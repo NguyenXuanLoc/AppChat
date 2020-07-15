@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="350dp"
+    android:layout_height="250sp"
+    android:layout_gravity="center_horizontal"
+    app:cardCornerRadius="@dimen/dimen_2x">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextView.Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:layout_marginTop="@dimen/dimen_3x"
+            android:text="@string/forgot_pass"
+            android:textSize="@dimen/text_size_20" />
+
+        <TextView
+            style="@style/TextView.Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:text="@string/email_address"
+            android:textSize="@dimen/text_size_17" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/btnRequest"
+            style="@style/Button.GreenDark"
+            android:layout_width="@dimen/dimen_170"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:background="@drawable/btn_orange_radius"
+            android:text="@string/request"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:id="@+id/btnReturn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:layout_marginTop="@dimen/dimen_1x"
+            android:text="@string/return_home"
+            android:textColor="@color/blue" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

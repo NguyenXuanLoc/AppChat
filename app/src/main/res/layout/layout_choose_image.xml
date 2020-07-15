@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/grey100">
+
+    <TextView
+        android:id="@+id/btnPick"
+        style="@style/Button.Purple"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_2x"
+        android:background="@drawable/btn_purple_radius"
+        android:text="Chọn hình từ thư viện"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/btnCamera"
+        style="@style/Button.Purple"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_2x"
+        android:background="@drawable/btn_purple_radius"
+        android:text="Chụp hình"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnPick"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/btnCancel"
+        style="@style/Button.Purple"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_2x"
+        android:background="@drawable/btn_grey_radius"
+        android:text="Hủy"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnCamera"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

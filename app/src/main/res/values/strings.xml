@@ -1,0 +1,31 @@
+<resources>
+    <string name="facebook_app_id">283433129572777</string>
+    <string name="fb_login_protocol_scheme">fb283433129572777</string>
+    <string name="id_web_token">705955618285-45ssda7l8q688fkgliq9mnfc95v6jndt.apps.googleusercontent.com</string>
+    <string name="app_name">AppChat</string>
+    <string name="email">Email</string>
+    <string name="pass">Pass</string>
+    <string name="confirm_pass">Confirm pass</string>
+    <string name="register">Đăng ký</string>
+    <string name="register_success">Đăng ký thành công !!</string>
+    <string name="login_success">Đăng nhập thành công!!</string>
+    <string name="wrong_pass">Mật khẩu của bạn không đúng, vui lòng thử lại sau</string>
+    <string name="not_equals_pass">Mật khẩu không trùng khớp, vui lòng thử lại</string>
+    <string name="account_exits">Tài khoản đã tồn tại, vui lòng đăng ký bằng tài khoản khác</string>
+    <string name="lack_of_information">Vui lòng nhập đầy đủ thông tin và thử lại sau.</string>
+    <string name="login_by">Đăng nhập bằng</string>
+    <string name="login">Đăng nhập</string>
+    <string name="new_user">Bạn là người mới, đăng ký ngay !!</string>
+    <string name="already_account">Bạn đã có\n tài khoản chưa?</string>
+    <string name="forgot_pass">Bạn quên mật khẩu?</string>
+    <string name="email_address">Địa chỉ email</string>
+    <string name="request">Yêu cầu</string>
+    <string name="return_home">Quay lại</string>
+    <string name="check_email">Mật khẩu mới sẽ được gửi vào email của bạn!!!</string>
+    <string name="error">Có lối sảy ra, vui lòng thử lại sau.</string>
+    <string name="wrong_info">Sai thông tin đăng nhập, vui lòng thử lại !!</string>
+    <string name="friend">Bạn bè̉</string>
+    <string name="group">Hội nhóm</string>
+    <string name="notification">Thông báo</string>
+    <string name="personal">Cá nhân</string>
+</resources>
