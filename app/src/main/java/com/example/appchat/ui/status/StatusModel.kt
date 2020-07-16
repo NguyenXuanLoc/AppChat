@@ -1,6 +1,7 @@
 package com.example.appchat.ui.status
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import timber.log.Timber
@@ -12,12 +13,12 @@ class StatusModel(statusResponse: StatusResponse) {
         val file: Uri = uri
         val riversRef: StorageReference =
             mStorageRef.child(System.currentTimeMillis().toString())
-        riversRef.putFile(file)
+            riversRef.putFile(file)
             .addOnSuccessListener {   // Get a URL to the uploaded content
-                Timber.e("Success")
+                Log.e("TAG", "OK")
             }
             .addOnFailureListener {
-                Timber.e(it.message)
+                Log.e("TAG", "Error")
                 // Handle unsuccessful uploads
                 // ...
             }

@@ -5,8 +5,8 @@
     tools:targetApi="lollipop">
     <item>
         <shape>
-            <solid android:color="@color/purple100"/>
-            <corners android:radius="@dimen/dimen_1x"/>
+            <solid android:color="@color/white247" />
+            <corners android:radius="@dimen/dimen_1x" />
         </shape>
     </item>
 </ripple>

@@ -13,17 +13,15 @@ class DialogChooseImage(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomShe
     init {
         this.setContentView(R.layout.layout_choose_image)
         btnCamera.setOnClickListener {
-            this.dismiss()
             listener?.onClickCamera()
-            Timber.e("Camera")
+            this.dismiss()
         }
-        btnPick.setOnClickListener {
+        btnAlbum.setOnClickListener {
             listener?.onClickAlbum()
-            Timber.e("Upload")
+            this.dismiss()
         }
         btnCancel.setOnClickListener {
-            listener?.onCancel()
-            Timber.e("Upload")
+            this.dismiss()
         }
     }
 
@@ -36,6 +34,5 @@ class DialogChooseImage(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomShe
 
         fun onClickAlbum()
 
-        fun onCancel()
     }
 }

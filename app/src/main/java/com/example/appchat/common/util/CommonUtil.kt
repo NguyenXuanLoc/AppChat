@@ -1,20 +1,13 @@
 package com.example.fcm.common.util
 
-import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.provider.CallLog
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import java.lang.reflect.Type
 import java.net.NetworkInterface
 import java.security.MessageDigest
 import java.util.*

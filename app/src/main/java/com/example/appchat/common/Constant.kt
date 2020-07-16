@@ -1,6 +1,9 @@
 package com.example.appchat.common
 
 object Constant {
+    const val GET_IMAGE = 111
+    const val REQUEST_EXTERNAL_STORAGE = 32234
+    const val OPEN_CAMERA = 1221
 }
 
 object Key {

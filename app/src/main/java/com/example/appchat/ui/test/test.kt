@@ -78,7 +78,4 @@ class test : AppCompatActivity(), DialogChooseImage.ImageChooserListener {
         toast("camera")
     }
 
-    override fun onCancel() {
-        toast("camera")
-    }
 }
