@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.appchat.R
-import com.example.appchat.common.Key
+import com.example.appchat.common.Constant
 import com.example.appchat.data.UserModel
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.saveUser
@@ -21,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun init() {
         pagerMain.adapter = MainStateAdapter(supportFragmentManager)
-        toast(getUser(getPreferences(Context.MODE_PRIVATE))?.userName.toString())
+        toast(getUser()?.userName.toString())
     }
 
     private fun evenHandle() {
@@ -29,10 +29,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getExtra() {
-        var bundle = intent.getBundleExtra(Key.USER)
+        var bundle = intent.getBundleExtra(Constant.USER)
         if (bundle != null) {
-            var user: UserModel = bundle.getSerializable(Key.USER) as UserModel
-            saveUser(getSharedPreferences(Key.USER, Context.MODE_PRIVATE), user)
+            var user: UserModel = bundle.getSerializable(Constant.USER) as UserModel
+            saveUser(user)
         }
 
     }

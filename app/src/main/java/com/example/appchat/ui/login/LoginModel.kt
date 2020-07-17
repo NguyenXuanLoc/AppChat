@@ -2,6 +2,7 @@ package com.example.appchat.ui.login
 
 import android.app.Activity
 import android.util.Log
+import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.data.UserModel
 import com.facebook.AccessToken
@@ -97,7 +98,7 @@ class LoginModel(loginResponse: LoginResponse) {
     }
 
     fun checkAccount(user: FirebaseUser) {
-        var reference = FirebaseDatabase.getInstance().getReference(Key.USER).child(user.uid)
+        var reference = FirebaseDatabase.getInstance().getReference(Constant.USER).child(user.uid)
         reference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 Timber.e(error.toString())
@@ -115,7 +116,7 @@ class LoginModel(loginResponse: LoginResponse) {
 
     private fun insertAccountToFirebase(user: FirebaseUser) {
         val database = Firebase.database
-        val myRef = database.getReference(Key.USER).child(user.uid)
+        val myRef = database.getReference(Constant.USER).child(user.uid)
         var map = HashMap<String, String>()
         map[Key.ID] = user.uid
         map[Key.USER_NAME] = user.displayName.toString()

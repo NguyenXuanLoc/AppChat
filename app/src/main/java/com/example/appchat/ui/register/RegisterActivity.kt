@@ -1,8 +1,5 @@
 package com.example.appchat.ui.register
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +8,6 @@ import com.example.fcm.common.ext.invisible
 import com.example.fcm.common.ext.toast
 import com.example.fcm.common.ext.visible
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity(), RegisterView {

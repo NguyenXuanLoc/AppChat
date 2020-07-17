@@ -1,11 +1,12 @@
 package com.example.appchat.widget
 
+import android.app.Activity
 import android.content.Context
+import android.os.Build
 import com.example.appchat.R
+import com.example.appchat.common.util.FileUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.layout_choose_image.*
-import timber.log.Timber
 
 class DialogChooseImage(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDialogTheme) {
     private var listener: ImageChooserListener? = null
@@ -13,12 +14,19 @@ class DialogChooseImage(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomShe
     init {
         this.setContentView(R.layout.layout_choose_image)
         btnCamera.setOnClickListener {
-            listener?.onClickCamera()
             this.dismiss()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                FileUtil.checkPermissions(ctx as Activity)
+            }
+            FileUtil.openCamera(ctx as Activity)
         }
+
         btnAlbum.setOnClickListener {
-            listener?.onClickAlbum()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                FileUtil.checkPermissions(ctx as Activity)
+            }
             this.dismiss()
+            FileUtil.openStorage(ctx as Activity)
         }
         btnCancel.setOnClickListener {
             this.dismiss()
@@ -30,9 +38,7 @@ class DialogChooseImage(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomShe
     }
 
     interface ImageChooserListener {
-        fun onClickCamera()
-
-        fun onClickAlbum()
-
+/*        fun onClickCamera()
+        fun onClickAlbum()*/
     }
 }

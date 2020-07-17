@@ -1,5 +1,6 @@
 package com.example.appchat.ui.register
 
+import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -22,7 +23,7 @@ class RegisterModel(registerResponse: RegisterResponse) {
 
     private fun insertAccountToFirebase(user: FirebaseUser) {
         val database = Firebase.database
-        val myRef = database.getReference(Key.USER).child(user.uid)
+        val myRef = database.getReference(Constant.USER).child(user.uid)
         var map = HashMap<String, String>()
         map[Key.ID] = user.uid
         map[Key.USER_NAME] = user.displayName.toString()

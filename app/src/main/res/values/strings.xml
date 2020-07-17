@@ -28,4 +28,10 @@
     <string name="group">Hội nhóm</string>
     <string name="notification">Thông báo</string>
     <string name="personal">Cá nhân</string>
+    <string name="back">Back</string>
+    <string name="apply">Apply</string>
+    <string name="click_to_record">Nhấn để ghi âm</string>
+    <string name="what_do_you_think">Bạn đang nghĩ gì</string>
+    <string name="share">Chia sẻ</string>
+    <string name="notify_only_one">Bạn chỉ được chọn 1 trong 3 thể loại khi viết Status.</string>
 </resources>

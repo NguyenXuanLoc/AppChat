@@ -8,7 +8,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import bundleOf
 import com.example.appchat.R
-import com.example.appchat.common.Key
+import com.example.appchat.common.Constant
 import com.example.appchat.data.UserModel
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.register.RegisterActivity
@@ -118,12 +118,13 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }
 
     override fun getUser(user: UserModel) {
-        bundleOf(Key.USER to user).run {
-            openActivity(HomeActivity::class.java, this, Key.USER)
+        bundleOf(Constant.USER to user).run {
+            openActivity(HomeActivity::class.java, this, Constant.USER)
         }
     }
 
     override fun onStop() {
+        super.onStop()
         finish()
     }
 }

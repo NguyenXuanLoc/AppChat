@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.example.appchat.R
+import com.example.appchat.common.Constant
 import com.example.appchat.widget.DialogChooseImage
 import com.example.fcm.common.ext.toast
 import com.google.firebase.storage.FirebaseStorage
@@ -23,59 +24,13 @@ class test : AppCompatActivity(), DialogChooseImage.ImageChooserListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
         init()
-//        chooseImage()
-//        test()
-        test2()
     }
 
     private fun init() {
-        dialogChooseImage = DialogChooseImage(this)
-        dialogChooseImage.setImageChooserListener(this)
-    }
-
-    fun chooseImage() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, 1)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
-            uri = data.data!!
-
+        var bundle = intent.getBundleExtra(Constant.URI)
+        if (bundle != null) {
+            var uri = bundle.getString(Constant.URI)
         }
-    }
-
-    fun test() {
-        btnUpload.setOnClickListener {
-            var mStorageRef: StorageReference = FirebaseStorage.getInstance().reference;
-            val file: Uri = uri
-            val riversRef: StorageReference =
-                mStorageRef.child(System.currentTimeMillis().toString())
-            riversRef.putFile(file)
-                .addOnSuccessListener {   // Get a URL to the uploaded content
-                    toast(it.toString())
-                }
-                .addOnFailureListener {
-                    Timber.e(it.message)
-                    // Handle unsuccessful uploads
-                    // ...
-                }
-        }
-    }
-
-    fun test2() {
-        btnUpload.setOnClickListener { dialogChooseImage.show() }
-    }
-
-    override fun onClickCamera() {
-        toast("camera")
-    }
-
-    override fun onClickAlbum() {
-        toast("camera")
     }
 
 }

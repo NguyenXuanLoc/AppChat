@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.status.StatusActivity">
+    tools:context=".ui.status.UploadStatusActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,30 +14,35 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_6x"
+        android:layout_marginLeft="@dimen/dimen_2x"
+        android:layout_marginRight="@dimen/dimen_2x"
         android:background="@color/white247"
-        android:paddingLeft="@dimen/dimen_1x"
-        android:paddingTop="@dimen/dimen_2x"
-        android:paddingRight="@dimen/dimen_x1x"
-        android:paddingBottom="@dimen/dimen_x1x"
         android:weightSum="3"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints">
 
-        <LinearLayout
-            android:id="@+id/layoutVoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutAudio"
+            android:layout_width="@dimen/dimen_8x"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_white_grey"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_voice"
                 android:layout_width="@dimen/dimen_4x"
                 android:layout_height="@dimen/dimen_4x"
-                android:src="@drawable/ic_voice" />
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_voice"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/lbl_voice"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/lbl_voice"
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,23 +50,34 @@
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"
                 android:text="Giọng nói"
-                android:textSize="@dimen/text_size_13" />
-        </LinearLayout>
+                android:textSize="@dimen/text_size_13"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/img_voice"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutImage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_white_grey"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_Image"
                 android:layout_width="@dimen/dimen_4x"
                 android:layout_height="@dimen/dimen_4x"
-                android:src="@drawable/ic_picture" />
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_picture"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/lbl_image"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/lbl_image"
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,23 +85,34 @@
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"
                 android:text="Hình ảnh"
-                android:textSize="@dimen/text_size_13" />
-        </LinearLayout>
+                android:textSize="@dimen/text_size_13"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/img_Image"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutVideo"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_white_grey"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_video"
                 android:layout_width="@dimen/dimen_4x"
                 android:layout_height="@dimen/dimen_4x"
-                android:src="@drawable/ic_video" />
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_video"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/lbl_video"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/lbl_video"
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,23 +120,38 @@
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"
                 android:text="Video"
-                android:textSize="@dimen/text_size_13" />
-        </LinearLayout>
+                android:textSize="@dimen/text_size_13"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/img_video"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <EditText
-        style="@style/EditText.Regular"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
-        android:layout_margin="@dimen/dimen_2x"
-        android:background="@drawable/bn_while_radius"
-        android:gravity="start"
-        android:hint="Bạn đang nghĩ gì"
+        android:hint="@string/what_do_you_think"
+        android:paddingTop="@dimen/dimen_2x"
+        app:counterEnabled="true"
+        app:counterMaxLength="500"
         app:layout_constraintBottom_toTopOf="@id/line1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/edtStatus"
+            style="@style/EditText.Regular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_2x"
+            android:background="@drawable/bn_while_radius"
+            android:gravity="start"
+            tools:ignore="MissingConstraints" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/line1"
@@ -117,6 +159,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_percent="0.5"
+        app:layout_constraintGuide_begin="366dp"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rclImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgVideo"
+        android:layout_width="@dimen/dimen_140"
+        android:layout_height="@dimen/dimen_90"
+        android:layout_margin="@dimen/dimen_2x"
+        android:background="@drawable/bn_while_radius"
+        android:padding="@dimen/dimen_5x"
+        android:src="@drawable/ic_play_grey"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rclImage"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

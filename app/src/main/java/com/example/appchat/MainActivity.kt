@@ -1,14 +1,10 @@
 package com.example.appchat
 
-import com.example.appchat.common.Key
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.login.LoginActivity
-import com.example.appchat.ui.status.StatusActivity
-import com.example.appchat.ui.test.test
+import com.example.appchat.ui.status.UploadStatusActivity
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.openActivity
 
@@ -22,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         Handler().postDelayed(Runnable {
-            if (getUser(getSharedPreferences(Key.USER, Context.MODE_PRIVATE)) != null) {
-                openActivity(StatusActivity::class.java)
+            if (getUser() != null) {
+                openActivity(UploadStatusActivity::class.java)
             } else openActivity(LoginActivity::class.java)
         }, 1000)
     }

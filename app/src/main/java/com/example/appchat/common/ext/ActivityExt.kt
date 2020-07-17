@@ -1,8 +1,6 @@
 package com.example.fcm.common.ext
 
 import android.app.Activity
-import android.app.role.RoleManager
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -21,7 +19,7 @@ fun AppCompatActivity.replaceFragment(containerId: Int, fragment: Fragment) {
     supportFragmentManager.beginTransaction().replace(containerId, fragment, fragment.TAG).commit()
 }
 
-fun AppCompatActivity.toast(notify: String) {
+fun AppCompatActivity.toast(notify: String?) {
     Toast.makeText(this, notify.toString(), Toast.LENGTH_SHORT).show()
 }
 
@@ -54,13 +52,13 @@ fun AppCompatActivity.openActivity(
 fun AppCompatActivity.openActivityForResult(
     clz: Class<*>,
     requestCode: Int,
-    bundle: Bundle? = null,
+    bundle: Bundle? = null, keyBundle: String? = null,
     enterAnim: Int? = null,
     exitAnim: Int? = null
 ) {
     val intent = Intent(ctx, clz)
     if (bundle != null) {
-        intent.putExtras(bundle)
+        intent.putExtra(keyBundle, bundle)
     }
     startActivityForResult(intent, requestCode)
     enterAnim?.also { enter ->

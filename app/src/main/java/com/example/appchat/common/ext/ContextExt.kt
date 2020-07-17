@@ -4,6 +4,7 @@ import com.example.appchat.common.Key
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import com.example.appchat.common.Constant
 import com.example.appchat.data.UserModel
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
@@ -33,22 +34,24 @@ fun Context.getFirebaseInstanceToken(onComplete: (String?) -> Unit) {
     }
 }
 
-fun Context.saveUser(mPrefs: SharedPreferences, userModel: UserModel) {
+fun Context.saveUser(userModel: UserModel) {
+    val mPrefs = getSharedPreferences(Constant.USER, Context.MODE_PRIVATE)
     var prefsEditor = mPrefs.edit();
     var gson = Gson();
     var json: String = gson.toJson(userModel);
-    prefsEditor.putString(Key.USER, json);
+    prefsEditor.putString(Constant.USER, json);
     prefsEditor.commit();
 }
 
-fun Context.getUser(mPrefs: SharedPreferences): UserModel? {
+fun Context.getUser(): UserModel? {
+    val mPrefs = getSharedPreferences(Constant.USER, Context.MODE_PRIVATE)
     val gson = Gson()
-    val json: String? = mPrefs.getString(Key.USER, "")
+    val json: String? = mPrefs.getString(Constant.USER, "")
     var user = gson.fromJson(json, UserModel::class.java)
     return user
 }
 
 fun Context.removeUser(mPrefs: SharedPreferences) {
-    mPrefs.edit().remove(Key.USER).commit()
+    mPrefs.edit().remove(Constant.USER).commit()
 }
 

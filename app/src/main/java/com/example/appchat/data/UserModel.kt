@@ -9,20 +9,4 @@ class UserModel() : Serializable {
     var sex: String? = null
     var status: String? = null
     var userName: String? = null
-
-    constructor(
-        age: String,
-        id: String?,
-        imageUrl: String?,
-        sex: String?,
-        status: String?,
-        userName: String?
-    ) : this() {
-        this.age = age
-        this.id = id
-        this.imageUrl = imageUrl
-        this.sex = sex
-        this.status = status
-        this.userName = userName
-    }
 }

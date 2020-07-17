@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bn_white_radius_top"
+    android:paddingTop="@dimen/dimen_3x"
+    android:paddingBottom="@dimen/dimen_1x">
+
+    <TextView
+        android:id="@+id/lblTime"
+        style="@style/TextView.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_1x"
+        android:text="@string/click_to_record"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_size_16"
+        app:layout_constraintBottom_toTopOf="@id/imgRecord"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgRecord"
+        android:layout_width="@dimen/dimen_8x"
+        android:layout_height="@dimen/dimen_8x"
+        android:layout_margin="@dimen/dimen_1x"
+        android:layout_marginTop="@dimen/dimen_5x"
+        android:background="@drawable/btn_record_audio_purple"
+        android:padding="@dimen/dimen_2x"
+        android:src="@drawable/ic_microphone_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblTime"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgDelete"
+        android:layout_width="@dimen/dimen_5x"
+        android:layout_height="@dimen/dimen_5x"
+        android:background="@drawable/btn_circle_grey"
+        android:padding="@dimen/dimen_x1x"
+        android:src="@drawable/ic_clear_pink"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/imgRecord"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/imgRecord"
+        app:layout_constraintTop_toTopOf="@id/imgRecord"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgApply"
+        android:layout_width="@dimen/dimen_5x"
+        android:layout_height="@dimen/dimen_5x"
+        android:background="@drawable/btn_circle_grey"
+        android:padding="@dimen/dimen_x1x"
+        android:src="@drawable/ic_tick_purple"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/imgRecord"
+        app:layout_constraintLeft_toRightOf="@id/imgRecord"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imgRecord"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>
