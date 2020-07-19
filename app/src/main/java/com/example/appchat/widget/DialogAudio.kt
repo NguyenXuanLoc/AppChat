@@ -31,44 +31,9 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
     init {
         setContentView(R.layout.layout_audio)
         mFileName = Environment.getExternalStorageDirectory().absolutePath;
-        mFileName += "/recorded_audio.3gp";
+        mFileName += "/recorded_audio_app_chat.3gp";
         imgRecord.setOnClickListener {
-            when (checkStatus) {
-                0 -> {
-                    imgRecord.setImage(R.drawable.ic_stop_white)
-                    initRecord()
-                    try {
-                        mRecorder.prepare()
-                    } catch (e: Exception) {
-                        Log.e("TAG", e.message.toString())
-                    }
-                    mRecorder.start()
-                    countTime(lblTime)
-                    checkStatus++
-                }
-                1 -> {
-                    imgRecord.setImage(R.drawable.ic_play_white)
-                    mRecorder.stop()
-                    mPlayer?.setDataSource(mFileName);
-                    mPlayer?.prepare();
-                    time = (lblTime.text.toString().toInt() * 1000).toLong()
-                    countDownTimer.cancel()
-                    showHide(imgApply, imgDelete)
-                    checkStatus++
-                }
-                2 -> {
-                    imgRecord.setImage(R.drawable.ic_stop_white)
-                    countTime(lblTime, false, time)
-                    mPlayer?.start();
-                    checkStatus++
-                }
-                3 -> {
-                    imgRecord.setImage(R.drawable.ic_play_white)
-                    mPlayer.reset()
-                    countDownTimer.cancel()
-                    checkStatus--
-                }
-            }
+            checkStatus()
         }
         imgDelete.setOnClickListener {
             checkStatus = 0
@@ -79,8 +44,8 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
             showHide(imgDelete, imgApply, false)
         }
         imgApply.setOnClickListener {
-            var uri = Uri.fromFile(File(mFileName))
-            listener?.onClickApply(uri)
+            listener?.onClickAudio(Uri.fromFile(File(mFileName)), time)
+            this.dismiss()
         }
     }
 
@@ -93,12 +58,19 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
         }
     }
 
+    private fun initMedia() {
+        mPlayer.reset()
+        mPlayer?.setDataSource(mFileName)
+        mPlayer?.prepare()
+        mPlayer?.start();
+    }
+
     fun setAudioListener(listener: AudioListener) {
         this.listener = listener
     }
 
     interface AudioListener {
-        fun onClickApply(uri: Uri)
+        fun onClickAudio(uri: Uri, time: Long)
     }
 
     //Time record check == true: count up, check == false count down
@@ -127,6 +99,47 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
         } else {
             img1.gone()
             img2.gone()
+        }
+    }
+
+    //Check status when user click:
+    private fun checkStatus() {
+        when (checkStatus) {
+            0 -> {
+                imgRecord.setImage(R.drawable.ic_stop_white)
+                initRecord()
+                try {
+                    mRecorder.prepare()
+                } catch (e: Exception) {
+                    Log.e("TAG", e.message.toString())
+                }
+                mRecorder.start()
+                countTime(lblTime)
+                checkStatus++
+            }
+            1 -> {
+                imgRecord.setImage(R.drawable.ic_play_white)
+                mRecorder.stop()
+
+                countDownTimer.cancel()
+                showHide(imgApply, imgDelete)
+                checkStatus++
+            }
+            2 -> {
+                initMedia()
+                time = (lblTime.text.toString().toInt() * 1000).toLong()
+                imgRecord.setImage(R.drawable.ic_stop_white)
+                countTime(lblTime, false, time)
+
+                checkStatus++
+            }
+            3 -> {
+                imgRecord.setImage(R.drawable.ic_play_white)
+                mPlayer.reset()
+                countDownTimer.cancel()
+
+                checkStatus--
+            }
         }
     }
 }

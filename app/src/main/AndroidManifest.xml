@@ -19,10 +19,11 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/WhiteTheme">
-        <activity android:name=".ui.playvideo.PlayVideoActivity"></activity>
+        <activity android:name=".ui.playvideo.PlayVideoActivity"/>
         <activity
             android:name=".ui.status.UploadStatusActivity"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.test.test"
