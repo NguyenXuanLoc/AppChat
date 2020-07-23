@@ -1,6 +1,6 @@
 package com.example.appchat.ui.login
 
-import com.example.appchat.data.UserModel
+import com.example.appchat.data.model.UserModel
 import com.google.firebase.auth.FirebaseUser
 
 interface LoginResponse {

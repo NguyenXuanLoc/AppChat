@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import bundleOf
 import com.example.appchat.R
 import com.example.appchat.common.Constant
-import com.example.appchat.data.UserModel
+import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.register.RegisterActivity
 import com.example.fcm.common.ext.*

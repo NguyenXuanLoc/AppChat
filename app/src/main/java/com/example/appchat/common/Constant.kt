@@ -18,7 +18,7 @@ object Constant {
     const val GROUP = "group"
     const val NOTIFICATION = "notification"
     const val PERSONAL = "personal"
-
+    const val PLAY_VIDEO = "playvideo"
 
 }
 
@@ -30,6 +30,7 @@ object Key {
     const val SEX = "sex"
     const val AGE = "age"
     const val STATUS = "status"
+    const val VIDEO = "video"
 }
 
 object KeyStatus {

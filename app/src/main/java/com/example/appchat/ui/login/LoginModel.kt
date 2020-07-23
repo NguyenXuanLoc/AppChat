@@ -4,7 +4,7 @@ import android.app.Activity
 import android.util.Log
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
-import com.example.appchat.data.UserModel
+import com.example.appchat.data.model.UserModel
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback

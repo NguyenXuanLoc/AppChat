@@ -6,7 +6,6 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.CountDownTimer
 import android.os.Environment
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.appchat.R
@@ -16,7 +15,6 @@ import com.example.fcm.common.ext.visible
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.layout_audio.*
 import java.io.File
-import kotlin.concurrent.timer
 
 
 class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDialogTheme) {
@@ -81,7 +79,6 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
                 else millisUntilFinished / 1000
                 lblTime.text = "$time"
             }
-
             override fun onFinish() {
                 checkStatus = 2
                 lblTime.text = (time / 1000).toString()
@@ -111,7 +108,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
                 try {
                     mRecorder.prepare()
                 } catch (e: Exception) {
-                    Log.e("TAG", e.message.toString())
+                    e.message
                 }
                 mRecorder.start()
                 countTime(lblTime)

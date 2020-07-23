@@ -1,4 +1,4 @@
-package com.example.appchat.data
+package com.example.appchat.data.model
 
 import com.google.firebase.database.IgnoreExtraProperties
 import java.io.Serializable

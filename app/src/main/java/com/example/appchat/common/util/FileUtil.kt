@@ -65,13 +65,13 @@ object FileUtil {
         )
         return Uri.parse(path)
     }
+
     fun openVideo(activity: Activity) {
         val intent = Intent()
         intent.type = "video/*"
         intent.action = Intent.ACTION_GET_CONTENT
         activity.startActivityForResult(intent, Constant.GET_VIDEO)
     }
-
 
 
     fun getThumbnailFromUrl(videoPath: String?, ctx: Context): Bitmap? {

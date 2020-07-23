@@ -1,11 +1,10 @@
 package com.example.fcm.common.ext
 
-import com.example.appchat.common.Key
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import com.example.appchat.common.Constant
-import com.example.appchat.data.UserModel
+import com.example.appchat.data.model.UserModel
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import timber.log.Timber

@@ -1,4 +1,4 @@
-package com.example.appchat.ui.status
+package com.example.appchat.ui.personal.uploadstatus
 
 
 import android.app.Activity
@@ -22,6 +22,7 @@ import com.example.appchat.common.util.FileUtil
 import com.example.appchat.ui.playvideo.PlayVideoActivity
 import com.example.appchat.widget.DialogAudio
 import com.example.appchat.widget.DialogChooseImage
+import com.example.appchat.widget.DialogLoading
 import com.example.fcm.common.ext.*
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.exoplayer2.util.Log
@@ -32,20 +33,30 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
     DialogChooseImage.ImageChooserListener,
     DialogAudio.AudioListener {
     private val mediaPlayer by lazy { MediaPlayer() }
-
     private val dialogUploadImage by lazy { DialogChooseImage(this) }
     private val dialogAudio by lazy { DialogAudio(this) }
+    private val dialogLoading by lazy { DialogLoading(this) }
 
     private val presenter by lazy { UploadStatusPresenter(this) }
+    private val adapter: UploadStatusImageAdapter by lazy {
+        UploadStatusImageAdapter(this, uriImages) { onClick(it) }
+    }
 
-    private val uriImage by lazy { ArrayList<Uri>() }
+    private val uriImages by lazy { ArrayList<Uri>() }
     private var uriVideo: Uri? = null
     private var uriAudio: Uri? = null
     private var checkAudio = true
 
-    private val adapter: UploadStatusImageAdapter by lazy {
-        UploadStatusImageAdapter(this, uriImage) { onClick(it) }
-    }
+    private var threadAudio: Thread? = null
+    private var threadVideo: Thread? = null
+    private var threadPhoto: Thread? = null
+
+    // number file Attach
+    private var numberAttach = 0
+
+    // number file Attach result
+    private var countResult = 0
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +73,6 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         setSupportActionBar(toolbar)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         dialogAudio.setAudioListener(this)
         dialogUploadImage.setImageChooserListener(this)
 
@@ -70,21 +80,23 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         rclImage.setHasFixedSize(true)
         adapter.updateThumbRatio(true)
         rclImage.adapter = adapter
+
     }
 
     private fun eventHandle() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             FileUtil.checkPermissions(this)
         }
+
         //listener
         layoutAudio.setOnClickListener {
-            checkAttach(uriVideo, uriAudio, uriImage, 0)
+            dialogAudio.show()
         }
         layoutImage.setOnClickListener {
-            checkAttach(uriVideo, uriAudio, uriImage, 1)
+            dialogUploadImage.show()
         }
         layoutVideo.setOnClickListener {
-            checkAttach(uriVideo, uriAudio, uriImage, 2)
+            FileUtil.openVideo(this)
         }
         imgDeleteAudio.setOnClickListener {
             if (uriAudio != null) uriAudio = null
@@ -107,7 +119,7 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
     }
 
     private fun onClick(Position: Int) {
-        uriImage.removeAt(Position)
+        uriImages.removeAt(Position)
         adapter.notifyDataSetChanged()
     }
 
@@ -119,16 +131,16 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                     val clipData: ClipData? = data.clipData
                     if (clipData != null) {
                         for (i in 0 until clipData.itemCount) {
-                            uriImage.add(clipData.getItemAt(i).uri)
+                            uriImages.add(clipData.getItemAt(i).uri)
                         }
                     } else {
-                        data.data?.let { uriImage.add(it) }
+                        data.data?.let { uriImages.add(it) }
                     }
                 }
                 Constant.OPEN_CAMERA -> {
                     val bitmap = data.extras!!["data"] as Bitmap?
                     val uri = FileUtil.getImageUri(this, bitmap)
-                    uri?.let { uriImage.add(it) }
+                    uri?.let { uriImages.add(it) }
                 }
                 Constant.GET_VIDEO -> {
                     bundleOf(Constant.URI to data.data.toString()).also {
@@ -159,9 +171,9 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                 getUser()?.let {
                     presenter.uploadStatus(
                         edtStatus.text.toString(),
-                        it,
-                        checkAttachStatus(uriVideo, uriAudio, uriImage)
+                        it
                     )
+                    dialogLoading.show()
                 }
             }
             else -> finish()
@@ -174,33 +186,9 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         uriAudio = uri
         layoutPlayAudio.visible()
         imgDeleteAudio.visible()
+        lblTimeAudio.text = (time / 1000).toString()
         playAudio(uriAudio, time)
     }
-
-    // check Attach: only one attach when Upload status
-    private fun checkAttach(
-        uriVideo: Uri? = null, uriAudio: Uri? = null,
-        listUri: ArrayList<Uri>, attach: Int
-    ) {
-        when (attach) {
-            0 -> {
-                if (uriAudio == null && listUri.size == 0) {
-                    dialogAudio.show()
-                } else toast(getString(R.string.notify_only_one))
-            }
-            1 -> {
-                if (uriAudio == null && uriVideo == null)
-                    dialogUploadImage.show()
-                else toast(getString(R.string.notify_only_one))
-            }
-            2 -> {
-                if (uriAudio == null && listUri.size == 0)
-                    FileUtil.openVideo(this)
-                else toast(getString(R.string.notify_only_one))
-            }
-        }
-    }
-
 
     private fun playAudio(uriAudio: Uri?, time: Long) {
         layoutPlayAudio.setOnClickListener {
@@ -224,49 +212,66 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         }
     }
 
-    // Check Attach to insert Attach to Database
-    private fun checkAttachStatus(
-        uriVideo: Uri? = null, uriAudio: Uri? = null, listUri: ArrayList<Uri>
-    ): Int {
-        return when {
-            uriAudio != null -> 0
-            uriVideo != null -> 1
-            listUri.size > 0 -> 2
-            else -> 3
-        }
-    }
-
     // check Uri to Upload to firebase
-    private fun checkUri(
+    private fun uploadFileAttach(
         uriVideo: Uri? = null, uriAudio: Uri? = null, listUri: ArrayList<Uri>,
         idStatus: String
     ) {
-        when {
-            uriAudio != null -> presenter.uploadFile(
-                uriAudio = uriAudio,
-                attach = 0,
-                idStatus = idStatus
-            )
-            uriVideo != null -> presenter.uploadFile(
-                uriVideo = uriVideo,
-                attach = 1,
-                idStatus = idStatus
-            )
-            listUri.size > 0 -> presenter.uploadFile(
-                uriList = listUri,
-                attach = 2,
-                idStatus = idStatus, size = listUri.size
-            )
+        if (uriAudio != null) {
+            numberAttach++
+            threadAudio = Thread {
+                presenter.uploadFile(
+                    uriAudio = uriAudio,
+                    attach = 0,
+                    idStatus = idStatus
+                )
+            }
         }
+        if (uriVideo != null) {
+            numberAttach++
+            threadVideo = Thread {
+                presenter.uploadFile(
+                    uriVideo = uriVideo,
+                    attach = 1,
+                    idStatus = idStatus
+                )
+            }
+
+        }
+        if (uriImages != null) {
+            numberAttach += uriImages.size
+            threadPhoto = Thread {
+                presenter.uploadFile(
+                    uriList = listUri,
+                    attach = 2,
+                    idStatus = idStatus
+                )
+            }
+        }
+        threadVideo?.start()
+        threadPhoto?.start()
+        threadAudio?.start()
     }
 
     override fun getIdStatus(idStatus: String) {
-        if (uriVideo != null || uriAudio != null || uriImage != null)
-            checkUri(uriVideo, uriAudio, uriImage, idStatus)
-        else finish()
+        if (uriVideo != null || uriAudio != null || uriImages.size > 0)
+            uploadFileAttach(uriVideo, uriAudio, uriImages, idStatus)
+        else {
+            toast(getString(R.string.upload_status_success))
+            dialogLoading.dismiss()
+            finish()
+        }
     }
 
     override fun uploadSuccess() {
-        finish()
+        countResult++
+        if (countResult == numberAttach) {
+            numberAttach = 0
+            toast(getString(R.string.upload_status_success))
+            dialogLoading.dismiss()
+            finish()
+        }
     }
+
+
 }

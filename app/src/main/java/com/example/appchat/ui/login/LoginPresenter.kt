@@ -1,7 +1,7 @@
 package com.example.appchat.ui.login
 
 import android.app.Activity
-import com.example.appchat.data.UserModel
+import com.example.appchat.data.model.UserModel
 import com.facebook.CallbackManager
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

@@ -21,7 +21,7 @@
         android:theme="@style/WhiteTheme">
         <activity android:name=".ui.playvideo.PlayVideoActivity"/>
         <activity
-            android:name=".ui.status.UploadStatusActivity"
+            android:name="com.example.appchat.ui.personal.uploadstatus.UploadStatusActivity"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />

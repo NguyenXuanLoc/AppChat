@@ -27,9 +27,9 @@ class test : AppCompatActivity(), DialogChooseImage.ImageChooserListener {
     }
 
     private fun init() {
-        var bundle = intent.getBundleExtra(Constant.URI)
+        var bundle = intent.getBundleExtra(Constant.PLAY_VIDEO)
         if (bundle != null) {
-            var uri = bundle.getString(Constant.URI)
+            var uri = bundle.getString(Constant.PLAY_VIDEO)
         }
     }
 

@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appchat.R
 import com.example.appchat.common.Constant
-import com.example.appchat.data.UserModel
+import com.example.appchat.data.model.UserModel
+import com.example.appchat.ui.personal.FragPersonal
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.saveUser
 import com.example.fcm.common.ext.toast
@@ -20,11 +21,12 @@ class HomeActivity : AppCompatActivity() {
 
     private fun init() {
         pagerMain.adapter = MainStateAdapter(supportFragmentManager)
-        toast(getUser()?.userName.toString())
     }
+
 
     private fun evenHandle() {
         getExtra()
+        supportFragmentManager.beginTransaction().add(R.id.mLayout, FragPersonal()).commit()
     }
 
     private fun getExtra() {

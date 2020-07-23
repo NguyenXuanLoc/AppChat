@@ -9,14 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.setImage
+import com.example.appchat.data.model.VideoModel
 import com.example.fcm.common.ext.gone
+import com.example.fcm.common.ext.toast
 import com.example.fcm.common.ext.visible
 import kotlinx.android.synthetic.main.activity_play_video.*
+import timber.log.Timber
 
 
 class PlayVideoActivity : AppCompatActivity() {
-    lateinit var uri: String
-    var check = true
+    private lateinit var uri: String
+    private var check = true
+    private var videoModel: VideoModel? = null
     private lateinit var controller: MediaController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +38,19 @@ class PlayVideoActivity : AppCompatActivity() {
 
     private fun eventHandle() {
         var bundle = intent.getBundleExtra(Constant.URI)
-        bundle?.let { uri = bundle.getString(Constant.URI).toString() }
+        if (bundle != null) {
+            uri = bundle.getString(Constant.URI).toString()
+        } else {
+            bundle = intent.getBundleExtra(Constant.PLAY_VIDEO)
+            videoModel = bundle.getSerializable(Constant.PLAY_VIDEO) as VideoModel?
+            uri = videoModel?.url.toString()
+            imgApply.gone()
+            lblApply.gone()
+            lblBack.gone()
+        }
         playerView.setVideoURI(Uri.parse(uri))
         playerView.start()
+
         imgApply.setOnClickListener {
             check = if (check) {
                 imgApply.setImage(R.drawable.ic_tick_while)
