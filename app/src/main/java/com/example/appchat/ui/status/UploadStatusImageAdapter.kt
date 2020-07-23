@@ -44,7 +44,7 @@ class UploadStatusImageAdapter(
         private var image = itemView.findViewById<SimpleDraweeView>(R.id.sdv_image)
         private var imgDelete = itemView.findViewById<ImageView>(R.id.img_delete)
         fun bind(uri: Uri, position: Int) {
-            image.setRatio(ctx as AppCompatActivity, 16, 12, totalMargin)
+            image.setRatio(ctx as AppCompatActivity, 16,9, totalMargin)
             image.setImageURI(uri)
             imgDelete.setOnClickListener { itemClick(position) }
         }

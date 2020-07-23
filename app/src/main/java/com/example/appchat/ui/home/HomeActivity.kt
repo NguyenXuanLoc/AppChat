@@ -1,8 +1,7 @@
 package com.example.appchat.ui.home
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.data.UserModel

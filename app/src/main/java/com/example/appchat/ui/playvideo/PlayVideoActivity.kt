@@ -29,13 +29,14 @@ class PlayVideoActivity : AppCompatActivity() {
         controller = MediaController(this);
         controller.setMediaPlayer(playerView);
         playerView.setMediaController(controller);
-        playerView.requestFocus();
+        playerView.requestFocus()
     }
 
     private fun eventHandle() {
         var bundle = intent.getBundleExtra(Constant.URI)
         bundle?.let { uri = bundle.getString(Constant.URI).toString() }
         playerView.setVideoURI(Uri.parse(uri))
+        playerView.start()
         imgApply.setOnClickListener {
             check = if (check) {
                 imgApply.setImage(R.drawable.ic_tick_while)

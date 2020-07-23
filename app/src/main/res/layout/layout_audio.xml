@@ -30,7 +30,7 @@
         android:layout_margin="@dimen/dimen_1x"
         android:layout_marginTop="@dimen/dimen_5x"
         android:background="@drawable/btn_record_audio_purple"
-        android:padding="@dimen/dimen_2x"
+        android:padding="@dimen/dimen_3x"
         android:src="@drawable/ic_microphone_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

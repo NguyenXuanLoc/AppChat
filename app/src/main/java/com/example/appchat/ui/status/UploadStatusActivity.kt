@@ -19,16 +19,12 @@ import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.countTime
 import com.example.appchat.common.util.FileUtil
-import com.example.appchat.data.AudioModel
-import com.example.appchat.data.StatusModel
 import com.example.appchat.ui.playvideo.PlayVideoActivity
 import com.example.appchat.widget.DialogAudio
 import com.example.appchat.widget.DialogChooseImage
 import com.example.fcm.common.ext.*
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.exoplayer2.util.Log
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_status.*
 
 
@@ -95,6 +91,19 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
             layoutPlayAudio.gone()
             imgDeleteAudio.gone()
         }
+        imgDeleteVideo.setOnClickListener {
+            if (uriVideo != null) uriVideo = null
+            cardVideo.gone()
+            imgDeleteVideo.gone()
+        }
+        imgVideo.setOnClickListener {
+            bundleOf(Constant.URI to uriVideo.toString()).also {
+                openActivityForResult(
+                    PlayVideoActivity::class.java,
+                    Constant.RESULT_VIDEO, it, Constant.URI
+                )
+            }
+        }
     }
 
     private fun onClick(Position: Int) {
@@ -131,8 +140,8 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                 }
                 Constant.RESULT_VIDEO -> {
                     uriVideo = Uri.parse(data.getStringExtra(Constant.URI))
-//                  imgVideo.setImageBitmap(FileUtil.getImageUri())
-                    imgVideo.visible()
+                    cardVideo.visible()
+                    imgDeleteVideo.visible()
                 }
             }
             adapter.notifyDataSetChanged()
@@ -153,9 +162,9 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                         it,
                         checkAttachStatus(uriVideo, uriAudio, uriImage)
                     )
-//                    checkUri(uriVideo, uriAudio, uriImage)
                 }
             }
+            else -> finish()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -166,7 +175,6 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         layoutPlayAudio.visible()
         imgDeleteAudio.visible()
         playAudio(uriAudio, time)
-//        presenter.uploadFile(uriAudio = uriAudio, attach = 0, name = Constant.AUDIO)
     }
 
     // check Attach: only one attach when Upload status
@@ -216,10 +224,9 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         }
     }
 
+    // Check Attach to insert Attach to Database
     private fun checkAttachStatus(
-        uriVideo: Uri? = null,
-        uriAudio: Uri? = null,
-        listUri: ArrayList<Uri>
+        uriVideo: Uri? = null, uriAudio: Uri? = null, listUri: ArrayList<Uri>
     ): Int {
         return when {
             uriAudio != null -> 0
@@ -231,9 +238,7 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
 
     // check Uri to Upload to firebase
     private fun checkUri(
-        uriVideo: Uri? = null,
-        uriAudio: Uri? = null,
-        listUri: ArrayList<Uri>,
+        uriVideo: Uri? = null, uriAudio: Uri? = null, listUri: ArrayList<Uri>,
         idStatus: String
     ) {
         when {
@@ -250,12 +255,18 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
             listUri.size > 0 -> presenter.uploadFile(
                 uriList = listUri,
                 attach = 2,
-                idStatus = idStatus
+                idStatus = idStatus, size = listUri.size
             )
         }
     }
 
     override fun getIdStatus(idStatus: String) {
-        checkUri(uriVideo, uriAudio, uriImage, idStatus)
+        if (uriVideo != null || uriAudio != null || uriImage != null)
+            checkUri(uriVideo, uriAudio, uriImage, idStatus)
+        else finish()
+    }
+
+    override fun uploadSuccess() {
+        finish()
     }
 }

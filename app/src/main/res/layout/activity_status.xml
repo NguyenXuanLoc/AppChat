@@ -12,7 +12,152 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        app:layout_constraintBottom_toTopOf="@id/layout_navigation"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="@dimen/zero"
+            android:layout_height="@dimen/zero"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:layout_marginRight="@dimen/dimen_2x"
+            app:counterEnabled="true"
+            app:counterMaxLength="500"
+            app:hintEnabled="false"
+            app:layout_constraintBottom_toTopOf="@id/line1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <EditText
+                android:id="@+id/edtStatus"
+                style="@style/EditText.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bn_white_grey_radius"
+                android:gravity="start"
+                android:hint="@string/what_do_you_think"
+                tools:ignore="MissingConstraints" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rclImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/line1"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:id="@+id/layoutPlayAudio"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:background="@drawable/btn_purple_radius_top"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dimen_1x"
+            android:paddingRight="@dimen/dimen_2x"
+            android:visibility="gone"
+            android:weightSum="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/line2"
+            app:layout_constraintTop_toTopOf="@id/line1"
+            tools:ignore="MissingConstraints">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lvAudio"
+                android:layout_width="@dimen/dimen_6x"
+                android:layout_height="@dimen/dimen_4x"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:scaleType="centerCrop"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/audio"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lblTimeAudio"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="8x"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgDeleteAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:src="@drawable/btn_ic_close_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/layoutPlayAudio"
+            app:layout_constraintLeft_toRightOf="@id/layoutPlayAudio"
+            app:layout_constraintTop_toTopOf="@id/layoutPlayAudio"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardVideo"
+            android:layout_width="@dimen/dimen_140"
+            android:layout_height="@dimen/dimen_90"
+            android:layout_margin="@dimen/dimen_2x"
+            android:padding="@dimen/dimen_5x"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/dimen_1x"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rclImage">
+
+            <ImageView
+                android:id="@+id/imgVideo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/img_video"
+                android:padding="@dimen/dimen_5x"
+                android:src="@drawable/ic_play_white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rclImage"
+                tools:ignore="MissingConstraints" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/imgDeleteVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:src="@drawable/btn_ic_close_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/cardVideo"
+            app:layout_constraintLeft_toRightOf="@id/cardVideo"
+            app:layout_constraintTop_toTopOf="@id/cardVideo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
+        android:id="@+id/layout_navigation"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_6x"
         android:layout_marginLeft="@dimen/dimen_2x"
@@ -128,118 +273,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="@dimen/zero"
-        android:layout_height="@dimen/zero"
-        android:layout_marginLeft="@dimen/dimen_2x"
-        android:layout_marginRight="@dimen/dimen_2x"
-        app:counterEnabled="true"
-        app:counterMaxLength="500"
-        app:hintEnabled="false"
-        app:layout_constraintBottom_toTopOf="@id/line1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:ignore="MissingConstraints">
-
-        <EditText
-            android:id="@+id/edtStatus"
-            style="@style/EditText.Regular"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bn_white_grey_radius"
-            android:gravity="start"
-            android:hint="@string/what_do_you_think"
-            tools:ignore="MissingConstraints" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_percent="0.5"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_percent="0.5"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rclImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/line1"
-        tools:ignore="MissingConstraints" />
-
-    <LinearLayout
-        android:id="@+id/layoutPlayAudio"
-        android:layout_width="@dimen/zero"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_2x"
-        android:background="@drawable/btn_purple_radius_top"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dimen_1x"
-        android:paddingRight="@dimen/dimen_2x"
-        android:visibility="gone"
-        android:weightSum="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/line2"
-        app:layout_constraintTop_toTopOf="@id/line1"
-        tools:ignore="MissingConstraints">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lvAudio"
-            android:layout_width="@dimen/dimen_6x"
-            android:layout_height="@dimen/dimen_4x"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:scaleType="centerCrop"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/audio"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/lblTimeAudio"
-            style="@style/TextView.Regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="8x"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/imgDeleteAudio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_2x"
-        android:src="@drawable/btn_ic_close_white"
-        app:layout_constraintBottom_toBottomOf="@id/layoutPlayAudio"
-        app:layout_constraintLeft_toRightOf="@id/layoutPlayAudio"
-        app:layout_constraintTop_toTopOf="@id/layoutPlayAudio"
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/imgVideo"
-        android:layout_width="@dimen/dimen_140"
-        android:layout_height="@dimen/dimen_90"
-        android:layout_margin="@dimen/dimen_2x"
-        android:background="@drawable/bn_while_stroke_radius"
-        android:padding="@dimen/dimen_5x"
-        android:src="@drawable/ic_play_grey"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rclImage"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

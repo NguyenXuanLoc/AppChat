@@ -14,15 +14,20 @@ import java.util.*
 class UploadStatusModel(statusResponse: UploadStatusResponse) {
     private var v = statusResponse
 
-    fun uploadFile(uri: Uri, file: String? = Constant.IMAGE, attach: Int, idStatus: String) {
+    fun uploadFile(
+        uri: Uri,
+        file: String? = Constant.IMAGE,
+        attach: Int,
+        idStatus: String,
+        size: Int? = null, index: Int? = null
+    ) {
         var mStorageRef = FirebaseStorage.getInstance().reference;
         val riversRef =
             mStorageRef.child(file.toString()).child(System.currentTimeMillis().toString())
         riversRef.putFile(uri).addOnSuccessListener { it ->
             var result = it.metadata?.reference?.downloadUrl
             result?.addOnSuccessListener {
-                uploadUrlToStatus(it.toString(), idStatus, attach)
-
+                uploadUrlToStatus(it.toString(), idStatus, attach, size, index)
             }
         }
     }
@@ -43,44 +48,48 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
         database.child(key.toString()).setValue(model).addOnSuccessListener {
             v.getKeyStatus(key.toString())
         }
-
     }
 
-    private fun uploadUrlToStatus(url: String, idStatus: String, attach: Int) {
+    private fun uploadUrlToStatus(
+        url: String,
+        idStatus: String,
+        attach: Int,
+        size: Int? = null,
+        index: Int? = null
+    ) {
         var nameFile: String? = null
-
+        var database = Firebase.database
         when (attach) {
-            //0: Audio
-            //1: Video
-            //2: Image
+            //0: Audio          //1: Video          //2: Image
             0 -> {
                 nameFile = Constant.AUDIO
-                var database = Firebase.database.getReference(nameFile.toString())
-                var key = database.push().key.toString()
+                var ref = database.getReference(nameFile.toString())
+                var key = ref.push().key.toString()
                 var audioModel = AudioModel(key, idStatus, url)
-                database.child(key).setValue(audioModel)
+                ref.child(key).setValue(audioModel)
                     .addOnSuccessListener {
-                        Log.d("TAG", "update Audio")
+                        v.uploadSuccess()
                     }
             }
             1 -> {
                 nameFile = Constant.VIDEO
-                var database = Firebase.database.getReference(nameFile.toString())
-                var key = database.push().key.toString()
+                var ref = database.getReference(nameFile.toString())
+                var key = ref.push().key.toString()
                 var videoModel = VideoModel(key, idStatus, url)
-                database.push().setValue(videoModel)
+                ref.child(key).setValue(videoModel)
                     .addOnSuccessListener {
-                        Log.d("TAG", "update Video")
+                        v.uploadSuccess()
                     }
             }
             2 -> {
                 nameFile = Constant.IMAGE
-                var database = Firebase.database.getReference(nameFile.toString())
-                var key = database.push().key.toString()
+                var ref = database.getReference(nameFile.toString())
+                var key = ref.push().key.toString()
                 var imageModel = ImageModel(key, idStatus, url)
-                database.child(key).setValue(imageModel)
+                ref.child(key).setValue(imageModel)
                     .addOnSuccessListener {
-                        Log.d("TAG", "update Image")
+                        if (size != null && index != null && (size - 1) == index)
+                            v.uploadSuccess()
                     }
             }
         }
