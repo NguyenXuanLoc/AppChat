@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
     // Timber - an alternative logger
     implementation "com.jakewharton.timber:timber:4.7.1"
@@ -56,8 +57,10 @@ dependencies {
     //Ui
     implementation 'com.android.support:design:29.0.0'
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
-    implementation 'com.facebook.fresco:fresco:2.2.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.facebook.fresco:fresco:2.3.0'
+    implementation 'me.relex:photodraweeview:2.0.0'
+
+    //Animation
     implementation 'com.airbnb.android:lottie:3.0.1'
 
     //Facebook
@@ -69,4 +72,7 @@ dependencies {
     //Play video
     implementation "com.google.android.exoplayer:exoplayer:$exoplayer_version"
     implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
+
+    // nen
+    implementation 'id.zelory:compressor:3.0.0'
 }

@@ -42,11 +42,12 @@ class PlayVideoActivity : AppCompatActivity() {
             uri = bundle.getString(Constant.URI).toString()
         } else {
             bundle = intent.getBundleExtra(Constant.PLAY_VIDEO)
-            videoModel = bundle.getSerializable(Constant.PLAY_VIDEO) as VideoModel?
-            uri = videoModel?.url.toString()
-            imgApply.gone()
-            lblApply.gone()
-            lblBack.gone()
+            uri = bundle.getString(Constant.PLAY_VIDEO).toString()
+            if (uri.isNotEmpty()){
+                imgApply.gone()
+                lblApply.gone()
+                lblBack.gone()
+            }
         }
         playerView.setVideoURI(Uri.parse(uri))
         playerView.start()

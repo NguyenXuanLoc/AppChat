@@ -5,11 +5,33 @@ import com.example.appchat.data.model.StatusModel
 class FragPersonalPresenter(fragPersonalView: FragPersonalView) : FragPersonalResponse {
     private val model = FragPersonalModel(this)
     private val v = fragPersonalView
+
     fun getStatus(idUser: String) {
         model.getStatus(idUser)
     }
 
-    override fun loadStatusSuccess(statusModel: StatusModel) {
-        v.loadStatusSuccess(statusModel)
+    fun getLastKey(idUser: String) {
+        model.getLastKey(idUser)
+    }
+
+    fun loadMore(idUser: String, lastNode: String) {
+        model.loadMoreStatus(idUser, lastNode)
+    }
+
+
+    override fun loadStatusSuccess(results: ArrayList<StatusModel>) {
+        v.loadStatusSuccess(results)
+    }
+
+    override fun loadMoreStatusSuccess(results: ArrayList<StatusModel>) {
+        v.loadMoreSuccess(results)
+    }
+
+    override fun nullResult() {
+        v.nullResult()
+    }
+
+    override fun resultLastKey(lastKey: String) {
+        v.resultLastKey(lastKey)
     }
 }

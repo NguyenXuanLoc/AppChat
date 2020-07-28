@@ -13,14 +13,15 @@
         tools:ignore="MissingConstraints" />
 
     <ScrollView
-        android:fillViewport="true"
-        android:isScrollContainer="true"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
+        android:fillViewport="true"
+        android:isScrollContainer="true"
         app:layout_constraintBottom_toTopOf="@id/layout_navigation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -73,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_2x"
                 android:layout_marginEnd="@dimen/dimen_2x"
-                app:layout_constraintTop_toBottomOf="@id/cardVideo"
+                app:layout_constraintTop_toBottomOf="@id/sdvVideo"
                 tools:ignore="MissingConstraints" />
 
             <LinearLayout
@@ -126,28 +127,31 @@
                 app:layout_constraintTop_toTopOf="@id/layoutPlayAudio"
                 tools:ignore="MissingConstraints" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardVideo"
-                android:layout_width="@dimen/dimen_140"
-                android:layout_height="@dimen/dimen_90"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdvVideo"
+                android:layout_width="@dimen/zero"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_2x"
-                android:padding="@dimen/dimen_5x"
-                android:visibility="gone"
-                app:cardCornerRadius="@dimen/dimen_1x"
+                android:scaleType="centerCrop"
+                app:actualImageResource="@color/greyBold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutPlayAudio">
+                app:layout_constraintRight_toRightOf="@id/line2"
+                app:layout_constraintTop_toBottomOf="@id/line1"
+                app:roundBottomEnd="true"
+                app:roundBottomRight="true"
+                app:roundTopLeft="true"
+                app:roundTopStart="true"
+                app:roundedCornerRadius="@dimen/dimen_1x"
+                tools:ignore="MissingConstraints,NotSibling" />
 
-                <ImageView
-                    android:id="@+id/imgVideo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/img_video"
-                    android:padding="@dimen/dimen_5x"
-                    android:src="@drawable/ic_play_white"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/rclImage"
-                    tools:ignore="MissingConstraints" />
-            </androidx.cardview.widget.CardView>
+            <ImageView
+                android:src="@drawable/ic_play_white"
+                android:layout_width="@dimen/dimen_2x"
+                android:layout_height="@dimen/dimen_2x"
+                app:layout_constraintBottom_toBottomOf="@id/sdvVideo"
+                app:layout_constraintLeft_toLeftOf="@id/sdvVideo"
+                app:layout_constraintRight_toRightOf="@id/sdvVideo"
+                app:layout_constraintTop_toTopOf="@id/sdvVideo" />
 
             <ImageView
                 android:id="@+id/imgDeleteVideo"
@@ -156,10 +160,9 @@
                 android:layout_marginLeft="@dimen/dimen_2x"
                 android:src="@drawable/btn_ic_close_white"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/cardVideo"
-                app:layout_constraintLeft_toRightOf="@id/cardVideo"
-                app:layout_constraintTop_toTopOf="@id/cardVideo" />
-
+                app:layout_constraintBottom_toBottomOf="@id/sdvVideo"
+                app:layout_constraintLeft_toRightOf="@id/sdvVideo"
+                app:layout_constraintTop_toTopOf="@id/sdvVideo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

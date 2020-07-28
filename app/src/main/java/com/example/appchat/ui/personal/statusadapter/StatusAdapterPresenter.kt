@@ -1,17 +1,16 @@
 package com.example.appchat.ui.personal.statusadapter
 
-import com.example.appchat.data.model.VideoModel
+import com.example.appchat.data.model.ImageModel
 
 class StatusAdapterPresenter(statusAdapterView: StatusAdapterView) : StatusAdapterResponse {
     private var v = statusAdapterView
     private var model = StatusAdapterModel(this)
 
-    fun loadVideo(idStatus: String, itemHolder: StatusAdapter.ItemHolder) {
-        model.loadVideo(idStatus, itemHolder)
+    fun loadImage(idStatus: String) {
+        model.loadImages(idStatus)
     }
 
-
-    override fun loadVideoSuccess(videoModel: VideoModel, itemHolder: StatusAdapter.ItemHolder) {
-        v.loadVideoSuccess(videoModel, itemHolder)
+    override fun loadImageSuccess(results: ImageModel) {
+        v.loadImageSuccess(results)
     }
 }

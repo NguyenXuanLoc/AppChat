@@ -11,5 +11,8 @@ class StatusModel(
     var like: String = "",
     var time: String = "",
     var date: String = "",
-    var attach: String = ""
+    var attach: String = "",
+    var video: String = "",
+    var thumbnail:String="",
+    var audio: String = ""
 ) : Serializable

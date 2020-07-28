@@ -14,9 +14,9 @@ import com.example.fcm.common.util.CommonUtil
 import com.facebook.drawee.view.SimpleDraweeView
 
 class UploadStatusImageAdapter(
-    var ctx: Context,
-    var listUri: ArrayList<Uri>,
-    var itemClick: (posittion: Int) -> Unit
+    private var ctx: Context,
+    private var listUri: ArrayList<Uri>,
+    private var itemClick: (posittion: Int) -> Unit
 ) : RecyclerView.Adapter<UploadStatusImageAdapter.ItemHolder>() {
 
     private val margin = CommonUtil.convertDpToPixel(
@@ -44,7 +44,7 @@ class UploadStatusImageAdapter(
         private var image = itemView.findViewById<SimpleDraweeView>(R.id.sdv_image)
         private var imgDelete = itemView.findViewById<ImageView>(R.id.img_delete)
         fun bind(uri: Uri, position: Int) {
-            image.setRatio(ctx as AppCompatActivity, 16,9, totalMargin)
+            image.setRatio(ctx as AppCompatActivity, 16, 9, totalMargin)
             image.setImageURI(uri)
             imgDelete.setOnClickListener { itemClick(position) }
         }

@@ -7,6 +7,7 @@ import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.login.LoginActivity
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.openActivity
+import com.example.fcm.common.ext.removeUser
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+//        removeUser()
         Handler().postDelayed(Runnable {
             if (getUser() != null) {
                 openActivity(HomeActivity::class.java)

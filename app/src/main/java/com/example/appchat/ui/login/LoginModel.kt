@@ -71,15 +71,10 @@ class LoginModel(loginResponse: LoginResponse) {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    Log.e("TAG", "signInWithCredential:success ${user?.displayName}")
                     user?.let { v.updateUI(it) }
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e("TAG", "signInWithCredential:failure", task.exception)
-//                    updateUI(null)
+                   Timber.e("signInWithCredential:failure ${task.exception}")
                 }
-
-                // ...
             }
     }
 

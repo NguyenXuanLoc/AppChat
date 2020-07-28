@@ -50,7 +50,8 @@ fun Context.getUser(): UserModel? {
     return user
 }
 
-fun Context.removeUser(mPrefs: SharedPreferences) {
+fun Context.removeUser() {
+    val mPrefs = getSharedPreferences(Constant.USER, Context.MODE_PRIVATE)
     mPrefs.edit().remove(Constant.USER).commit()
 }
 

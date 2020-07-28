@@ -15,6 +15,7 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.core.widget.NestedScrollView
+        android:visibility="gone"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
         android:fillViewport="true"
@@ -29,8 +30,8 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdvAvt"
-                android:layout_width="@dimen/dimen_120"
-                android:layout_height="@dimen/dimen_120"
+                android:layout_width="@dimen/dimen_100"
+                android:layout_height="@dimen/dimen_100"
                 app:actualImageResource="@drawable/btn_circle_grey"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -43,14 +44,14 @@
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_2x"
                 android:background="@drawable/bn_radius_green_dark"
                 android:drawableLeft="@color/buttonPrimary"
                 android:drawablePadding="@dimen/dimen_1x"
                 android:padding="@dimen/dimen_1x"
                 android:text="21"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@id/lblNickName"
+                app:layout_constraintBottom_toBottomOf="@id/sdvAvt"
+                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
                 app:layout_constraintLeft_toLeftOf="@id/sdvAvt"
                 app:layout_constraintRight_toRightOf="@id/sdvAvt"
                 tools:ignore="MissingConstraints" />
@@ -63,9 +64,10 @@
                 android:text="Lộc Ka"
                 android:textColor="@color/greyBold"
                 android:textSize="@dimen/text_size_15"
+                android:layout_marginTop="@dimen/dimen_1x"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
+                app:layout_constraintTop_toBottomOf="@id/lblAge"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -207,7 +209,14 @@
                 tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rclStatuss"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_1x"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnUpload"
         android:layout_width="wrap_content"

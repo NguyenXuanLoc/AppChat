@@ -1,14 +1,17 @@
 package com.example.appchat.ui.personal.uploadstatus
 
 
+import android.Manifest
 import android.app.Activity
 import android.content.ClipData
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaPlayer
+import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
@@ -19,6 +22,8 @@ import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.countTime
 import com.example.appchat.common.util.FileUtil
+import com.example.appchat.common.util.RealPathUtils
+import com.example.appchat.common.util.PermissionUtil
 import com.example.appchat.ui.playvideo.PlayVideoActivity
 import com.example.appchat.widget.DialogAudio
 import com.example.appchat.widget.DialogChooseImage
@@ -27,8 +32,10 @@ import com.example.fcm.common.ext.*
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.exoplayer2.util.Log
 import kotlinx.android.synthetic.main.activity_status.*
+import kotlin.collections.ArrayList
 
 
+@Suppress("DEPRECATION")
 class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
     DialogChooseImage.ImageChooserListener,
     DialogAudio.AudioListener {
@@ -45,11 +52,9 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
     private val uriImages by lazy { ArrayList<Uri>() }
     private var uriVideo: Uri? = null
     private var uriAudio: Uri? = null
-    private var checkAudio = true
+    private var uriThumbnail: Uri? = null
 
-    private var threadAudio: Thread? = null
-    private var threadVideo: Thread? = null
-    private var threadPhoto: Thread? = null
+    private var checkAudio = true
 
     // number file Attach
     private var numberAttach = 0
@@ -57,6 +62,10 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
     // number file Attach result
     private var countResult = 0
 
+    companion object {
+        private const val RC_PERMISSION_READ_STORAGE = 1
+        private const val RC_PERMISSION_WRITE_STORAGE = 2
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +105,18 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
             dialogUploadImage.show()
         }
         layoutVideo.setOnClickListener {
-            FileUtil.openVideo(this)
+            if (PermissionUtil.isGranted(
+                    this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    RC_PERMISSION_READ_STORAGE
+                ) && PermissionUtil.isGranted(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    RC_PERMISSION_WRITE_STORAGE
+                )
+            ) {
+                FileUtil.openVideo(this)
+            }
         }
         imgDeleteAudio.setOnClickListener {
             if (uriAudio != null) uriAudio = null
@@ -104,11 +124,12 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
             imgDeleteAudio.gone()
         }
         imgDeleteVideo.setOnClickListener {
-            if (uriVideo != null) uriVideo = null
-            cardVideo.gone()
+            uriVideo = null
+            uriThumbnail = null
+            sdvVideo.gone()
             imgDeleteVideo.gone()
         }
-        imgVideo.setOnClickListener {
+        sdvVideo.setOnClickListener {
             bundleOf(Constant.URI to uriVideo.toString()).also {
                 openActivityForResult(
                     PlayVideoActivity::class.java,
@@ -125,7 +146,7 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK && data != null && resultCode != Activity.RESULT_CANCELED) {
             when (requestCode) {
                 Constant.GET_IMAGE -> {
                     val clipData: ClipData? = data.clipData
@@ -139,8 +160,9 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                 }
                 Constant.OPEN_CAMERA -> {
                     val bitmap = data.extras!!["data"] as Bitmap?
-                    val uri = FileUtil.getImageUri(this, bitmap)
+                    val uri = bitmap?.let { FileUtil.getImageUriFromBitmap(this, it) }
                     uri?.let { uriImages.add(it) }
+
                 }
                 Constant.GET_VIDEO -> {
                     bundleOf(Constant.URI to data.data.toString()).also {
@@ -152,12 +174,20 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                 }
                 Constant.RESULT_VIDEO -> {
                     uriVideo = Uri.parse(data.getStringExtra(Constant.URI))
-                    cardVideo.visible()
+                    var bitmap = getVideoThumbnail(RealPathUtils.getPath(this, uriVideo))
+                    sdvVideo.setImageBitmap(bitmap)
+                    sdvVideo.visible()
                     imgDeleteVideo.visible()
+                    uriThumbnail = bitmap?.let { FileUtil.getImageUriFromBitmap(this, it) }
                 }
             }
             adapter.notifyDataSetChanged()
         }
+    }
+
+
+    private fun getVideoThumbnail(videoPath: String): Bitmap? {
+        return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MINI_KIND)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -208,54 +238,45 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
                 mediaPlayer.reset()
                 true
             }
-
         }
     }
 
     // check Uri to Upload to firebase
     private fun uploadFileAttach(
         uriVideo: Uri? = null, uriAudio: Uri? = null, listUri: ArrayList<Uri>,
-        idStatus: String
+        idStatus: String, idUser: String
     ) {
         if (uriAudio != null) {
             numberAttach++
-            threadAudio = Thread {
-                presenter.uploadFile(
-                    uriAudio = uriAudio,
-                    attach = 0,
-                    idStatus = idStatus
-                )
-            }
+            presenter.uploadFile(
+                uriAudio = uriAudio,
+                attach = 0,
+                idStatus = idStatus, idUser = idUser
+            )
         }
         if (uriVideo != null) {
             numberAttach++
-            threadVideo = Thread {
-                presenter.uploadFile(
-                    uriVideo = uriVideo,
-                    attach = 1,
-                    idStatus = idStatus
-                )
-            }
-
+            presenter.uploadFile(
+                uriVideo = uriVideo,
+                attach = 1,
+                idStatus = idStatus,
+                idUser = idUser, uriThumbnail = uriThumbnail
+            )
         }
         if (uriImages != null) {
             numberAttach += uriImages.size
-            threadPhoto = Thread {
-                presenter.uploadFile(
-                    uriList = listUri,
-                    attach = 2,
-                    idStatus = idStatus
-                )
-            }
+            presenter.uploadFile(
+                uriList = listUri,
+                attach = 2,
+                idStatus = idStatus,
+                idUser = idUser
+            )
         }
-        threadVideo?.start()
-        threadPhoto?.start()
-        threadAudio?.start()
     }
 
     override fun getIdStatus(idStatus: String) {
         if (uriVideo != null || uriAudio != null || uriImages.size > 0)
-            uploadFileAttach(uriVideo, uriAudio, uriImages, idStatus)
+            uploadFileAttach(uriVideo, uriAudio, uriImages, idStatus, getUser()?.id.toString())
         else {
             toast(getString(R.string.upload_status_success))
             dialogLoading.dismiss()

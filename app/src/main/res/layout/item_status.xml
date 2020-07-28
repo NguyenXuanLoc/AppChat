@@ -22,8 +22,11 @@
         style="@style/TextView.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_2x"
+        android:layout_marginLeft="@dimen/dimen_2x"
+        android:layout_marginTop="@dimen/dimen_1x"
+        android:layout_marginRight="@dimen/dimen_2x"
         android:textSize="@dimen/text_size_15"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lblTime"
         tools:ignore="MissingConstraints" />
@@ -42,7 +45,9 @@
         android:id="@+id/layoutPlayAudio"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_2x"
+        android:layout_margin="@dimen/dimen_1x"
+        android:layout_marginLeft="@dimen/dimen_2x"
+        android:layout_marginRight="@dimen/dimen_2x"
         android:background="@drawable/btn_purple_radius_top"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dimen_1x"
@@ -77,12 +82,11 @@
     </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/imgVideo"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdvVideo"
         android:layout_width="@dimen/zero"
-        android:layout_height="@dimen/zero"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_2x"
-        android:layout_marginTop="@dimen/dimen_1x"
         android:background="@drawable/btn_white_grey"
         android:scaleType="centerCrop"
         android:visibility="gone"
@@ -96,11 +100,10 @@
         android:layout_width="@dimen/dimen_2x"
         android:layout_height="@dimen/dimen_2x"
         android:src="@drawable/ic_play_white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/imgVideo"
-        app:layout_constraintLeft_toLeftOf="@id/imgVideo"
-        app:layout_constraintRight_toRightOf="@id/imgVideo"
-        app:layout_constraintTop_toTopOf="@id/imgVideo"
+        app:layout_constraintBottom_toBottomOf="@id/sdvVideo"
+        app:layout_constraintLeft_toLeftOf="@id/sdvVideo"
+        app:layout_constraintRight_toRightOf="@id/sdvVideo"
+        app:layout_constraintTop_toTopOf="@id/sdvVideo"
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -110,7 +113,7 @@
         android:layout_marginTop="@dimen/dimen_x1x"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgVideo"
+        app:layout_constraintTop_toBottomOf="@id/sdvVideo"
         tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.widget.Guideline

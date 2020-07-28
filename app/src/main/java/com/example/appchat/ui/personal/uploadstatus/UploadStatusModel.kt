@@ -3,7 +3,9 @@ package com.example.appchat.ui.personal.uploadstatus
 import android.net.Uri
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
-import com.example.appchat.data.model.*
+import com.example.appchat.data.model.ImageModel
+import com.example.appchat.data.model.StatusModel
+import com.example.appchat.data.model.UserModel
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -17,16 +19,33 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
         uri: Uri,
         namePath: String,
         attach: Int,
-        idStatus: String
+        idStatus: String, idUser: String
     ) {
-        var mStorageRef = FirebaseStorage.getInstance().reference;
-        val riversRef =
-            mStorageRef.child(namePath.toString()).child(System.currentTimeMillis().toString())
+        var mStorageRef = FirebaseStorage.getInstance().reference
+        var nameFile = System.currentTimeMillis().toString()
+        val riversRef = mStorageRef.child(namePath).child(nameFile)
         riversRef.putFile(uri).addOnSuccessListener { it ->
             var result = it.metadata?.reference?.downloadUrl
+            var name = it.metadata?.name
             result?.addOnSuccessListener {
-                uploadAttachStatus(it.toString(), idStatus, attach)
+                uploadAttachStatus(it.toString(), idStatus, attach, idUser, name.toString())
             }
+        }
+    }
+
+    fun uploadThumbnail(
+        uri: Uri,
+        attach: Int,
+        idStatus: String, idUser: String
+    ) {
+        var mStorage = FirebaseStorage.getInstance().getReference(Key.IMAGE)
+        var nameFile = System.currentTimeMillis().toString()
+        mStorage.child(nameFile).putFile(uri).addOnSuccessListener { it ->
+            var result = it.metadata?.reference?.downloadUrl
+            result?.addOnSuccessListener {
+                uploadAttachStatus(it.toString(), idStatus, attach, idUser, nameFile)
+            }
+
         }
     }
 
@@ -52,39 +71,35 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
     private fun uploadAttachStatus(
         url: String,
         idStatus: String,
-        attach: Int
+        attach: Int,
+        idUser: String,
+        nameFile: String
     ) {
-        var nameFile: String? = null
         var database = Firebase.database
         when (attach) {
-            //0: Audio          //1: Video          //2: Image
+            //0: Audio          //1: Video          //2: Image  //3.Thumbnail Audio
             0 -> {
-                var ref = database.getReference(Constant.AUDIO)
-                var key = ref.push().key.toString()
-                var audioModel =
-                    AudioModel(key, idStatus, url)
-                ref.child(idStatus).push().setValue(audioModel)
-                    .addOnSuccessListener {
+                database.getReference(Key.STATUS).child(idUser).child(idStatus).child(Key.AUDIO)
+                    .setValue(url).addOnSuccessListener {
                         v.uploadSuccess()
                     }
             }
             1 -> {
-                var ref = database.getReference(Constant.VIDEO)
-                var key = ref.push().key.toString()
-                var videoModel =
-                    VideoModel(key, idStatus, url)
-                ref.child(idStatus).push().setValue(videoModel)
-                    .addOnSuccessListener {
+                database.getReference(Key.STATUS).child(idUser).child(idStatus).child(Key.VIDEO)
+                    .setValue(url).addOnSuccessListener {
                         v.uploadSuccess()
                     }
             }
             2 -> {
-                var ref = database.getReference(Constant.IMAGE)
-                var key = ref.push().key.toString()
-                var imageModel =
-                    ImageModel(key, idStatus, url)
-                ref.child(idStatus).push().setValue(imageModel)
+                var imageModel = ImageModel(nameFile, idStatus, url)
+                database.getReference(Constant.IMAGE).child(idStatus).push().setValue(imageModel)
                     .addOnSuccessListener {
+                        v.uploadSuccess()
+                    }
+            }
+            3 -> {
+                database.getReference(Key.STATUS).child(idUser)
+                    .child(idStatus).child(Key.THUMBNAIL).setValue(url).addOnSuccessListener {
                         v.uploadSuccess()
                     }
             }

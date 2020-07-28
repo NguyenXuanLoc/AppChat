@@ -26,6 +26,12 @@ object FileUtil {
                 Constant.REQUEST_EXTERNAL_STORAGE
             )
         }
+        if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                activity, Array(1) { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                Constant.REQUEST_EXTERNAL_WRITE
+            )
+        }
         if (activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_DENIED
         ) {
             ActivityCompat.requestPermissions(
@@ -74,7 +80,7 @@ object FileUtil {
     }
 
 
-    fun getThumbnailFromUrl(videoPath: String?, ctx: Context): Bitmap? {
+    fun getThumbnailFromUrl(videoPath: String?): Bitmap? {
         var bitmap: Bitmap? = null
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
@@ -88,18 +94,14 @@ object FileUtil {
         }
         return bitmap
     }
-
-    fun getRealPathFromURI(contentURI: Uri, context: Context): String? {
-        val result: String?
-        val cursor: Cursor = context.contentResolver.query(contentURI, null, null, null, null)!!
-        if (cursor == null) { //checking
-            result = contentURI.path
-        } else {
-            cursor.moveToFirst()
-            val idx = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA)
-            result = cursor.getString(idx)
-            cursor.close()
-        }
-        return result
+    fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Title", null)
+        return Uri.parse(path.toString())
     }
+
+
+
 }

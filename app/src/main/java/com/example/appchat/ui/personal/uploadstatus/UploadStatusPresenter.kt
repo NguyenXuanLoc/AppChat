@@ -14,13 +14,17 @@ class UploadStatusPresenter(statusView: UploadStatusView) : UploadStatusResponse
         uriAudio: Uri? = null,
         uriVideo: Uri? = null,
         attach: Int,
-        idStatus: String
+        idStatus: String, idUser: String,
+        uriThumbnail: Uri? = null
     ) {
-        uriAudio?.let { model.uploadFile(uriAudio, Constant.AUDIO, attach, idStatus) }
-        uriVideo?.let { model.uploadFile(uriVideo, Constant.VIDEO, attach, idStatus) }
+        uriAudio?.let { model.uploadFile(uriAudio, Constant.AUDIO, attach, idStatus, idUser) }
+        uriVideo?.let {
+            model.uploadFile(uriVideo, Constant.VIDEO, attach, idStatus, idUser)
+            uriThumbnail?.let { model.uploadThumbnail(uriThumbnail, 3, idStatus, idUser) }
+        }
         uriList?.let {
             for (i in 0 until uriList.size) {
-                model.uploadFile(uriList[i], Constant.IMAGE, attach, idStatus)
+                model.uploadFile(uriList[i], Constant.IMAGE, attach, idStatus, idUser)
             }
         }
     }
