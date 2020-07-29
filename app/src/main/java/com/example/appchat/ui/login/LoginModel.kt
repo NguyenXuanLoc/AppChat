@@ -1,7 +1,9 @@
 package com.example.appchat.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
+import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.data.model.UserModel
@@ -22,9 +24,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import timber.log.Timber
+import java.util.*
 import kotlin.collections.HashMap
 
-class LoginModel(loginResponse: LoginResponse) {
+class LoginModel(loginResponse: LoginResponse,var ctx:Context) {
     var v = loginResponse
     fun signInGoogle(mGoogleSignInClient: GoogleSignInClient, activity: Activity) {
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -73,7 +76,7 @@ class LoginModel(loginResponse: LoginResponse) {
                     val user = auth.currentUser
                     user?.let { v.updateUI(it) }
                 } else {
-                   Timber.e("signInWithCredential:failure ${task.exception}")
+                    Timber.e("signInWithCredential:failure ${task.exception}")
                 }
             }
     }
@@ -91,6 +94,13 @@ class LoginModel(loginResponse: LoginResponse) {
                 }
             }
     }
+    private fun randomAvt(ctx: Context): String {
+        var list = ctx.resources.getStringArray(R.array.image)
+        var radom = Random()
+        var index = radom.nextInt(list.size)
+        Log.e("TAG", list[index])
+        return list[index]
+    }
 
     fun checkAccount(user: FirebaseUser) {
         var reference = FirebaseDatabase.getInstance().getReference(Constant.USER).child(user.uid)
@@ -98,6 +108,7 @@ class LoginModel(loginResponse: LoginResponse) {
             override fun onCancelled(error: DatabaseError) {
                 Timber.e(error.toString())
             }
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     var userModel = snapshot.getValue<UserModel>()
@@ -115,7 +126,7 @@ class LoginModel(loginResponse: LoginResponse) {
         var map = HashMap<String, String>()
         map[Key.ID] = user.uid
         map[Key.USER_NAME] = user.displayName.toString()
-        map[Key.IMAGE_URL] = user.photoUrl.toString()
+        map[Key.IMAGE_URL] = randomAvt(ctx)
         map[Key.SEX] = ""
         map[Key.AGE] = ""
         map[Key.STATUS] = ""

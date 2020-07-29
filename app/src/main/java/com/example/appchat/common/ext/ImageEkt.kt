@@ -14,7 +14,7 @@ fun ImageView.setImage(image: Int) {
 fun SimpleDraweeView.setImageSimple(
     src: Any?,
     ctx: Activity,
-    errorImage: Int? = R.drawable.img_no_image
+    errorImage: Int? = R.drawable.img_circle_letter
 ) {
     hierarchy?.setFailureImage(errorImage!!)
     when (src) {

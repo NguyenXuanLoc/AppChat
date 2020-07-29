@@ -1,11 +1,15 @@
 package com.example.appchat.ui.personal.uploadstatus
 
+import android.content.Context
 import android.net.Uri
+import android.util.Log
+import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.data.model.ImageModel
 import com.example.appchat.data.model.StatusModel
 import com.example.appchat.data.model.UserModel
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -45,8 +49,12 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
             result?.addOnSuccessListener {
                 uploadAttachStatus(it.toString(), idStatus, attach, idUser, nameFile)
             }
-
         }
+    }
+
+    fun uploadDuration(duration: String? = null, idStatus: String, idUser: String) {
+        FirebaseDatabase.getInstance().getReference(Key.STATUS).child(idUser).child(idStatus)
+            .child(Key.DURATION).setValue(duration)
     }
 
     fun uploadStatus(status: String, userModel: UserModel) {
@@ -77,7 +85,7 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
     ) {
         var database = Firebase.database
         when (attach) {
-            //0: Audio          //1: Video          //2: Image  //3.Thumbnail Audio
+            //0: Audio          //1: Video          //2: Image  //3.Thumbnail Audio //4. Upload Duration
             0 -> {
                 database.getReference(Key.STATUS).child(idUser).child(idStatus).child(Key.AUDIO)
                     .setValue(url).addOnSuccessListener {
@@ -103,6 +111,11 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
                         v.uploadSuccess()
                     }
             }
+            4 -> {
+
+            }
         }
     }
+
+
 }

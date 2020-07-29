@@ -51,9 +51,9 @@ class ImageAdapter(
             sdvImage.setImageURI(model.url)
             sdvImage.setRatio(ctx as AppCompatActivity, 9, 9, totalMargin)
             sdvImage.setOnClickListener {
-                bundleOf(Constant.INFO_IMAGE to images).also {
+//                bundleOf(Constant.INFO_IMAGE to images).also {
                     itemClick(position)
-                }
+//                }
             }
         }
     }

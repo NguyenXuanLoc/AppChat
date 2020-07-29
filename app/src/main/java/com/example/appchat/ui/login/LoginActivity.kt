@@ -4,15 +4,17 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import bundleOf
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.data.model.UserModel
+import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.register.RegisterActivity
-import com.example.fcm.common.ext.*
+import com.example.fcm.common.ext.invisible
+import com.example.fcm.common.ext.openActivity
+import com.example.fcm.common.ext.toast
+import com.example.fcm.common.ext.visible
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.dialog_forgot_pass.*
 
 
-class LoginActivity : AppCompatActivity(), LoginView {
+class LoginActivity : BaseActivity(), LoginView {
     private lateinit var auth: FirebaseAuth
     private lateinit var dialog: Dialog
     private lateinit var presenter: LoginPresenter
@@ -34,15 +36,12 @@ class LoginActivity : AppCompatActivity(), LoginView {
     private lateinit var callbackManager: CallbackManager
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        init()
-        eventHandle()
+    override fun contentView(): Int {
+        return R.layout.activity_main
     }
 
-    private fun init() {
-        presenter = LoginPresenter(this)
+    override fun init() {
+        presenter = LoginPresenter(this, this)
         auth = FirebaseAuth.getInstance()
 
         dialog = Dialog(this)
@@ -58,7 +57,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
         callbackManager = CallbackManager.Factory.create()
     }
 
-    private fun eventHandle() {
+    override fun eventHandle() {
         btnLogin.setOnClickListener {
             pbLoading.visible()
             presenter.loginWithEmailAndPass(auth, edtEmail.text.toString(), edtPass.text.toString())

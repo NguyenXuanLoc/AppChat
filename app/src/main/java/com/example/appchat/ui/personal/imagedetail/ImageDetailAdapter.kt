@@ -1,4 +1,4 @@
-package com.example.appchat.ui.personal.imageinfo
+package com.example.appchat.ui.personal.imagedetail
 
 import android.content.Context
 import android.view.LayoutInflater

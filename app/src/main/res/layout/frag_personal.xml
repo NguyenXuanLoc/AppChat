@@ -15,16 +15,20 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
+        android:id="@+id/nestedScroll"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
         android:fillViewport="true"
+        android:isScrollContainer="true"
+        android:measureAllChildren="true"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -51,9 +55,9 @@
                 android:text="21"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@id/sdvAvt"
-                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
                 app:layout_constraintLeft_toLeftOf="@id/sdvAvt"
                 app:layout_constraintRight_toRightOf="@id/sdvAvt"
+                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -61,10 +65,9 @@
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lộc Ka"
+                android:layout_marginTop="@dimen/dimen_1x"
                 android:textColor="@color/greyBold"
                 android:textSize="@dimen/text_size_15"
-                android:layout_marginTop="@dimen/dimen_1x"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lblAge"
@@ -188,10 +191,11 @@
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rclStatus"
+                android:id="@+id/rclStatuss"
                 android:layout_width="@dimen/zero"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_1x"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/line_2"
@@ -199,8 +203,8 @@
 
             <ImageView
                 android:id="@+id/imgDecorate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="201dp"
+                android:layout_height="198dp"
                 android:src="@drawable/img_circle_letter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -209,19 +213,14 @@
                 tools:ignore="MissingConstraints" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rclStatuss"
-        android:layout_width="@dimen/zero"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_1x"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:ignore="MissingConstraints" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_2x"
+        android:backgroundTint="@color/purple100"
+        android:src="@drawable/ic_write_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />

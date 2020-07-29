@@ -1,6 +1,7 @@
 package com.example.appchat.ui.login
 
 import android.app.Activity
+import android.content.Context
 import com.example.appchat.data.model.UserModel
 import com.facebook.CallbackManager
 import com.facebook.login.widget.LoginButton
@@ -8,9 +9,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-class LoginPresenter(loginView: LoginView) : LoginResponse {
+class LoginPresenter(loginView: LoginView, ctx: Context) : LoginResponse {
     var v: LoginView = loginView
-    var model = LoginModel(this)
+    var model = LoginModel(this, ctx)
     fun loginWithEmailAndPass(auth: FirebaseAuth, email: String, pass: String) {
         model.loginWithEmailAndPass(auth, email, pass)
     }
@@ -53,7 +54,6 @@ class LoginPresenter(loginView: LoginView) : LoginResponse {
     override fun wrongInfo() {
         v.wrongInfo()
     }
-
 
 
     override fun getUser(userModel: UserModel) {

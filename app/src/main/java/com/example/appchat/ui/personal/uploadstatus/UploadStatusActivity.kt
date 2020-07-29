@@ -10,33 +10,31 @@ import android.media.MediaPlayer
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.countTime
 import com.example.appchat.common.util.FileUtil
+import com.example.appchat.common.util.MediaUtil
 import com.example.appchat.common.util.RealPathUtils
 import com.example.appchat.common.util.PermissionUtil
+import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.playvideo.PlayVideoActivity
 import com.example.appchat.widget.DialogAudio
 import com.example.appchat.widget.DialogChooseImage
 import com.example.appchat.widget.DialogLoading
 import com.example.fcm.common.ext.*
-import com.facebook.drawee.backends.pipeline.Fresco
-import com.google.android.exoplayer2.util.Log
 import kotlinx.android.synthetic.main.activity_status.*
+import java.util.*
 import kotlin.collections.ArrayList
 
 
-@Suppress("DEPRECATION")
-class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
+class UploadStatusActivity : BaseActivity(), UploadStatusView,
     DialogChooseImage.ImageChooserListener,
     DialogAudio.AudioListener {
     private val mediaPlayer by lazy { MediaPlayer() }
@@ -61,24 +59,20 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
 
     // number file Attach result
     private var countResult = 0
+    private var duration: String? = null
 
     companion object {
         private const val RC_PERMISSION_READ_STORAGE = 1
         private const val RC_PERMISSION_WRITE_STORAGE = 2
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Fresco.initialize(this)
-        setContentView(R.layout.activity_status)
-        init()
-        eventHandle()
 
+    override fun contentView(): Int {
+        return R.layout.activity_status
     }
 
 
-    private fun init() {
+    override fun init() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -92,7 +86,7 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
 
     }
 
-    private fun eventHandle() {
+    override fun eventHandle() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             FileUtil.checkPermissions(this)
         }
@@ -199,10 +193,7 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
         when (item.itemId) {
             R.id.menu_upload -> {
                 getUser()?.let {
-                    presenter.uploadStatus(
-                        edtStatus.text.toString(),
-                        it
-                    )
+                    presenter.uploadStatus(edtStatus.text.toString(), it)
                     dialogLoading.show()
                 }
             }
@@ -212,33 +203,31 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
     }
 
     //Audio
-    override fun onClickAudio(uri: Uri, time: Long) {
+    override fun onClickAudio(uri: Uri, time: String) {
         uriAudio = uri
         layoutPlayAudio.visible()
         imgDeleteAudio.visible()
-        lblTimeAudio.text = (time / 1000).toString()
-        playAudio(uriAudio, time)
+        lblTimeAudio.text = (time.toLong() / 1000).toString()
+        playAudio(uriAudio, time.toLong())
     }
 
     private fun playAudio(uriAudio: Uri?, time: Long) {
         layoutPlayAudio.setOnClickListener {
             checkAudio = if (checkAudio) {
-                uriAudio?.let { it1 -> mediaPlayer.setDataSource(this, it1) }
-                lblTimeAudio.countTime(false, time)
-                lvAudio.playAnimation()
-                try {
-                    mediaPlayer.prepare()
-                } catch (e: Exception) {
-                    Log.e("TAG", e.message.toString())
+                uriAudio?.let {
+                    lvAudio.playAnimation()
+                    MediaUtil.playAudio(mediaPlayer, it, self)
+                    lblTimeAudio.countTime(false, time)
+
                 }
-                mediaPlayer.start()
                 false
             } else {
+                MediaUtil.stopAudio(mediaPlayer)
                 lvAudio.cancelAnimation()
-                mediaPlayer.reset()
                 true
             }
         }
+        duration = time.toString()
     }
 
     // check Uri to Upload to firebase
@@ -251,7 +240,7 @@ class UploadStatusActivity : AppCompatActivity(), UploadStatusView,
             presenter.uploadFile(
                 uriAudio = uriAudio,
                 attach = 0,
-                idStatus = idStatus, idUser = idUser
+                idStatus = idStatus, idUser = idUser, duration = duration
             )
         }
         if (uriVideo != null) {

@@ -23,6 +23,7 @@ object Constant {
     const val PAGE_SIZE = 10
     const val INFO_IMAGE = "info_image"
     const val POSITION = "position"
+    const val FILE_NAME = "/recorded_audio_app_chat.3gp"
 }
 
 object Key {
@@ -37,6 +38,7 @@ object Key {
     const val AUDIO = "audio"
     const val IMAGE = "image"
     const val THUMBNAIL = "thumbnail"
+    const val DURATION = "duration"
 }
 
 object KeyStatus {

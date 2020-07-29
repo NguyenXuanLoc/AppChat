@@ -6,9 +6,11 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.CountDownTimer
 import android.os.Environment
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.appchat.R
+import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.setImage
 import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.visible
@@ -17,6 +19,7 @@ import kotlinx.android.synthetic.main.layout_audio.*
 import java.io.File
 
 
+@Suppress("DEPRECATION")
 class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDialogTheme) {
     private var listener: AudioListener? = null
     private lateinit var mRecorder: MediaRecorder
@@ -29,7 +32,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
     init {
         setContentView(R.layout.layout_audio)
         mFileName = Environment.getExternalStorageDirectory().absolutePath;
-        mFileName += "/recorded_audio_app_chat.3gp";
+        mFileName += Constant.FILE_NAME
         imgRecord.setOnClickListener {
             checkStatus()
         }
@@ -42,7 +45,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
             showHide(imgDelete, imgApply, false)
         }
         imgApply.setOnClickListener {
-            listener?.onClickAudio(Uri.fromFile(File(mFileName)), time)
+            listener?.onClickAudio(Uri.fromFile(File(mFileName)), getDuration())
             this.dismiss()
         }
     }
@@ -63,12 +66,19 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
         mPlayer?.start();
     }
 
+    private fun getDuration(): String {
+        mPlayer.reset()
+        mPlayer?.setDataSource(mFileName)
+        mPlayer?.prepare()
+        return mPlayer.duration.toString()
+    }
+
     fun setAudioListener(listener: AudioListener) {
         this.listener = listener
     }
 
     interface AudioListener {
-        fun onClickAudio(uri: Uri, time: Long)
+        fun onClickAudio(uri: Uri, time: String)
     }
 
     //Time record check == true: count up, check == false count down
@@ -79,6 +89,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
                 else millisUntilFinished / 1000
                 lblTime.text = "$time"
             }
+
             override fun onFinish() {
                 checkStatus = 2
                 lblTime.text = (time / 1000).toString()

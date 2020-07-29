@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="image">
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(1).png?alt=media&amp;token=6408d835-57c6-4495-872e-2b712d77464c</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(2).png?alt=media&amp;token=e042ea9e-4d3d-4c93-9283-53a8227cfe20</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(3).png?alt=media&amp;token=792e0971-fc28-43c7-ac4a-a8a79f1c160a</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(4).png?alt=media&amp;token=5d6930d3-9477-4b7b-8625-64238ce56a93</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(5).png?alt=media&amp;token=8ac72d1f-a256-4712-a2a5-45b92272e4b0</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(6).png?alt=media&amp;token=707c59fd-5f72-4f53-808c-54039781fa92</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien%20(7).png?alt=media&amp;token=92f8b981-8f48-462b-9779-7e0106026f10</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Falien.png?alt=media&amp;token=2b7f0624-d23c-42f9-8eea-e51de0b54ee9</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Faliens.png?alt=media&amp;token=bfe01548-2e9a-4b14-9f46-53c60b059e76</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Fmonster%20(1).png?alt=media&amp;token=5ade69e6-5414-41bc-a338-d542c89a5f3e</item>
+        <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Fspaceship%20(1).png?alt=media&amp;token=62ed9c3f-3e9a-42e6-a9b0-c4c5937b13f4</item>
+    </string-array>
+</resources>
