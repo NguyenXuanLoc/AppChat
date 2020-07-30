@@ -106,4 +106,27 @@ class FragPersonalModel(fragPersonalResponse: FragPersonalResponse) {
             })
     }
 
+    fun loadNewStatus(idUser: String) {
+        FirebaseDatabase.getInstance().getReference(Key.STATUS).child(idUser)
+            .limitToLast(Constant.PAGE_SIZE)
+            .startAt("-MDP4aCbMm4cV3lwNjqM")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.e(error.message)
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var results = ArrayList<StatusModel>()
+                    results.clear()
+                    if (snapshot.hasChildren()) {
+                        snapshot.children.forEach { it ->
+                            var statusModel = it.getValue<StatusModel>()
+                            statusModel?.let { results.add(it) }
+                        }
+                        v.loadNewStatusSuccess(results)
+                    }
+
+                }
+            })
+    }
 }

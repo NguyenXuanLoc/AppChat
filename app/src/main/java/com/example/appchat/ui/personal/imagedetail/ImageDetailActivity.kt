@@ -1,32 +1,29 @@
 package com.example.appchat.ui.personal.imagedetail
 
 import android.graphics.Bitmap
-import android.os.Bundle
 import android.provider.MediaStore
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import androidx.core.graphics.drawable.toBitmap
+import androidx.viewpager.widget.ViewPager
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.data.model.ImageModel
+import com.example.appchat.ui.base.BaseActivity
 import com.example.fcm.common.ext.toast
 import kotlinx.android.synthetic.main.activity_image_info.*
 import kotlinx.android.synthetic.main.item_image_detail.*
-import java.io.FileOutputStream
 
 
-class ImageDetailActivity : AppCompatActivity() {
+class ImageDetailActivity : BaseActivity() {
     private val images by lazy { ArrayList<ImageModel>() }
     private val adapter by lazy { ImageDetailAdapter(this, images) }
+    private var position: Int? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_info)
-        init()
-        getExtra()
-        eventHandle()
+    override fun contentView(): Int {
+        return R.layout.activity_image_info
     }
 
-    private fun eventHandle() {
+    override fun eventHandle() {
         //Listener
         imgDownload.setOnClickListener {
             var nameFile = images[vpImage.currentItem].url
@@ -35,19 +32,21 @@ class ImageDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun init() {
+    override fun init() {
         vpImage.adapter = adapter
+        vpImage.setPageTransformer(true) { page, position -> page.rotationY = (position * -10) }
         adapter.notifyDataSetChanged()
+        position?.let { vpImage.currentItem = it }
     }
 
-    private fun getExtra() {
+    override fun getExtra() {
         var bundle = intent.getBundleExtra(Constant.INFO_IMAGE)
         if (bundle != null) {
             var results = bundle.getSerializable(Constant.INFO_IMAGE) as ArrayList<ImageModel>
             images.addAll(results)
             adapter.notifyDataSetChanged()
-            var position = bundle.getInt(Constant.POSITION)
-            vpImage.currentItem = position
+            position = bundle.getInt(Constant.POSITION)
+
         }
     }
 

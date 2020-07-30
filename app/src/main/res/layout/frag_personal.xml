@@ -79,7 +79,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_2x"
-                android:text="Good boy"
                 android:textColor="@color/greyBold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -113,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_1x"
-                    android:text="Đang theo dõi"
+                    android:text="@string/following"
                     android:textColor="@color/greyBold" />
             </LinearLayout>
 
@@ -144,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_1x"
-                    android:text="Lượt theo dõi"
+                    android:text="@string/count_follow"
                     android:textColor="@color/greyBold" />
             </LinearLayout>
 
@@ -175,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_1x"
-                    android:text="Đã ghé thăm"
+                    android:text="@string/visited"
                     android:textColor="@color/greyBold" />
             </LinearLayout>
 

@@ -18,6 +18,9 @@ class FragPersonalPresenter(fragPersonalView: FragPersonalView) : FragPersonalRe
         model.loadMoreStatus(idUser, lastNode)
     }
 
+    fun loadNewStatus(idUser: String) {
+    model.loadNewStatus(idUser)
+    }
 
     override fun loadStatusSuccess(results: ArrayList<StatusModel>) {
         v.loadStatusSuccess(results)
@@ -25,6 +28,10 @@ class FragPersonalPresenter(fragPersonalView: FragPersonalView) : FragPersonalRe
 
     override fun loadMoreStatusSuccess(results: ArrayList<StatusModel>) {
         v.loadMoreSuccess(results)
+    }
+
+    override fun loadNewStatusSuccess(results: ArrayList<StatusModel>) {
+        v.loadNewStatusSuccess(results)
     }
 
     override fun nullResult() {

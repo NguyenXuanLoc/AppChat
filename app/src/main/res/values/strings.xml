@@ -35,4 +35,14 @@
     <string name="share">Chia sẻ</string>
     <string name="upload_status_success">Chia sẻ status thành công.</string>
     <string name="download_image_success">Tải hình ảnh thành công.</string>
+    <string name="just_finished">Vừa xong</string>
+    <string name="minute">phút trước</string>
+    <string name="our">giờ trước</string>
+    <string name="day">ngày trước</string>
+    <string name="voice">Giọng nói</string>
+    <string name="image">Hình ảnh</string>
+    <string name="video">Video</string>
+    <string name="following">Đang theo dõi</string>
+    <string name="count_follow">Lượt theo dõi</string>
+    <string name="visited">Đã ghé thăm</string>
 </resources>

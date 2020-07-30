@@ -10,10 +10,12 @@ import android.media.MediaPlayer
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
+import android.os.CountDownTimer
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.appchat.R
@@ -52,14 +54,14 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
     private var uriAudio: Uri? = null
     private var uriThumbnail: Uri? = null
 
-    private var checkAudio = true
+    private var isAudio = true
 
-    // number file Attach
+    // number file Attach result  number file Attach
     private var numberAttach = 0
-
-    // number file Attach result
     private var countResult = 0
     private var duration: String? = null
+
+    private lateinit var countDownAudio: CountDownTimer
 
     companion object {
         private const val RC_PERMISSION_READ_STORAGE = 1
@@ -131,6 +133,12 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
                 )
             }
         }
+
+        mediaPlayer.setOnCompletionListener {
+            lvAudio.cancelAnimation()
+            lblTimeAudio.text = (duration?.toLong()?.div(1000)).toString() + "''"
+            isAudio = true
+        }
     }
 
     private fun onClick(Position: Int) {
@@ -171,6 +179,7 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
                     var bitmap = getVideoThumbnail(RealPathUtils.getPath(this, uriVideo))
                     sdvVideo.setImageBitmap(bitmap)
                     sdvVideo.visible()
+                    imgPlayVideo.visible()
                     imgDeleteVideo.visible()
                     uriThumbnail = bitmap?.let { FileUtil.getImageUriFromBitmap(this, it) }
                 }
@@ -178,7 +187,6 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
             adapter.notifyDataSetChanged()
         }
     }
-
 
     private fun getVideoThumbnail(videoPath: String): Bitmap? {
         return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MINI_KIND)
@@ -207,21 +215,21 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
         uriAudio = uri
         layoutPlayAudio.visible()
         imgDeleteAudio.visible()
-        lblTimeAudio.text = (time.toLong() / 1000).toString()
+        lblTimeAudio.text = (time.toLong() / 1000).toString() + "''"
         playAudio(uriAudio, time.toLong())
     }
 
     private fun playAudio(uriAudio: Uri?, time: Long) {
         layoutPlayAudio.setOnClickListener {
-            checkAudio = if (checkAudio) {
+            isAudio = if (isAudio) {
                 uriAudio?.let {
                     lvAudio.playAnimation()
                     MediaUtil.playAudio(mediaPlayer, it, self)
-                    lblTimeAudio.countTime(false, time)
-
+                    countDownAudio(time, false, lblTimeAudio)
                 }
                 false
             } else {
+                countDownAudio.cancel()
                 MediaUtil.stopAudio(mediaPlayer)
                 lvAudio.cancelAnimation()
                 true
@@ -283,5 +291,17 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
         }
     }
 
+    private fun countDownAudio(time: Long, check: Boolean = true, lblTimeAudio: TextView) {
+        countDownAudio = object : CountDownTimer(time, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                var time = if (check) (time / 1000 - millisUntilFinished / 1000)
+                else millisUntilFinished / 1000
+                lblTimeAudio.text = "$time''"
+            }
+            override fun onFinish() {
+                lblTimeAudio.text = "${(time / 1000)}''"
+            }
+        }.start()
+    }
 
 }

@@ -45,8 +45,8 @@ fun Fragment.openActivity(
     }
 }
 
-fun Fragment.toast(notify: String, ctx: Context) {
-    Toast.makeText(ctx, notify.toString(), Toast.LENGTH_SHORT).show()
+fun Fragment.toast(notify: String) {
+    Toast.makeText(ctx, notify, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.openActivityForResult(clz: Class<*>, requestCode: Int, bundle: Bundle? = null) {

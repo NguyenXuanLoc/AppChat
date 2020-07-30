@@ -99,7 +99,7 @@
                     android:layout_height="@dimen/dimen_4x"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:scaleType="centerCrop"
-                    app:lottie_autoPlay="false"
+                    app:lottie_autoPlay="true"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/audio"
                     tools:ignore="MissingConstraints" />
@@ -145,9 +145,11 @@
                 tools:ignore="MissingConstraints,NotSibling" />
 
             <ImageView
-                android:src="@drawable/ic_play_white"
+                android:id="@+id/imgPlayVideo"
                 android:layout_width="@dimen/dimen_2x"
                 android:layout_height="@dimen/dimen_2x"
+                android:src="@drawable/ic_play_white"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/sdvVideo"
                 app:layout_constraintLeft_toLeftOf="@id/sdvVideo"
                 app:layout_constraintRight_toRightOf="@id/sdvVideo"
@@ -206,7 +208,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"
-                android:text="Giọng nói"
+                android:text="@string/voice"
                 android:textSize="@dimen/text_size_13"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/img_voice"
@@ -241,7 +243,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"
-                android:text="Hình ảnh"
+                android:text="@string/image"
                 android:textSize="@dimen/text_size_13"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/img_Image"
@@ -276,7 +278,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"
-                android:text="Video"
+                android:text="@string/video"
                 android:textSize="@dimen/text_size_13"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/img_video"

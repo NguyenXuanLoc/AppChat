@@ -15,7 +15,7 @@ class FragTest : BaseFragment() {
     }
 
     override fun init() {
-        activity?.let { toast("OK", it) }
+        toast("OK")
     }
 
     override fun onCreateView(): Int {

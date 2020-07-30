@@ -7,12 +7,13 @@
     android:paddingTop="@dimen/dimen_x1x">
 
     <TextView
+        android:textSize="@dimen/text_size_16"
         android:id="@+id/lblTime"
-        style="@style/TextView.Regular"
+        style="@style/TextView.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_2x"
-        android:textColor="@color/greyBold"
+        android:textColor="@color/grey"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -45,8 +46,8 @@
         android:id="@+id/layoutPlayAudio"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_1x"
         android:layout_marginLeft="@dimen/dimen_2x"
+        android:layout_marginTop="@dimen/dimen_1x"
         android:layout_marginRight="@dimen/dimen_2x"
         android:background="@drawable/btn_purple_radius_top"
         android:orientation="horizontal"
@@ -85,13 +86,19 @@
         android:id="@+id/sdvVideo"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_2x"
         android:background="@drawable/btn_white_grey"
         android:scaleType="centerCrop"
-        android:layout_marginLeft="@dimen/dimen_2x"
         android:visibility="gone"
-        app:layout_constraintRight_toLeftOf="@id/line_vertical"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/line_vertical"
         app:layout_constraintTop_toBottomOf="@id/layoutPlayAudio"
+        app:roundBottomEnd="true"
+        app:roundBottomStart="true"
+        app:roundTopEnd="true"
+        app:roundTopStart="true"
+        android:layout_marginTop="@dimen/dimen_2x"
+        app:roundedCornerRadius="@dimen/dimen_05x"
         tools:ignore="MissingConstraints" />
 
     <ImageView
@@ -110,6 +117,7 @@
         android:id="@+id/rclImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_2x"
         android:layout_marginTop="@dimen/dimen_x1x"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

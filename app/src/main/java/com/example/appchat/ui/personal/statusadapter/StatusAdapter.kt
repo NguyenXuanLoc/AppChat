@@ -2,8 +2,8 @@ package com.example.appchat.ui.personal.statusadapter
 
 import android.app.Activity
 import android.content.Intent
-import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.lottie.LottieAnimationView
 import com.example.appchat.R
 import com.example.appchat.common.Constant
+import com.example.appchat.common.util.TimeUtil
 import com.example.appchat.data.model.ImageModel
 import com.example.appchat.data.model.StatusModel
 import com.example.appchat.ui.personal.imagedetail.ImageDetailActivity
@@ -28,7 +28,7 @@ import com.example.fcm.common.ext.setRatio
 import com.example.fcm.common.ext.visible
 import com.example.fcm.common.util.CommonUtil
 import com.facebook.drawee.view.SimpleDraweeView
-import find
+import kotlinx.android.synthetic.main.activity_status.*
 
 class StatusAdapter(
     var self: Activity,
@@ -99,30 +99,39 @@ class StatusAdapter(
 
     @Suppress("DEPRECATION")
     inner class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView), StatusAdapterView {
+        //Video
         private var lblTime: TextView = itemView.findViewById(R.id.lblTime)
         private var lblStatus: TextView = itemView.findViewById(R.id.lblStatus)
         private var sdvVideo: SimpleDraweeView = itemView.findViewById(R.id.sdvVideo)
         private var imgPlayVideo: ImageView = itemView.findViewById(R.id.imgPlayVideo)
+
+        //Audio
+        private var mediaPlayer = MediaPlayer()
+        private lateinit var countDownAudio: CountDownTimer
+        private var isPlayAudio = true
         private var layoutPlayAudio: LinearLayout = itemView.findViewById(R.id.layoutPlayAudio)
         private var lvAudio: LottieAnimationView = itemView.findViewById(R.id.lvAudio)
         private var lblTimeAudio: TextView = itemView.findViewById(R.id.lblTimeAudio)
-        private var mediaPlayer = MediaPlayer()
 
+        //Images
         private var rclImage: RecyclerView = itemView.findViewById(R.id.rclImage)
         private var images = ArrayList<ImageModel>()
         private var adapter = ImageAdapter(
             self,
             images
         ) { clickImage(it) }
+
         private val presenter by lazy { StatusAdapterPresenter(this) }
+
         fun onBind(statusModel: StatusModel) {
             with(statusModel) {
-                lblTime.text = "$time, $date"
+                lblTime.text = TimeUtil.getTime(date, time, self)
                 status?.run {
                     lblStatus.text = this
                     lblStatus.visible()
                 }
-                sdvVideo.setRatio(self as AppCompatActivity, 9, 16, totalMargin)
+                sdvVideo.setRatio(self as AppCompatActivity, 9, 15, totalMargin)
+
                 if (video.isNotEmpty()) {
                     imgPlayVideo.visible()
                     sdvVideo.visible()
@@ -138,21 +147,32 @@ class StatusAdapter(
                     }
                 }
                 if (audio.isNotEmpty()) {
-//                    lvAudio.playAnimation()
-//                    mediaPlayer.reset()
-//                    mediaPlayer.setDataSource(audio)
-//                    mediaPlayer.prepare()
-//                    timeDuration(mediaPlayer.duration.toLong(), mediaPlayer, audio)
+                    lblTimeAudio.text = (duration.toLong() / 1000).toString() + "''"
+                    playAudioSuccess(duration)
+                    lvAudio.visible()
+                    lvAudio.playAnimation()
                     layoutPlayAudio.visible()
                     layoutPlayAudio.setOnClickListener {
-                        lvAudio.playAnimation()
-                        playAudio(mediaPlayer, audio)
+                        isPlayAudio = if (isPlayAudio) {
+                            playAudio(
+                                mediaPlayer, audio, duration.toLong(),
+                                false, lblTimeAudio, isPlayAudio
+                            )
+                            false
+                        } else {
+                            playAudio(
+                                mediaPlayer, audio, duration.toLong(),
+                                false, lblTimeAudio, isPlayAudio
+                            )
+                            true
+                        }
+
                     }
                 }
+
                 rclImage.adapter = adapter
-                adapter.updateThumbRatio(true)
-                var manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                rclImage.layoutManager = manager
+//                adapter.updateThumbRatio(true)
+                rclImage.layoutManager =StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                 presenter.loadImage(statusModel.id)
             }
         }
@@ -171,26 +191,55 @@ class StatusAdapter(
                 self.startActivity(intent)
             }
         }
+
+        private fun countDownAudio(time: Long, check: Boolean = true, lblTimeAudio: TextView) {
+            lblTimeAudio.text = "${(time / 1000)}''"
+            countDownAudio = object : CountDownTimer(time, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    var time = if (check) (time / 1000 - millisUntilFinished / 1000)
+                    else millisUntilFinished / 1000
+                    lblTimeAudio.text = "$time''"
+                }
+
+                override fun onFinish() {
+                    lblTimeAudio.text = "${(time / 1000)}''"
+                }
+            }.start()
+        }
+
+        private fun playAudio(
+            mediaPlayer: MediaPlayer, url: String,
+            time: Long, check: Boolean, lblTime: TextView, isPlay: Boolean
+        ) {
+            if (isPlay) {
+                lvAudio.playAnimation()
+                countDownAudio(time, check, lblTime)
+                mediaPlayer.reset()
+                mediaPlayer.setDataSource(url)
+                try {
+                    mediaPlayer.prepare()
+                } catch (e: Exception) {
+                    Log.e("TAG", e.message)
+                }
+                mediaPlayer.start()
+            } else {
+                countDownAudio.cancel()
+                lvAudio.cancelAnimation()
+            }
+
+        }
+
+        private fun playAudioSuccess(duration: String) {
+            mediaPlayer.setOnCompletionListener {
+                lvAudio.cancelAnimation()
+                lblTimeAudio.text = (duration?.toLong()?.div(1000)).toString() + "''"
+                isPlayAudio = true
+            }
+        }
     }
 
     inner class LoadMoreHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
 
-private fun timeDuration(time: Long, mediaPlayer: MediaPlayer, url: String) {
-    mediaPlayer.reset()
-    mediaPlayer.setDataSource(url)
-    mediaPlayer.prepare()
-    var seconds: Int = (((time % (1000 * 60 * 60)) / (1000 * 60)) / 1000).toInt()
-    Log.e("TAG", seconds.toString())
-}
 
-private fun playAudio(mediaPlayer: MediaPlayer, url: String) {
-    mediaPlayer.reset()
-    mediaPlayer.setDataSource(url)
-    try {
-        mediaPlayer.prepare()
-    } catch (e: Exception) {
-        Log.e("TAG", e.message)
-    }
-    mediaPlayer.start()
-}
+

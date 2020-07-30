@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.appchat.common.Constant
 import ctx
 
 
@@ -67,6 +68,7 @@ fun AppCompatActivity.openActivityForResult(
         }
     }
 }
+
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 fun AppCompatActivity.closeActivity(enterAnim: Int? = null, exitAnim: Int? = null) {

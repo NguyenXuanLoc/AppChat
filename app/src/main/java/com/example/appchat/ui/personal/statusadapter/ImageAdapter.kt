@@ -44,16 +44,13 @@ class ImageAdapter(
     }
 
     inner class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val sdvImage: SimpleDraweeView =
-            itemView.findViewById(R.id.sdv_image)
+        private val sdvImage: SimpleDraweeView =  itemView.findViewById(R.id.sdv_image)
 
         fun bind(model: ImageModel, position: Int) {
             sdvImage.setImageURI(model.url)
             sdvImage.setRatio(ctx as AppCompatActivity, 9, 9, totalMargin)
             sdvImage.setOnClickListener {
-//                bundleOf(Constant.INFO_IMAGE to images).also {
                     itemClick(position)
-//                }
             }
         }
     }

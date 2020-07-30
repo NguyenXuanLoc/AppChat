@@ -1,11 +1,13 @@
 package com.example.appchat.ui.personal
 
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appchat.R
 import com.example.appchat.common.ext.setImageSimple
+import com.example.appchat.common.util.TimeUtil
 import com.example.appchat.data.model.StatusModel
 import com.example.appchat.ui.base.BaseFragment
 import com.example.appchat.ui.personal.statusadapter.StatusAdapter
@@ -16,7 +18,7 @@ import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.openActivity
 import kotlinx.android.synthetic.main.frag_personal.*
 import kotlinx.android.synthetic.main.frag_personal.view.*
-
+import java.text.SimpleDateFormat
 
 
 class FragPersonal : BaseFragment(), FragPersonalView {
@@ -44,6 +46,7 @@ class FragPersonal : BaseFragment(), FragPersonalView {
                 adapter.addLoadingView()
                 presenter.loadMore(idUser.toString(), lastNode.toString())
             }
+
             override fun isLoading(): Boolean {
                 return isLoading
             }
@@ -78,7 +81,9 @@ class FragPersonal : BaseFragment(), FragPersonalView {
         mView.btnUpload.setOnClickListener {
             openActivity(UploadStatusActivity::class.java)
         }
+        presenter.loadNewStatus(idUser.toString())
     }
+
 
     private fun onClick(statusModel: StatusModel) {
 
@@ -101,6 +106,14 @@ class FragPersonal : BaseFragment(), FragPersonalView {
             adapter?.notifyDataSetChanged()
             imgDecorate.gone()
             lastNode = results[results.size - 1].id
+        }
+    }
+
+    override fun loadNewStatusSuccess(results: ArrayList<StatusModel>) {
+        if (results.size > 0) {
+            for (i in 0 until results.size) {
+                Log.e("TAG", results[i].status)
+            }
         }
     }
 

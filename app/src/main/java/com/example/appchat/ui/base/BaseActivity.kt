@@ -11,9 +11,9 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Fresco.initialize(this)
         setContentView(contentView())
+        getExtra()
         init()
         eventHandle()
-        getExtra()
     }
 
     abstract fun contentView(): Int

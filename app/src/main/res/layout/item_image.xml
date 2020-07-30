@@ -3,16 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dimen_1x">
+    android:layout_margin="@dimen/dimen_05x">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_image"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
-        android:background="@null"
         android:foreground="?android:attr/selectableItemBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:roundBottomEnd="true"
+        app:roundBottomStart="true"
+        app:roundTopEnd="true"
+        app:roundTopStart="true"
+        app:roundedCornerRadius="@dimen/dimen_2x" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
