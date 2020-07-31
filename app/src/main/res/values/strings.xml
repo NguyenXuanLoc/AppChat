@@ -45,4 +45,7 @@
     <string name="following">Đang theo dõi</string>
     <string name="count_follow">Lượt theo dõi</string>
     <string name="visited">Đã ghé thăm</string>
+    <string name="add_tag">Thêm thẻ tag +</string>
+    <string name="gift">Quà tặng</string>
+    <string name="setting">Cài đặt</string>
 </resources>

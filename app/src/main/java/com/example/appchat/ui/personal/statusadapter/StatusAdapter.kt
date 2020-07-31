@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.lottie.LottieAnimationView
@@ -31,9 +32,7 @@ import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.activity_status.*
 
 class StatusAdapter(
-    var self: Activity,
-    var status: ArrayList<StatusModel>,
-    var itemClick: (StatusModel) -> Unit
+    var self: Activity, var status: ArrayList<StatusModel>, var itemClick: (StatusModel) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_LOADING = 0
     private val VIEW_TYPE_NORMAL = 1
@@ -166,14 +165,15 @@ class StatusAdapter(
                             )
                             true
                         }
-
                     }
                 }
 
                 rclImage.adapter = adapter
-//                adapter.updateThumbRatio(true)
-                rclImage.layoutManager =StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+                adapter.updateThumbRatio(true)
+                rclImage.layoutManager =
+                    GridLayoutManager(self, 3, GridLayoutManager.VERTICAL, false)
                 presenter.loadImage(statusModel.id)
+//                presenter.loadTest(statusModel.id)
             }
         }
 
@@ -182,6 +182,9 @@ class StatusAdapter(
                 images.add(results)
                 adapter.notifyDataSetChanged()
             }
+        }
+
+        override fun test(results: ArrayList<ImageModel>) {
         }
 
         private fun clickImage(position: Int) {

@@ -20,7 +20,7 @@
 
     <ImageView
         android:padding="@dimen/dimen_1x"
-        android:background="@drawable/btn_black_radius"
+        android:background="@drawable/btn_radius_black"
         android:id="@+id/imgDownload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

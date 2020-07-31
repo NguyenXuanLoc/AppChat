@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.data.model.StatusModel
+import com.example.fcm.common.ext.getUser
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import timber.log.Timber
@@ -27,7 +28,7 @@ class FragPersonalModel(fragPersonalResponse: FragPersonalResponse) {
                             var statusModel = it.getValue<StatusModel>()
                             statusModel?.let { results.add(it) }
                         }
-                        v.loadStatusSuccess(results)
+//                        v.loadStatusSuccess(results)
                     }
 
                 }
@@ -50,45 +51,47 @@ class FragPersonalModel(fragPersonalResponse: FragPersonalResponse) {
                             var statusModel = it.getValue<StatusModel>()
                             statusModel?.let { results.add(it) }
                         }
-                        if (results.size > 0) v.loadStatusSuccess(results)
-                        else v.nullResult()
+                        /*   if (results.size > 0) v.loadStatusSuccess(results)
+                           else v.nullResult()*/
                     } else Log.e("TAG", "Not result+ lastNode: $lastNode")
 
                 }
             })
     }
 
-    fun loadMoreStatus(idUser: String, lastNode: String) {
+    fun loadMore(idUser: String, lastNode: String) {
         FirebaseDatabase.getInstance().getReference(Key.STATUS).child(idUser)
-            .orderByKey().startAt(lastNode)
-            .limitToFirst(Constant.PAGE_SIZE)
+            .orderByKey()
+            .limitToLast(Constant.PAGE_SIZE)
+            .endAt(lastNode)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("TAG", error.message)
+
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    var status = ArrayList<StatusModel>()
                     if (snapshot.hasChildren()) {
-                        var status = ArrayList<StatusModel>()
-                        if (status.size > 0) status.clear()
                         snapshot.children.forEach { it ->
                             var model = it.getValue<StatusModel>()
                             model?.let { it1 -> status.add(it1) }
                         }
-                        if (status.size <= 1) v.nullResult()
-                        else v.loadMoreStatusSuccess(status)
-                    } else v.nullResult()
+                        if (status.size > 0) {
+                            v.loadMoreStatusSuccess(status)
+                        } else {
+                            v.nullResult()
+                        }
+                    }
                 }
             })
     }
 
     fun getLastKey(idUser: String) {
-        var lastKey: String? = ""
+        var lastKey: String? = null
         FirebaseDatabase.getInstance().getReference(Key.STATUS).child(idUser).orderByKey()
             .limitToLast(1)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("TAG", "CAN NOT GET LAST KEY: ${error.message}")
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -96,9 +99,8 @@ class FragPersonalModel(fragPersonalResponse: FragPersonalResponse) {
                         snapshot.children.forEach { it ->
                             lastKey = it.key
                         }
-                        if (lastKey?.isNotEmpty()!!)
-                            v.resultLastKey(lastKey.toString())
-                        else {
+                        lastKey?.let {
+                            loadNewStatus(idUser, it)
                         }
                     }
 
@@ -106,26 +108,47 @@ class FragPersonalModel(fragPersonalResponse: FragPersonalResponse) {
             })
     }
 
-    fun loadNewStatus(idUser: String) {
+    fun loadNewStatus(idUser: String, lastNode: String) {
         FirebaseDatabase.getInstance().getReference(Key.STATUS).child(idUser)
+            .orderByKey()
             .limitToLast(Constant.PAGE_SIZE)
-            .startAt("-MDP4aCbMm4cV3lwNjqM")
+            .endAt(lastNode)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
-                    Timber.e(error.message)
+
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    var results = ArrayList<StatusModel>()
-                    results.clear()
+                    var status = ArrayList<StatusModel>()
                     if (snapshot.hasChildren()) {
                         snapshot.children.forEach { it ->
-                            var statusModel = it.getValue<StatusModel>()
-                            statusModel?.let { results.add(it) }
+                            var model = it.getValue<StatusModel>()
+                            model?.let { it1 -> status.add(it1) }
                         }
-                        v.loadNewStatusSuccess(results)
+                        if (status.size > 0) {
+                            v.loadNewStatusSuccess(status)
+                        } else v.nullResult()
                     }
+                }
+            })
+    }
 
+    fun getFirstKey(idUser: String) {
+        FirebaseDatabase.getInstance().getReference(Key.STATUS).child(idUser)
+            .orderByKey().limitToFirst(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var firstKey: String? = null
+                    if (snapshot.hasChildren()) {
+                        snapshot.children.forEach { it ->
+                            firstKey = it.key
+                        }
+                    }
+                    firstKey.run { v.loadFirstKeySuccess(this.toString()) }
                 }
             })
     }

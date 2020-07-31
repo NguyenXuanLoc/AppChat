@@ -75,9 +75,9 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
 
 
     override fun init() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        enableHomeAsUp { finish() }
+        applyToolbar()
+
         dialogAudio.setAudioListener(this)
         dialogUploadImage.setImageChooserListener(this)
 
@@ -85,7 +85,6 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
         rclImage.setHasFixedSize(true)
         adapter.updateThumbRatio(true)
         rclImage.adapter = adapter
-
     }
 
     override fun eventHandle() {
@@ -298,6 +297,7 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
                 else millisUntilFinished / 1000
                 lblTimeAudio.text = "$time''"
             }
+
             override fun onFinish() {
                 lblTimeAudio.text = "${(time / 1000)}''"
             }

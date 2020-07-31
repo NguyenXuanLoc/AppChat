@@ -14,10 +14,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:roundBottomEnd="true"
-        app:roundBottomStart="true"
-        app:roundTopEnd="true"
-        app:roundTopStart="true"
+        app:roundBottomLeft="true"
+        app:roundBottomRight="true"
+        app:roundTopLeft="true"
+        app:roundTopRight="true"
         app:roundedCornerRadius="@dimen/dimen_2x" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun init() {
-
+        hideToolbarBase()
     }
 
     override fun eventHandle() {

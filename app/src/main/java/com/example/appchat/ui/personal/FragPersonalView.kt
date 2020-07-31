@@ -4,8 +4,7 @@ import com.example.appchat.data.model.StatusModel
 
 interface FragPersonalView {
     fun nullResult()
-    fun resultLastKey(lastKey: String)
-    fun loadStatusSuccess(results: ArrayList<StatusModel>)
     fun loadMoreSuccess(results: ArrayList<StatusModel>)
     fun loadNewStatusSuccess(results: ArrayList<StatusModel>)
+    fun loadFirstKeySuccess(firstKey: String)
 }

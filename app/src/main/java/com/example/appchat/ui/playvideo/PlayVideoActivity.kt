@@ -71,7 +71,7 @@ class PlayVideoActivity : BaseActivity(), Player.EventListener {
 
 
     override fun init() {
-
+        hideToolbarBase()
     }
 
     override fun eventHandle() {

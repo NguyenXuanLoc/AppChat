@@ -10,7 +10,15 @@ class StatusAdapterPresenter(statusAdapterView: StatusAdapterView) : StatusAdapt
         model.loadImages(idStatus)
     }
 
+    fun loadTest(idStatus: String) {
+        model.test(idStatus)
+    }
+
     override fun loadImageSuccess(results: ImageModel) {
         v.loadImageSuccess(results)
+    }
+
+    override fun test(images: ArrayList<ImageModel>) {
+        v.test(images)
     }
 }

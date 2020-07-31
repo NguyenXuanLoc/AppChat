@@ -36,4 +36,8 @@
     <color name="orange40">#cc5c28</color>
     <color name="blue">#3993E3</color>
     <color name="whilePurple">#eef1ff</color>
+    <color name="blueWhite">#9de6f2</color>
+    <color name="purpleWhite">#b0c6fe</color>
+    <color name="purple230">#e6ceff</color>
+    <color name="white249">#f9f6ff</color>
 </resources>

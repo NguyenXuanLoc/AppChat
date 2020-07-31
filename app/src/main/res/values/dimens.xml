@@ -34,6 +34,8 @@
     <dimen name="dimen_320">320dp</dimen>
     <dimen name="dimen_200">200dp</dimen>
     <!-- Text size -->
+    <dimen name="text_size_8">8sp</dimen>
+    <dimen name="text_size_9">9sp</dimen>
     <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_12">12sp</dimen>

@@ -1,13 +1,14 @@
 package com.example.appchat.ui.personal
 
+import android.os.Parcelable
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
 import com.example.appchat.common.ext.setImageSimple
-import com.example.appchat.common.util.TimeUtil
 import com.example.appchat.data.model.StatusModel
 import com.example.appchat.ui.base.BaseFragment
 import com.example.appchat.ui.personal.statusadapter.StatusAdapter
@@ -16,11 +17,12 @@ import com.example.appchat.widget.PaginationScrollNestedListener
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.openActivity
+import com.example.fcm.common.ext.toast
 import kotlinx.android.synthetic.main.frag_personal.*
 import kotlinx.android.synthetic.main.frag_personal.view.*
-import java.text.SimpleDateFormat
 
 
+@Suppress("DEPRECATION")
 class FragPersonal : BaseFragment(), FragPersonalView {
     private val presenter by lazy { FragPersonalPresenter(this) }
 
@@ -35,8 +37,8 @@ class FragPersonal : BaseFragment(), FragPersonalView {
     private var idUser: String? = null
 
     //Pagination
+    private var firstKey: String? = null
     private var lastKey: String? = null
-    private var lastNode: String? = null
     private var isLoading = false
 
     private val pagination by lazy {
@@ -44,7 +46,7 @@ class FragPersonal : BaseFragment(), FragPersonalView {
             override fun loadMore() {
                 isLoading = true
                 adapter.addLoadingView()
-                presenter.loadMore(idUser.toString(), lastNode.toString())
+                presenter.loadMore(idUser.toString(), lastKey.toString())
             }
 
             override fun isLoading(): Boolean {
@@ -58,72 +60,75 @@ class FragPersonal : BaseFragment(), FragPersonalView {
     }
 
     override fun init() {
-        mView.rclStatuss.adapter = adapter
-        mView.rclStatuss.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        mView.rclStatuss.setHasFixedSize(true)
-        mView.rclStatuss.isNestedScrollingEnabled = false
+        mView.rclStatus.adapter = adapter
+        var manager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        mView.rclStatus.setHasFixedSize(true)
+        mView.rclStatus.layoutManager = manager
 
         self?.let {
             var url = it.getUser()?.imageUrl.toString()
             mView.sdvAvt.setImageSimple(url, it)
             idUser = it.getUser()?.id
         }
+        setHasOptionsMenu(true)
+        changeNavigationIcon(R.drawable.ic_snake)
+        pagination.setLayoutManager(mView.rclStatus.layoutManager as LinearLayoutManager)
     }
 
     override fun eventHandle() {
-        presenter.getStatus(idUser.toString())
-        presenter.getLastKey(idUser.toString())
-        //Pagination
+        dialogLoading?.show()
+        presenter.getFirstKey(idUser.toString())
+        presenter.loadNewStatus(idUser.toString())
         mView.nestedScroll.setOnScrollChangeListener(pagination)
-
         //Listener
         mView.btnUpload.setOnClickListener {
             openActivity(UploadStatusActivity::class.java)
         }
-        presenter.loadNewStatus(idUser.toString())
-    }
 
+    }
 
     private fun onClick(statusModel: StatusModel) {
 
     }
 
-    override fun loadStatusSuccess(results: ArrayList<StatusModel>) {
-        if (results.size > 0) {
-            status.addAll(results)
-            adapter?.notifyDataSetChanged()
-            lastNode = results[results.size - 1].id
-            imgDecorate.gone()
-        }
-    }
-
     override fun loadMoreSuccess(results: ArrayList<StatusModel>) {
         if (results.size > 0) {
-            isLoading = false
-            adapter?.removeLoadingView()
-            status.addAll(results)
-            adapter?.notifyDataSetChanged()
+            mView.rclStatus.scrollToPosition(adapter.itemCount - 1);
             imgDecorate.gone()
-            lastNode = results[results.size - 1].id
+            adapter.removeLoadingView()
+            if (dialogLoading!!.isShowing) dialogLoading?.dismiss()
+            for (i in results.size - 1 downTo 0) {
+                status.add(results[i])
+            }
+            lastKey = status[status.size - 1].id
+            if (firstKey != lastKey) {
+                isLoading = false
+            }
+            adapter.notifyDataSetChanged()
         }
     }
 
     override fun loadNewStatusSuccess(results: ArrayList<StatusModel>) {
         if (results.size > 0) {
-            for (i in 0 until results.size) {
-                Log.e("TAG", results[i].status)
+            imgDecorate.gone()
+            if (dialogLoading!!.isShowing) dialogLoading?.dismiss()
+            for (i in results.size - 1 downTo 0) {
+                status.add(results[i])
             }
+            lastKey = status[status.size - 1].id
+            adapter.notifyDataSetChanged()
         }
     }
 
-    override fun nullResult() {
-        adapter.removeLoadingView()
-        isLoading = true
+    override fun loadFirstKeySuccess(firstKey: String) {
+        this.firstKey = firstKey
     }
 
-    override fun resultLastKey(lastKey: String) {
-        this.lastKey = lastKey
+    override fun nullResult() {
+        if (status.size > 0) {
+            adapter.removeLoadingView()
+        }
+        isLoading = true
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -133,9 +138,13 @@ class FragPersonal : BaseFragment(), FragPersonalView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_update -> {
-
+            R.id.menu_gift -> {
+                toast("Bấm cc 2")
             }
+            R.id.menu_setting -> {
+                toast("Bấm cc 1")
+            }
+            else -> toast("Bấm cc 3")
         }
         return super.onOptionsItemSelected(item)
     }

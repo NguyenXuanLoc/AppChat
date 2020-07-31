@@ -9,6 +9,29 @@ import timber.log.Timber
 
 class StatusAdapterModel(statusResponse: StatusAdapterResponse) {
     var v = statusResponse
+    fun test(idStatus: String) {
+        FirebaseDatabase.getInstance().getReference(Key.IMAGE).child(idStatus)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var images = ArrayList<ImageModel>()
+                    if (snapshot.hasChildren()) {
+                        snapshot.children.forEach { it ->
+                            var model = it.getValue<ImageModel>()
+                            model?.let { it1 -> images.add(it1) }
+                            Log.e("TAG: OK", model?.url.toString())
+                        }
+                        if (images.size > 0) {
+                            v.test(images)
+                        }
+                    }
+                }
+
+            })
+    }
 
     fun loadImages(idStatus: String) {
         FirebaseDatabase.getInstance().getReference(Key.IMAGE).child(idStatus)

@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:color="?android:colorControlHighlight"
     tools:targetApi="lollipop">
-  <item android:drawable="@drawable/bn_purple_radius_top"/>
+  <item android:drawable="@drawable/bn_radius_purple_top"/>
 </ripple>
 

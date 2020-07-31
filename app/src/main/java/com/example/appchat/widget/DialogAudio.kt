@@ -1,5 +1,6 @@
 package com.example.appchat.widget
 
+import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
@@ -20,7 +21,7 @@ import java.io.File
 
 
 @Suppress("DEPRECATION")
-class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDialogTheme) {
+class DialogAudio(var ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDialogTheme) {
     private var listener: AudioListener? = null
     private lateinit var mRecorder: MediaRecorder
     private val mPlayer by lazy { MediaPlayer() }
@@ -28,6 +29,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
     private var checkStatus = 0
     private lateinit var countDownTimer: CountDownTimer
     private var time: Long = 0
+    private val self by lazy { ctx as Activity }
 
     init {
         setContentView(R.layout.layout_audio)
@@ -38,7 +40,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
         }
         imgDelete.setOnClickListener {
             checkStatus = 0
-            imgRecord.setImage(R.drawable.ic_microphone_white)
+            imgRecord.setImage(R.drawable.ic_microphone_white, self)
             lblTime.setText(R.string.click_to_record)
             mRecorder.reset()
             mPlayer.reset()
@@ -93,7 +95,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
             override fun onFinish() {
                 checkStatus = 2
                 lblTime.text = (time / 1000).toString()
-                imgRecord.setImage(R.drawable.ic_play_white)
+                imgRecord.setImage(R.drawable.ic_play_white, ctx as Activity)
             }
         }.start()
 
@@ -114,7 +116,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
     private fun checkStatus() {
         when (checkStatus) {
             0 -> {
-                imgRecord.setImage(R.drawable.ic_stop_white)
+                imgRecord.setImage(R.drawable.ic_stop_white, self)
                 initRecord()
                 try {
                     mRecorder.prepare()
@@ -126,7 +128,7 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
                 checkStatus++
             }
             1 -> {
-                imgRecord.setImage(R.drawable.ic_play_white)
+                imgRecord.setImage(R.drawable.ic_play_white, self)
                 mRecorder.stop()
 
                 countDownTimer.cancel()
@@ -136,13 +138,13 @@ class DialogAudio(ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheepDial
             2 -> {
                 initMedia()
                 time = (lblTime.text.toString().toInt() * 1000).toLong()
-                imgRecord.setImage(R.drawable.ic_stop_white)
+                imgRecord.setImage(R.drawable.ic_stop_white, self)
                 countTime(lblTime, false, time)
 
                 checkStatus++
             }
             3 -> {
-                imgRecord.setImage(R.drawable.ic_play_white)
+                imgRecord.setImage(R.drawable.ic_play_white, self)
                 mPlayer.reset()
                 countDownTimer.cancel()
 

@@ -20,10 +20,7 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
     private var v = statusResponse
 
     fun uploadFile(
-        uri: Uri,
-        namePath: String,
-        attach: Int,
-        idStatus: String, idUser: String
+        uri: Uri, namePath: String, attach: Int, idStatus: String, idUser: String
     ) {
         var mStorageRef = FirebaseStorage.getInstance().reference
         var nameFile = System.currentTimeMillis().toString()
@@ -38,9 +35,7 @@ class UploadStatusModel(statusResponse: UploadStatusResponse) {
     }
 
     fun uploadThumbnail(
-        uri: Uri,
-        attach: Int,
-        idStatus: String, idUser: String
+        uri: Uri, attach: Int, idStatus: String, idUser: String
     ) {
         var mStorage = FirebaseStorage.getInstance().getReference(Key.IMAGE)
         var nameFile = System.currentTimeMillis().toString()

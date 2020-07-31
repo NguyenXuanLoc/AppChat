@@ -41,7 +41,7 @@
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/dimen_6x"
         android:layout_margin="@dimen/dimen_2x"
-        android:background="@drawable/btn_grey_radius"
+        android:background="@drawable/btn_radius_grey"
         android:fontFamily="@font/roboto_regular"
         android:text="Hủy"
         android:textAllCaps="false"

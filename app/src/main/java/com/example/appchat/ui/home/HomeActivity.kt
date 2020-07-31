@@ -16,6 +16,7 @@ class HomeActivity : BaseActivity() {
 
     override fun init() {
         pagerMain.adapter = MainStateAdapter(supportFragmentManager)
+        applyToolbar(background = R.color.white)
     }
 
     override fun eventHandle() {

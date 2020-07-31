@@ -3,13 +3,11 @@ package com.example.appchat.common.ext
 import android.app.Activity
 import android.net.Uri
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.example.appchat.R
 import com.facebook.drawee.view.SimpleDraweeView
 import java.io.File
 
-fun ImageView.setImage(image: Int) {
-    this.setImageResource(image)
-}
 
 fun SimpleDraweeView.setImageSimple(
     src: Any?,
@@ -35,5 +33,21 @@ fun SimpleDraweeView.setImageSimple(
             setImageURI(Uri.fromFile(src), ctx)
         }
         else -> setActualImageResource(errorImage!!)
+    }
+}
+
+fun ImageView.setImage(src: Any, ctx: Activity, errorImage: Int? = R.drawable.img_circle_letter) {
+    when (src) {
+        is Int -> {
+            setImageResource(src)
+        }
+        is Uri -> {
+            setImageURI(src)
+        }
+        is String -> {
+            if (src.isNotEmpty())
+                Glide.with(ctx).load(src).into(this)
+            else setImageResource(errorImage!!)
+        }
     }
 }

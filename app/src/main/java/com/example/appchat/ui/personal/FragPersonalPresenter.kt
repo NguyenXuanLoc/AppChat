@@ -6,24 +6,16 @@ class FragPersonalPresenter(fragPersonalView: FragPersonalView) : FragPersonalRe
     private val model = FragPersonalModel(this)
     private val v = fragPersonalView
 
-    fun getStatus(idUser: String) {
-        model.getStatus(idUser)
-    }
-
-    fun getLastKey(idUser: String) {
+    fun loadNewStatus(idUser: String) {
         model.getLastKey(idUser)
     }
 
     fun loadMore(idUser: String, lastNode: String) {
-        model.loadMoreStatus(idUser, lastNode)
+        model.loadMore(idUser, lastNode)
     }
 
-    fun loadNewStatus(idUser: String) {
-    model.loadNewStatus(idUser)
-    }
-
-    override fun loadStatusSuccess(results: ArrayList<StatusModel>) {
-        v.loadStatusSuccess(results)
+    fun getFirstKey(idUser: String) {
+        model.getFirstKey(idUser)
     }
 
     override fun loadMoreStatusSuccess(results: ArrayList<StatusModel>) {
@@ -34,11 +26,13 @@ class FragPersonalPresenter(fragPersonalView: FragPersonalView) : FragPersonalRe
         v.loadNewStatusSuccess(results)
     }
 
+    override fun loadFirstKeySuccess(firstKey: String) {
+        v.loadFirstKeySuccess(firstKey)
+    }
+
     override fun nullResult() {
         v.nullResult()
     }
 
-    override fun resultLastKey(lastKey: String) {
-        v.resultLastKey(lastKey)
-    }
+
 }

@@ -10,11 +10,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 object TimeUtil {
-    fun TextView.countTime(
-        check: Boolean = true,
-        time: Long = 30000,
-        countDownTimer: CountDownTimer? = null
-    ) {
+    fun TextView.countTime(check: Boolean = true, time: Long = 30000) {
         this.text = (time / 1000).toString()
         object : CountDownTimer(time, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -55,9 +51,9 @@ object TimeUtil {
                 }
             }
         } else {
-            var dates = date.split("-")
-            var currentDates = currentDate.split("-")
-            if (dates[1] == currentDates[1]) {
+            var dates: List<String> = date.split("-")
+            var currentDates: List<String> = currentDate.split("-")
+            if (dates[dates.size - 1] == currentDates[currentDates.size - 1]) {
                 var time = currentDates[0].toInt() - dates[0].toInt()
                 result = if (time <= 2) "$time ${ctx.getString(R.string.day)}"
                 else date

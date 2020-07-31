@@ -4,25 +4,24 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appchat.R
+import com.example.appchat.ui.base.BaseActivity
 import com.example.fcm.common.ext.invisible
 import com.example.fcm.common.ext.toast
 import com.example.fcm.common.ext.visible
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_register.*
 
-class RegisterActivity : AppCompatActivity(), RegisterView {
+class RegisterActivity : BaseActivity(), RegisterView {
     private lateinit var auth: FirebaseAuth
     private lateinit var presenter: RegisterPresenter
     private lateinit var btnRegister: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-        init()
-        eventHandle()
+
+    override fun contentView(): Int {
+        return R.layout.activity_register
     }
 
-    private fun eventHandle() {
+    override fun eventHandle() {
         btnRegister.setOnClickListener {
             pbLoading.visible()
             presenter.registerAccount(
@@ -34,7 +33,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
         }
     }
 
-    private fun init() {
+    override fun init() {
         btnRegister = findViewById(R.id.btnRegister)
         auth = FirebaseAuth.getInstance()
         presenter = RegisterPresenter(this)

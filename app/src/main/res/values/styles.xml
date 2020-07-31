@@ -47,7 +47,7 @@
     <style name="ToolBarStyle">
         <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
         <item name="android:popupTheme" tools:ignore="NewApi">@style/PopUpTheme</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/white</item>
         <item name="android:elevation" tools:ignore="NewApi">@dimen/dimen_05x</item>
         <item name="android:contentInsetEnd" tools:ignore="NewApi">@dimen/zero</item>
         <item name="contentInsetEndWithActions">@dimen/zero</item>
@@ -146,7 +146,7 @@
     </style>
 
     <style name="Button.GreenDark">
-        <item name="background">@drawable/btn_green_dark_radius</item>
+        <item name="background">@drawable/btn_radius_green_dark</item>
     </style>
 
     <style name="Button.Purple">
@@ -154,7 +154,7 @@
     </style>
 
     <style name="Button.Grey">
-        <item name="background">@drawable/btn_grey_radius</item>
+        <item name="background">@drawable/btn_radius_grey</item>
     </style>
     <!--End Button-->
 
@@ -172,5 +172,5 @@
     <style name="BottomSheepStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="background">@color/transparent</item>
     </style>
-   <!-- End BottomSheet-->
+    <!-- End BottomSheet-->
 </resources>

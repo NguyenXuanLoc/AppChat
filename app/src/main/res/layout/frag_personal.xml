@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="@dimen/zero"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScroll"
         android:layout_width="@dimen/zero"
@@ -25,22 +16,52 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdvAvt"
-                android:layout_width="@dimen/dimen_100"
-                android:layout_height="@dimen/dimen_100"
-                app:actualImageResource="@drawable/btn_circle_grey"
+            <ImageView
+                android:id="@+id/img_background"
+                android:layout_width="@dimen/dimen_10x"
+                android:layout_height="@dimen/dimen_10x"
+                android:src="@drawable/bn_circle_purple_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdvAvt"
+                android:layout_width="@dimen/dimen_10x"
+                android:layout_height="@dimen/dimen_10x"
+                app:actualImageResource="@drawable/btn_circle_grey"
+                app:layout_constraintBottom_toBottomOf="@id/img_background"
+                app:layout_constraintLeft_toLeftOf="@id/img_background"
+                app:layout_constraintRight_toRightOf="@id/img_background"
+                app:layout_constraintTop_toTopOf="@id/img_background"
                 app:roundAsCircle="true"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lbl_gender"
+                style="@style/TextView.Regular"
+                android:layout_width="@dimen/dimen_5x"
+                android:layout_height="@dimen/dimen_2x"
+                android:background="@drawable/bn_blue_white_radius"
+                android:drawableLeft="@drawable/ic_gender_male_white"
+                android:drawablePadding="@dimen/dimen_1x"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dimen_1x"
+                android:text="21"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_8"
+                app:layout_constraintBottom_toBottomOf="@id/sdvAvt"
+                app:layout_constraintLeft_toLeftOf="@id/sdvAvt"
+                app:layout_constraintRight_toRightOf="@id/sdvAvt"
+                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -48,16 +69,13 @@
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bn_radius_green_dark"
-                android:drawableLeft="@color/buttonPrimary"
-                android:drawablePadding="@dimen/dimen_1x"
-                android:padding="@dimen/dimen_1x"
+                android:layout_marginRight="@dimen/dimen_1x"
                 android:text="21"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@id/sdvAvt"
-                app:layout_constraintLeft_toLeftOf="@id/sdvAvt"
-                app:layout_constraintRight_toRightOf="@id/sdvAvt"
-                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="@id/lbl_gender"
+                app:layout_constraintRight_toRightOf="@id/lbl_gender"
+                app:layout_constraintTop_toTopOf="@id/lbl_gender"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -66,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_1x"
+                android:text="Loc.Ka"
                 android:textColor="@color/greyBold"
                 android:textSize="@dimen/text_size_15"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -78,22 +97,40 @@
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_2x"
+                android:layout_marginTop="@dimen/dimen_1x"
+                android:text="Good boy"
                 android:textColor="@color/greyBold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lblNickName"
                 tools:ignore="MissingConstraints" />
 
+            <TextView
+                android:id="@+id/lblAddTag"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_2x"
+                android:background="@drawable/btn_radius_white_purple"
+                android:paddingLeft="@dimen/dimen_1x"
+                android:paddingTop="@dimen/dimen_05x"
+                android:paddingRight="@dimen/dimen_1x"
+                android:paddingBottom="05dp"
+                android:text="@string/add_tag"
+                android:textColor="@color/purple"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblStatus"
+                tools:ignore="MissingConstraints" />
+
             <LinearLayout
                 android:id="@+id/layout_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_1x"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/layout_follow"
-                app:layout_constraintTop_toBottomOf="@id/lblStatus"
+                app:layout_constraintTop_toTopOf="@id/layout_follow"
                 tools:ignore="MissingConstraints">
 
                 <TextView
@@ -124,7 +161,7 @@
                 android:orientation="vertical"
                 app:layout_constraintLeft_toRightOf="@id/layout_following"
                 app:layout_constraintRight_toLeftOf="@id/layout_visit"
-                app:layout_constraintTop_toBottomOf="@id/lblStatus"
+                app:layout_constraintTop_toBottomOf="@id/lblAddTag"
                 tools:ignore="MissingConstraints">
 
                 <TextView
@@ -151,11 +188,10 @@
                 android:id="@+id/layout_visit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_1x"
                 android:orientation="vertical"
                 app:layout_constraintLeft_toRightOf="@id/layout_follow"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lblStatus"
+                app:layout_constraintTop_toTopOf="@id/layout_follow"
                 tools:ignore="MissingConstraints">
 
                 <TextView
@@ -190,11 +226,10 @@
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rclStatuss"
+                android:id="@+id/rclStatus"
                 android:layout_width="@dimen/zero"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_1x"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/line_2"

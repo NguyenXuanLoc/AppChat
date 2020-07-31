@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.personal.uploadstatus.UploadStatusActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints" />
-
     <ScrollView
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
@@ -20,7 +14,7 @@
         app:layout_constraintBottom_toTopOf="@id/layout_navigation"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,6 +24,7 @@
                 android:layout_width="@dimen/zero"
                 android:layout_height="@dimen/zero"
                 android:layout_marginLeft="@dimen/dimen_2x"
+                android:layout_marginTop="@dimen/dimen_1x"
                 android:layout_marginRight="@dimen/dimen_2x"
                 app:counterEnabled="true"
                 app:counterMaxLength="500"
@@ -45,7 +40,7 @@
                     style="@style/EditText.Regular"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bn_white_grey_radius"
+                    android:background="@drawable/bn_radius_white_grey"
                     android:gravity="start"
                     android:hint="@string/what_do_you_think"
                     tools:ignore="MissingConstraints" />
