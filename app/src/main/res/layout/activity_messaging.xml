@@ -15,6 +15,16 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rclChat"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/lblNickName"
         style="@style/TextView.Bold"
@@ -102,16 +112,16 @@
     </LinearLayout>
 
     <TextView
-        android:visibility="gone"
-        android:padding="@dimen/dimen_1x"
-        android:textColor="@color/white"
+        android:id="@+id/lblSend"
         style="@style/TextView.Regular"
-        android:text="@string/send"
-        android:background="@drawable/btn_purple_radius"
-        android:id="@+id/imgSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dimen_2x"
+        android:background="@drawable/btn_purple_radius"
+        android:padding="@dimen/dimen_1x"
+        android:text="@string/send"
+        android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/layout_option"
         app:layout_constraintRight_toRightOf="@id/layout_option"
         app:layout_constraintTop_toTopOf="@id/layout_option"

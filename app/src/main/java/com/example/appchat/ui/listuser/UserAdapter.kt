@@ -20,7 +20,7 @@ import com.google.android.exoplayer2.util.Util
 import find
 import kotlin.random.Random
 
-class ListUserAdapter(
+class UserAdapter(
     var users: ArrayList<UserModel>,
     var ctx: Activity,
     var itemClick: (UserModel) -> Unit

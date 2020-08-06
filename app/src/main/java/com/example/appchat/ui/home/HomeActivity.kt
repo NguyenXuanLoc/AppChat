@@ -11,6 +11,7 @@ import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.widget.PaginationScrollListener
 import com.example.fcm.common.ext.getUser
+import com.example.fcm.common.ext.toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_home.*
@@ -78,5 +79,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         }
         return false
     }
+
+
 
 }

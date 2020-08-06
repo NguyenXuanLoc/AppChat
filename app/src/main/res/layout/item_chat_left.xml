@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_1x"
+    android:background="@color/white248">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_avt"
+        android:layout_width="@dimen/dimen_5x"
+        android:layout_height="@dimen/dimen_5x"
+        android:background="@drawable/bn_circle_purple_white"
+        android:padding="@dimen/dimen_05x"
+        app:layout_constraintRight_toLeftOf="@id/sdv_avt"
+        app:layout_constraintTop_toTopOf="@id/lbl_message"
+        app:roundAsCircle="true"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_1x"
+        android:background="@drawable/bn_radius_purple_top"
+        android:padding="@dimen/dimen_x1x"
+        android:text="@string/send"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

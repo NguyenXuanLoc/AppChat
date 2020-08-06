@@ -18,7 +18,6 @@ class UserModel(
     fun isMale(): Boolean {
         return gender == Key.MALE
     }
-
     fun isFeMale(): Boolean {
         return gender == Key.FEMALE
     }

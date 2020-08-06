@@ -13,10 +13,23 @@ class ChatPresenter(view: ChatView) : ChatResponse {
         model.checkNodeChild(idSend, idReceiver)
     }
 
-    override fun loadNodeChildSuccess(node: String) {
+    fun loadMore(node: String, lastNode: String) {
+        model.loadMoreMessage(node, lastNode)
+    }
 
+    override fun loadMoreSuccess(list: ArrayList<MessageModel>) {
+        v.loadMoreSuccess(list)
+    }
+
+    override fun loadMessageSuccess(list: ArrayList<MessageModel>) {
+        v.loadMessageSuccess(list)
+    }
+
+    override fun loadNodeChildSuccess(node: String) {
+        v.loadNodeChildSuccess(node)
     }
 
     override fun nullNodeChild() {
+        v.nullNodeChild()
     }
 }

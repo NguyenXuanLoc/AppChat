@@ -37,6 +37,7 @@
     <color name="blue">#3993E3</color>
     <color name="blue133">#85e9ff</color>
     <color name="whilePurple">#eef1ff</color>
+    <color name="white248">#f8f6f9</color>
     <color name="blueWhite">#9de6f2</color>
     <color name="purpleWhite">#b0c6fe</color>
     <color name="purple230">#e6ceff</color>
@@ -44,4 +45,7 @@
     <color name="pink">#C31953</color>
     <color name="pink234">#EA6694</color>
     <color name="red239">#EFA3A3</color>
+    <color name="pink254">#fee6f3</color>
+    <color name="green227">#e3f2ed</color>
+    <color name="blue233">#e9f1fe</color>
 </resources>

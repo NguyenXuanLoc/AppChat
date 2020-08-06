@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.frag_chat_friend.view.*
 class UserFragment : BaseFragment(), UserFragmentView {
     private val users by lazy { ArrayList<UserModel>() }
     private val presenter by lazy { UserFragmentPresenter(this) }
-    private val adapter by lazy { self?.let { ListUserAdapter(users, it) { it -> onClick(it) } } }
+    private val adapter by lazy { self?.let { UserAdapter(users, it) { it -> onClick(it) } } }
 
     private var isViewed = false
 

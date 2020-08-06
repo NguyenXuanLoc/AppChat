@@ -10,7 +10,9 @@ data class MessageModel(
     var received: String? = "",
     var message: String? = "",
     var urlAudio: String? = "",
-    var urlVideo:String?="",
-    var thumbnail:String?="",
-    var icon:String?=""
+    var urlVideo: String? = "",
+    var thumbnail: String? = "",
+    var icon: String? = "",
+    var time: String? = "",
+    var isSend: String? = ""
 ) : Serializable

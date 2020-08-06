@@ -101,9 +101,7 @@ class LoginModel(loginResponse: LoginResponse, var ctx: Context) {
 
     private fun randomAvt(ctx: Context): String {
         var list = ctx.resources.getStringArray(R.array.image)
-        var radom = Random()
-        var index = radom.nextInt(list.size)
-        Log.e("TAG", list[index])
+        var index = Random().nextInt(list.size)
         return list[index]
     }
 
