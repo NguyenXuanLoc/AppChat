@@ -24,6 +24,7 @@ class ImageDetailActivity : BaseActivity() {
     }
 
     override fun eventHandle() {
+        hideToolbarBase()
         //Listener
         imgDownload.setOnClickListener {
             var nameFile = images[vpImage.currentItem].url

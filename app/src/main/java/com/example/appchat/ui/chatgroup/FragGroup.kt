@@ -8,6 +8,13 @@ import androidx.fragment.app.Fragment
 import com.example.appchat.R
 
 class FragGroup : Fragment() {
+
+    companion object {
+        fun newInstance(): FragGroup {
+            return FragGroup()
+        }
+    }
+
     lateinit var mView: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

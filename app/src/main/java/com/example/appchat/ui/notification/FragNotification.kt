@@ -8,6 +8,12 @@ import androidx.fragment.app.Fragment
 import com.example.appchat.R
 
 class FragNotification : Fragment() {
+    companion object {
+        fun newInstance(): FragNotification {
+            return FragNotification()
+        }
+    }
+
     lateinit var mView: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

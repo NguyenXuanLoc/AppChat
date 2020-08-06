@@ -5,13 +5,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|center_horizontal"
-    android:background="@color/white"
     android:padding="@dimen/dimen_2x">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lvLoading"
-        android:layout_width="@dimen/dimen_8x"
-        android:layout_height="@dimen/dimen_8x"
+        android:layout_width="@dimen/dimen_6x"
+        android:layout_height="@dimen/dimen_6x"
         android:layout_gravity="center_horizontal|center_vertical"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,6 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/audio"
+        app:lottie_rawRes="@raw/loading"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

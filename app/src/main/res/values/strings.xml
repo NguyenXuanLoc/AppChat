@@ -48,4 +48,20 @@
     <string name="add_tag">Thêm thẻ tag +</string>
     <string name="gift">Quà tặng</string>
     <string name="setting">Cài đặt</string>
+    <string name="update_profile">CẬP NHẬT THÔNG TIN</string>
+    <string name="full_name">Họ tên</string>
+    <string name="story">Tiểu sử</string>
+    <string name="year_of_birth">Năm sinh</string>
+    <string name="gender">Giới tính</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="update">Cập nhật</string>
+    <string name="newbie">Người mới</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="she_is_newbie">Cô ấy là người mới :)</string>
+    <string name="he_is_newbie">Anh ấy là người mới :)</string>
+    <string name="not_null_birth_notify_or_name">Không được để trống họ tên hoặc năm sinh, vui lòng thử lại sau.</string>
+    <string name="welcome">Chào mừng bạn đến với LitMatch !! </string>
+    <string name="write_message">Soạn tin nhắn</string>
+    <string name="send">Gửi</string>
 </resources>

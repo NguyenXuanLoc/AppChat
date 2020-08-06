@@ -10,7 +10,6 @@ class RegisterPresenter(registerView: RegisterView) : RegisterResponse {
     fun registerAccount(auth: FirebaseAuth, email: String, pass: String, confirmPass: String) {
         if (email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) v.lackOfInformation()
         else {
-
             if (pass == confirmPass) {
                 if (pass.length < 6) v.errorPass(R.string.wrong_pass)
                 else model.registerAccount(auth, email, pass)

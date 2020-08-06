@@ -35,9 +35,13 @@
     <color name="red">#DB3F29</color>
     <color name="orange40">#cc5c28</color>
     <color name="blue">#3993E3</color>
+    <color name="blue133">#85e9ff</color>
     <color name="whilePurple">#eef1ff</color>
     <color name="blueWhite">#9de6f2</color>
     <color name="purpleWhite">#b0c6fe</color>
     <color name="purple230">#e6ceff</color>
     <color name="white249">#f9f6ff</color>
+    <color name="pink">#C31953</color>
+    <color name="pink234">#EA6694</color>
+    <color name="red239">#EFA3A3</color>
 </resources>

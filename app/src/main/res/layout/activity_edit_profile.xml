@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.editprofile.EditProfileActivity">
+
+        <ImageView
+            android:id="@+id/imgBackground"
+            android:layout_width="@dimen/zero"
+            android:layout_height="@dimen/zero"
+            app:layout_constraintBottom_toBottomOf="@id/line_horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/bvBackground"
+            android:layout_width="@dimen/zero"
+            android:layout_height="@dimen/zero"
+            app:layout_constraintBottom_toBottomOf="@id/line_horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/line_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/line_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <TextView
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_1x"
+            android:text="@string/update_profile"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdvAvt"
+            android:layout_width="@dimen/dimen_100"
+            android:layout_height="@dimen/dimen_100"
+            android:background="@drawable/bn_circle_purple_white"
+            android:padding="@dimen/dimen_1x"
+            app:actualImageResource="@drawable/img_no_image"
+            app:layout_constraintBottom_toTopOf="@id/line_horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/edtName"
+            style="@style/EditText.Regular"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:backgroundTint="@color/greyBold"
+            android:hint="@string/full_name"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords"
+            app:layout_constraintBottom_toTopOf="@id/line_horizontal"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.471"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imgClearName"
+            android:layout_width="@dimen/dimen_2x"
+            android:layout_height="@dimen/dimen_2x"
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:src="@drawable/btn_ic_close_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/edtName"
+            app:layout_constraintRight_toRightOf="@id/edtName"
+            app:layout_constraintTop_toTopOf="@id/edtName"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/lbl_story"
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:text="@string/story"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_17"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/line_horizontal"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/edtStory"
+            style="@style/EditText.Regular"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:background="@drawable/bn_radius_stroke_grey"
+            android:hint="@string/story"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords"
+            android:padding="@dimen/dimen_2x"
+            android:text="@string/newbie"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_story"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imgClearStory"
+            android:layout_width="@dimen/dimen_2x"
+            android:layout_height="@dimen/dimen_2x"
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:src="@drawable/btn_ic_close_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/edtStory"
+            app:layout_constraintRight_toRightOf="@id/edtStory"
+            app:layout_constraintTop_toTopOf="@id/edtStory"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/lbl_birth"
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:text="@string/year_of_birth"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_17"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtStory"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/edtBirth"
+            style="@style/EditText.Regular"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:background="@drawable/bn_radius_stroke_grey"
+            android:focusable="false"
+            android:hint="@string/year_of_birth"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/line_vertical"
+            app:layout_constraintTop_toBottomOf="@id/lbl_birth"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imgBirth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:background="@drawable/btn_circle_white"
+            android:src="@drawable/ic_expand_grey"
+            app:layout_constraintBottom_toBottomOf="@id/edtBirth"
+            app:layout_constraintRight_toRightOf="@id/edtBirth"
+            app:layout_constraintTop_toTopOf="@id/edtBirth"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/lbl_gender"
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:text="@string/gender"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_17"
+            app:layout_constraintBottom_toBottomOf="@id/lbl_birth"
+            app:layout_constraintLeft_toRightOf="@id/line_vertical"
+            app:layout_constraintTop_toTopOf="@id/lbl_birth"
+            tools:ignore="MissingConstraints" />
+
+        <RadioGroup
+            android:id="@+id/rgGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_2x"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/edtBirth"
+            app:layout_constraintLeft_toRightOf="@id/line_vertical"
+            app:layout_constraintTop_toTopOf="@id/edtBirth">
+
+            <RadioButton
+                android:id="@+id/rbMale"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:text="@string/male" />
+
+            <RadioButton
+                android:id="@+id/rbFeMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/female" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/lbl_phone"
+            style="@style/TextView.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:text="@string/phone_number"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_17"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edtBirth"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/edtPhoneNumber"
+            style="@style/EditText.Regular"
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_2x"
+            android:background="@drawable/bn_radius_stroke_grey"
+            android:hint="@string/phone_number"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:padding="@dimen/dimen_2x"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lbl_phone"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imgClearPhone"
+            android:layout_width="@dimen/dimen_2x"
+            android:layout_height="@dimen/dimen_2x"
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:src="@drawable/btn_ic_close_white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/edtPhoneNumber"
+            app:layout_constraintRight_toRightOf="@id/edtPhoneNumber"
+            app:layout_constraintTop_toTopOf="@id/edtPhoneNumber"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/lblGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

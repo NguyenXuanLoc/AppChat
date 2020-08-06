@@ -27,7 +27,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.collections.HashMap
 
-class LoginModel(loginResponse: LoginResponse,var ctx:Context) {
+class LoginModel(loginResponse: LoginResponse, var ctx: Context) {
     var v = loginResponse
     fun signInGoogle(mGoogleSignInClient: GoogleSignInClient, activity: Activity) {
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -74,7 +74,9 @@ class LoginModel(loginResponse: LoginResponse,var ctx:Context) {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-                    user?.let { v.updateUI(it) }
+                    user?.let {
+                        checkAccount(user)
+                    }
                 } else {
                     Timber.e("signInWithCredential:failure ${task.exception}")
                 }
@@ -88,12 +90,15 @@ class LoginModel(loginResponse: LoginResponse,var ctx:Context) {
             auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener { it ->
                 if (it.isSuccessful) {
                     val user = auth.currentUser
-                    user?.let { v?.updateUI(it) }
+                    user?.let {
+                        checkAccount(user)
+                    }
                 } else {
                     v?.wrongInfo()
                 }
             }
     }
+
     private fun randomAvt(ctx: Context): String {
         var list = ctx.resources.getStringArray(R.array.image)
         var radom = Random()
@@ -123,14 +128,15 @@ class LoginModel(loginResponse: LoginResponse,var ctx:Context) {
     private fun insertAccountToFirebase(user: FirebaseUser) {
         val database = Firebase.database
         val myRef = database.getReference(Constant.USER).child(user.uid)
-        var map = HashMap<String, String>()
+        var model = UserModel(user.uid, user.displayName.toString(), imageUrl = randomAvt(ctx))
+    /*    var map = HashMap<String, String>()
         map[Key.ID] = user.uid
         map[Key.USER_NAME] = user.displayName.toString()
         map[Key.IMAGE_URL] = randomAvt(ctx)
         map[Key.SEX] = ""
         map[Key.AGE] = ""
-        map[Key.STATUS] = ""
-        myRef.setValue(map).addOnCompleteListener {
+        map[Key.STATUS] = ""*/
+        myRef.setValue(model).addOnCompleteListener {
             if (it.isSuccessful) checkAccount(user)
         }
     }

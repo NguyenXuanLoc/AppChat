@@ -124,7 +124,7 @@ class StatusAdapter(
 
         fun onBind(statusModel: StatusModel) {
             with(statusModel) {
-                lblTime.text = TimeUtil.getTime(date, time, self)
+                lblTime.text = TimeUtil.getTimeUpload(date, time, self)
                 status?.run {
                     lblStatus.text = this
                     lblStatus.visible()

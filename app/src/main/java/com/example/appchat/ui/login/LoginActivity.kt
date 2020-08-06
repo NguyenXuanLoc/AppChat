@@ -9,6 +9,7 @@ import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
+import com.example.appchat.ui.editprofile.EditProfileActivity
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.register.RegisterActivity
 import com.example.fcm.common.ext.invisible
@@ -37,10 +38,11 @@ class LoginActivity : BaseActivity(), LoginView {
 
 
     override fun contentView(): Int {
-        return R.layout.activity_main
+        return R.layout.activity_login
     }
 
     override fun init() {
+        hideToolbarBase()
         presenter = LoginPresenter(this, this)
         auth = FirebaseAuth.getInstance()
 
@@ -118,7 +120,8 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun getUser(user: UserModel) {
         bundleOf(Constant.USER to user).run {
-            openActivity(HomeActivity::class.java, this, Constant.USER)
+            openActivity(EditProfileActivity::class.java, this, Constant.USER)
+//            openActivity(HomeActivity::class.java, this, Constant.USER)
         }
     }
 

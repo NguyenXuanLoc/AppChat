@@ -81,7 +81,6 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvVideo"
         android:layout_width="@dimen/zero"

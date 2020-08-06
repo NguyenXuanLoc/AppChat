@@ -24,6 +24,7 @@ fun Fragment.replaceFragment(containerId: Int, fragment: Fragment) {
 fun Fragment.openActivity(
     clz: Class<*>,
     bundle: Bundle? = null,
+    keyBundle: String? = null,
     enterAnim: Int? = null,
     exitAnim: Int? = null,
     flags: IntArray? = null
@@ -35,7 +36,7 @@ fun Fragment.openActivity(
         }
     }
     if (bundle != null) {
-        intent.putExtras(bundle)
+        intent.putExtra(keyBundle, bundle)
     }
     startActivity(intent)
     enterAnim?.also { enter ->

@@ -176,6 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_1x"
+                android:indeterminateTint="@color/greenDark"
                 android:visibility="invisible" />
 
 

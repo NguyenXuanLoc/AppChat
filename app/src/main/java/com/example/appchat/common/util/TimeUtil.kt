@@ -2,12 +2,11 @@ package com.example.appchat.common.util
 
 import android.content.Context
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.TextView
 import com.example.appchat.R
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
+
 
 object TimeUtil {
     fun TextView.countTime(check: Boolean = true, time: Long = 30000) {
@@ -26,37 +25,34 @@ object TimeUtil {
 
     }
 
-    fun getTime(date: String, time: String, ctx: Context): String {
+    fun getTimeUpload(date: String, time: String, ctx: Context): String {
         var result = ""
+        val sdfDate = SimpleDateFormat("dd-MM")
         val currentDate: String = SimpleDateFormat("dd-MM", Locale.getDefault()).format(Date())
         val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-        if (currentDate == date) {
-            val simpleDateFormat = SimpleDateFormat("hh:mm")
-            var time1 = simpleDateFormat.parse(time)
-            var time2 = simpleDateFormat.parse(currentTime)
-            if (time1 == time2) {
-                result = ctx.getString(R.string.just_finished)
+        var startDate: Date = sdfDate.parse(date)
+        var enDate: Date = sdfDate.parse(currentDate)
+        if (startDate.time == enDate.time) {
+            val sdfTime = SimpleDateFormat("HH:mm")
+            var startTime = sdfTime.parse(time)
+            var endTime = sdfTime.parse(currentTime)
+            result = if (endTime == startTime) {
+                ctx.getString(R.string.just_finished)
             } else {
-                val difference: Long = time2.time - time1.time
-                var days = (difference / (1000 * 60 * 60 * 24)).toInt()
-                var hours = ((difference - 1000 * 60 * 60 * 24 * days) / (1000 * 60 * 60)).toInt()
-                var min =
-                    (difference - 1000 * 60 * 60 * 24 * days - 1000 * 60 * 60 * hours).toInt() / (1000 * 60)
-                result = when {
-                    days > 0 -> "$days ${ctx.getString(R.string.day)}"
-                    hours > 0 -> "$hours ${ctx.getString(R.string.our)}"
-                    else -> {
-                        "$min ${ctx.getString(R.string.minute)}"
-                    }
-                }
+                var duration = endTime.time - startTime.time
+                var hours = (duration / (1000 * 60 * 60)).toInt()
+                var min = duration / (1000 * 60)
+                if (hours > 0) "$hours ${ctx.getString(R.string.our)}"
+                else "$min ${ctx.getString(R.string.minute)}"
+
             }
         } else {
-            var dates: List<String> = date.split("-")
-            var currentDates: List<String> = currentDate.split("-")
-            if (dates[dates.size - 1] == currentDates[currentDates.size - 1]) {
-                var time = currentDates[0].toInt() - dates[0].toInt()
-                result = if (time <= 2) "$time ${ctx.getString(R.string.day)}"
-                else date
+            var duration = enDate.time - startDate.time
+            var days = (duration / (1000 * 60 * 60 * 24)).toInt()
+            result = if (days <= 2) {
+                "$days ${ctx.getString(R.string.day)}"
+            } else {
+                date
             }
         }
         return result

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_friend"
+        android:icon="@drawable/bnv_ic_friend"
+        android:title="@string/friend"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/nav_group"
+        android:icon="@drawable/btn_ic_world"
+        android:title="@string/group"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/btn_message"
+        android:title="@string/notification"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/nav_personal"
+        android:icon="@drawable/btn_personal"
+        android:title="@string/personal"
+        app:showAsAction="always" />
+</menu>

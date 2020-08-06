@@ -1,4 +1,5 @@
 <resources>
+    <dimen name="dimen_02x">2dp</dimen>
     <dimen name="dimen_05x">4dp</dimen>
     <dimen name="dimen_1x">8dp</dimen>
     <dimen name="dimen_x1x">12dp</dimen>
@@ -60,4 +61,5 @@
     <dimen name="min_width_dialog">300dp</dimen>
     <dimen name="divider">1dp</dimen>
     <dimen name="border">2dp</dimen>
+
 </resources>

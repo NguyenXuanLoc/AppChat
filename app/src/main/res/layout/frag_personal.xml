@@ -45,13 +45,12 @@
                 app:roundAsCircle="true"
                 tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/lbl_gender"
+            <View
+                android:id="@+id/view_gender"
                 style="@style/TextView.Regular"
                 android:layout_width="@dimen/dimen_5x"
                 android:layout_height="@dimen/dimen_2x"
                 android:background="@drawable/bn_blue_white_radius"
-                android:drawableLeft="@drawable/ic_gender_male_white"
                 android:drawablePadding="@dimen/dimen_1x"
                 android:gravity="center_vertical"
                 android:padding="@dimen/dimen_1x"
@@ -64,18 +63,27 @@
                 app:layout_constraintTop_toBottomOf="@id/sdvAvt"
                 tools:ignore="MissingConstraints" />
 
+            <ImageView
+                android:id="@+id/imgGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_05x"
+                app:layout_constraintBottom_toBottomOf="@id/view_gender"
+                app:layout_constraintLeft_toLeftOf="@id/view_gender"
+                app:layout_constraintTop_toTopOf="@id/view_gender"
+                tools:ignore="MissingConstraints" />
+
             <TextView
                 android:id="@+id/lblAge"
                 style="@style/TextView.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dimen_1x"
-                android:text="21"
                 android:textColor="@color/white"
                 android:textSize="8sp"
-                app:layout_constraintBottom_toBottomOf="@id/lbl_gender"
-                app:layout_constraintRight_toRightOf="@id/lbl_gender"
-                app:layout_constraintTop_toTopOf="@id/lbl_gender"
+                app:layout_constraintBottom_toBottomOf="@id/view_gender"
+                app:layout_constraintRight_toRightOf="@id/view_gender"
+                app:layout_constraintTop_toTopOf="@id/view_gender"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -84,7 +92,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_1x"
-                android:text="Loc.Ka"
                 android:textColor="@color/greyBold"
                 android:textSize="@dimen/text_size_15"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -98,7 +105,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_1x"
-                android:text="Good boy"
                 android:textColor="@color/greyBold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.personal.uploadstatus.UploadStatusActivity">
+    tools:context=".ui.uploadstatus.UploadStatusActivity">
 
     <ScrollView
         android:layout_width="@dimen/zero"
@@ -189,7 +189,7 @@
                 android:layout_width="@dimen/dimen_4x"
                 android:layout_height="@dimen/dimen_4x"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_voice"
+                android:src="@drawable/ic_record_video"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/lbl_voice"

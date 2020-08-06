@@ -68,6 +68,15 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    //Change Icon
+    protected fun changeNavigationIcon(icon: Int=R.drawable.ic_back_grey) {
+        val actionBar = (self as AppCompatActivity?)?.supportActionBar
+        actionBar?.run {
+            setHomeAsUpIndicator(icon)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
     // Show Back icon
     protected fun enableHomeAsUp(
         toolbar: Toolbar = toolbarBase,

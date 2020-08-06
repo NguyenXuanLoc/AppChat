@@ -20,16 +20,16 @@ object Constant {
     const val NOTIFICATION = "notification"
     const val PERSONAL = "personal"
     const val PLAY_VIDEO = "playvideo"
-    const val PAGE_SIZE = 10
+    const val PAGE_SIZE = 15
     const val INFO_IMAGE = "info_image"
     const val POSITION = "position"
     const val FILE_NAME = "/recorded_audio_app_chat.3gp"
+    const val MESSAGE = "message"
 }
 
 object Key {
     const val ID = "id"
     const val USER_NAME = "userName"
-    const val NEW_BIE = "Người mới"
     const val IMAGE_URL = "imageUrl"
     const val SEX = "sex"
     const val AGE = "age"
@@ -39,14 +39,22 @@ object Key {
     const val IMAGE = "image"
     const val THUMBNAIL = "thumbnail"
     const val DURATION = "duration"
+    const val YEAR = 2000
+    const val MONTH = 1
+    const val DATE = 1
+    const val USER = "user"
+    const val MALE = "nam"
+    const val FEMALE = "nu"
+    const val ONLINE = "online"
+    const val OFFLINE = "offline"
+    const val CHATS = "chats"
 }
 
-object KeyStatus {
-    const val ID_STATUS = "id"
-    const val ID_USER = "idUser"
-    const val STATUS = "status"
-    const val LIKE = "like"
-    const val CURRENT_TIME = "time"
-    const val CURRENT_DATE = "date"
-    const val ATTACH = "attach"
+object KeyPermission {
+    const val RC_PERMISSION_READ_EXTERNAL_STORAGE = 1
+    const val RC_PERMISSION_WRITE_EXTERNAL_STORAGE = 13
+    const val RC_PERMISSION_CAMERA = 2
+    const val RC_PICK_VIDEO = 256
+    const val RC_RECORD_VIDEO = 257
+    const val RC_DELETING_VIDEO = 258
 }

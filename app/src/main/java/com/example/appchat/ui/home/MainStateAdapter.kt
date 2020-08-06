@@ -1,26 +1,28 @@
 package com.example.appchat.ui.home
 
-import android.view.View
-import androidx.fragment.app.*
-import androidx.viewpager.widget.PagerAdapter
-import com.example.appchat.ui.chatfriend.FragFriend
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.appchat.ui.listuser.UserFragment
 import com.example.appchat.ui.chatgroup.FragGroup
 import com.example.appchat.ui.notification.FragNotification
-import com.example.appchat.ui.personal.FragPersonal
+import com.example.appchat.ui.personal.PersonalFragment
 
 
-class MainStateAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> return FragFriend()
-            1 -> return FragGroup()
-            2 -> return FragNotification()
-            else -> return FragPersonal()
-        }
+class MainStateAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+    private val pages by lazy {
+        arrayListOf(
+            UserFragment.newInstance(),
+            FragGroup.newInstance(),
+            FragNotification.newInstance(),
+            PersonalFragment.newInstance()
+        )
     }
 
-    override fun getCount(): Int {
-        return 4
+    override fun getItemCount(): Int {
+        return pages.size
     }
-
+    override fun createFragment(position: Int): Fragment {
+        return pages[position]
+    }
 }
