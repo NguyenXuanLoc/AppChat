@@ -1,14 +1,19 @@
 package com.example.appchat.ui.listuser
 
+import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
+import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.data.model.OptionModel
 import com.example.fcm.common.ext.setRatio
 import com.example.fcm.common.util.CommonUtil
@@ -29,7 +34,7 @@ class OptionAdapter(
 
     fun updateThumbRatio(isListView: Boolean) {
         totalMargin = if (isListView) {
-            screenWidth / 2 + (margin - margin * 0.25).toInt()
+            screenWidth / 3 + (margin - margin * 0.25).toInt()
         } else {
             margin
         }
@@ -51,13 +56,16 @@ class OptionAdapter(
     }
 
     inner class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var sdvIcon: SimpleDraweeView = itemView.findViewById(R.id.sdv_icon)
-        var cvOption: CardView = itemView.findViewById(R.id.cv_option)
-        var lblTitle: TextView = itemView.findViewById(R.id.lbl_title)
-        var lblContent: TextView = itemView.findViewById(R.id.lbl_content)
+        private var sdvIcon: SimpleDraweeView = itemView.findViewById(R.id.sdv_icon)
+        private var lblTitle: TextView = itemView.findViewById(R.id.lbl_title)
+        private var lblContent: TextView = itemView.findViewById(R.id.lbl_content)
+        private var layoutOptions: ConstraintLayout = itemView.findViewById(R.id.layout_option)
         fun bind(model: OptionModel) {
-//            sdvIcon.setRatio(ctx as AppCompatActivity, 9, 9, totalMargin)
-//cvOption.setBac
+            lblTitle.text = model.title
+            lblContent.text = model.content
+            sdvIcon.setImageSimple(model.urlImage, ctx as Activity)
+            layoutOptions.setBackgroundColor(Color.parseColor(model.background.toString()))
+            layoutOptions.setOnClickListener { itemClick(model) }
         }
     }
 }

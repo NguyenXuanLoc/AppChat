@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,11 +10,33 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarBase"
         style="@style/ToolBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_width="@dimen/zero"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="@dimen/dimen_8x"
+        android:layout_height="@dimen/dimen_3x"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_logo_purple"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarBase"
+        app:layout_constraintLeft_toLeftOf="@id/toolbarBase"
+        app:layout_constraintRight_toRightOf="@id/toolbarBase"
+        app:layout_constraintTop_toTopOf="@id/toolbarBase"
+        tools:ignore="MissingConstraints" />
 
     <FrameLayout
         android:id="@+id/frlBase"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarBase"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

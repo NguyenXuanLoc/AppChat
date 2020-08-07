@@ -25,6 +25,9 @@ object Constant {
     const val POSITION = "position"
     const val FILE_NAME = "/recorded_audio_app_chat.3gp"
     const val MESSAGE = "message"
+    const val SOUL = "soul"
+    const val VOICE = "voice"
+    const val MOVIE = "movie"
 }
 
 object Key {
@@ -48,6 +51,7 @@ object Key {
     const val ONLINE = "online"
     const val OFFLINE = "offline"
     const val CHATS = "chats"
+    const val OPTIONS = "options"
 }
 
 object KeyPermission {

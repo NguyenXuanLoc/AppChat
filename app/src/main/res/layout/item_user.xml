@@ -9,6 +9,7 @@
     android:padding="@dimen/dimen_1x">
 
     <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_marginLeft="@dimen/dimen_2x"
         android:id="@+id/sdv_avt"
         android:layout_width="@dimen/dimen_6x"
         android:layout_height="@dimen/dimen_6x"

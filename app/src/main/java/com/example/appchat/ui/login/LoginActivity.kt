@@ -12,10 +12,7 @@ import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.editprofile.EditProfileActivity
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.register.RegisterActivity
-import com.example.fcm.common.ext.invisible
-import com.example.fcm.common.ext.openActivity
-import com.example.fcm.common.ext.toast
-import com.example.fcm.common.ext.visible
+import com.example.fcm.common.ext.*
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -120,8 +117,13 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun getUser(user: UserModel) {
         bundleOf(Constant.USER to user).run {
-            openActivity(EditProfileActivity::class.java, this, Constant.USER)
-//            openActivity(HomeActivity::class.java, this, Constant.USER)
+            if (user.dateOfBirth!!.isNotEmpty() && user.gender!!.isNotEmpty() && user.userName!!.isNotEmpty()) {
+                saveUser(user)
+                openActivity(HomeActivity::class.java, this, Constant.USER)
+            } else {
+                openActivity(EditProfileActivity::class.java, this, Constant.USER)
+
+            }
         }
     }
 

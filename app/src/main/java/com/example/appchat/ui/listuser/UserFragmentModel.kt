@@ -1,6 +1,10 @@
 package com.example.appchat.ui.listuser
 
+import android.content.Context
+import com.example.appchat.R
 import com.example.appchat.common.Constant
+import com.example.appchat.common.Key
+import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -73,4 +77,22 @@ class UserFragmentModel(response: UserFragmentResponse) {
             })
     }
 
+    fun loadOptions() {
+        FirebaseDatabase.getInstance().getReference(Key.OPTIONS).orderByKey()
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChildren()) {
+                        var list = ArrayList<OptionModel>()
+                        snapshot.children.forEach { it ->
+                            var model = it.getValue<OptionModel>()
+                            model?.let { it1 -> list.add(it1) }
+                        }
+                        v.resultOption(list)
+                    }
+                }
+            })
+    }
 }

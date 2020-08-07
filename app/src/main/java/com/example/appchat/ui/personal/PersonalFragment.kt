@@ -9,6 +9,7 @@ import com.example.appchat.common.Key
 import com.example.appchat.common.ext.setImage
 import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.data.model.StatusModel
+import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseFragment
 import com.example.appchat.ui.personal.statusadapter.StatusAdapter
 import com.example.appchat.ui.uploadstatus.UploadStatusActivity
@@ -31,6 +32,7 @@ class PersonalFragment : BaseFragment(), PersonalFragmentView {
         }
     }
 
+    private var user: UserModel? = null
     private var isViewed = false
     private val presenter by lazy { PersonalFragmentPresenter(this) }
 
@@ -72,17 +74,19 @@ class PersonalFragment : BaseFragment(), PersonalFragmentView {
         var manager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         mView.rclStatus.setHasFixedSize(true)
         mView.rclStatus.layoutManager = manager
+        user = self?.getUser()
 
-        self?.let {
-            var url = it.getUser()?.imageUrl.toString()
-            mView.sdvAvt.setImageSimple(url, it)
-            mView.lblNickName.text = it.getUser()?.userName.toString()
-            mView.lblAge.text = getAge(it.getUser()?.dateOfBirth.toString())
-            idUser = it.getUser()?.id
-            if (it.getUser()?.gender == Key.MALE) {
-                mView.imgGender.setImage(R.drawable.ic_male_white, it)
+        user?.run {
+            var url = this?.imageUrl
+            self?.let { mView.sdvAvt.setImageSimple(url, it) }
+            mView.lblNickName.text = this.userName
+            mView.lblAge.text = getAge(this?.dateOfBirth.toString())
+            mView.lblStory.text = this.story
+            idUser = this?.id
+            if (this.gender == Key.MALE) {
+                self?.let { mView.imgGender.setImage(R.drawable.ic_male_white, it) }
             } else {
-                mView.imgGender.setImage(R.drawable.ic_female_white, it)
+                self?.let { mView.imgGender.setImage(R.drawable.ic_female_white, it) }
             }
         }
 

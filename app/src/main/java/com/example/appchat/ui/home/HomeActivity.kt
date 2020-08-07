@@ -32,6 +32,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
     override
     fun init() {
+        showLogo()
         applyToolbar(background = white)
         bnvOptions.itemIconTintList = null
         bnvOptions.setOnNavigationItemSelectedListener(this)

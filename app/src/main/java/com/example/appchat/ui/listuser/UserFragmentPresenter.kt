@@ -1,10 +1,16 @@
 package com.example.appchat.ui.listuser
 
+import android.content.Context
+import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
 
 class UserFragmentPresenter(view: UserFragmentView) : UserFragmentResponse {
     val v = view
     val model = UserFragmentModel(this)
+
+    fun loadOptions() {
+        model.loadOptions()
+    }
 
     fun getFirstKey(node: String) {
         model.getFirstKey(node)
@@ -32,6 +38,10 @@ class UserFragmentPresenter(view: UserFragmentView) : UserFragmentResponse {
 
     override fun resultNull() {
         v.resultNull()
+    }
+
+    override fun resultOption(list: ArrayList<OptionModel>) {
+        v.resultOptions(list)
     }
 
 }

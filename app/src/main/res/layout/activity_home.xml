@@ -23,7 +23,7 @@
         style="@style/BottomNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:itemTextColor="@color/bnv_test"
+        app:itemTextColor="@color/bnv_navigation"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

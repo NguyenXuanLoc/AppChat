@@ -1,5 +1,6 @@
 package com.example.appchat.ui.listuser
 
+import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
 
 interface UserFragmentView {
@@ -7,4 +8,5 @@ interface UserFragmentView {
     fun resultListUser(list: ArrayList<UserModel>)
     fun resultFirstKey(firstKey: String)
     fun resultNull()
+    fun resultOptions(list: ArrayList<OptionModel>)
 }

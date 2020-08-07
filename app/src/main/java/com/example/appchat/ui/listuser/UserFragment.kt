@@ -3,16 +3,20 @@ package com.example.appchat.ui.listuser
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.core.os.bundleOf
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
+import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseFragment
 import com.example.appchat.ui.chat.ChatActivity
+import com.example.appchat.widget.PaginationScrollNestedListener
 import com.example.fcm.common.ext.openActivity
+import com.example.fcm.common.ext.toast
 import kotlinx.android.synthetic.main.frag_chat_friend.view.*
+
 
 @Suppress("DEPRECATION")
 class UserFragment : BaseFragment(), UserFragmentView {
@@ -21,16 +25,38 @@ class UserFragment : BaseFragment(), UserFragmentView {
     private val adapter by lazy { self?.let { UserAdapter(users, it) { it -> onClick(it) } } }
 
     private var isViewed = false
+    private var isLoading = true
+    private var lastNode: String? = null
+    private var firstNode: String? = null
+
+    private val options by lazy { ArrayList<OptionModel>() }
+    private val adapterOption by lazy {
+        self?.let {
+            OptionAdapter(
+                options,
+                it
+            ) { it -> onClickOptions(it) }
+        }
+    }
+    private val pagination by lazy {
+        object : PaginationScrollNestedListener() {
+            override fun loadMore() {
+                adapter?.addLoading()
+                presenter.loadListUser(Key.USER, lastNode.toString(), true)
+                isLoading = true
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+        }
+    }
 
     companion object {
         fun newInstance(): UserFragment {
             return UserFragment()
         }
     }
-
-    private var isLoading = true
-    private var lastNode: String? = null
-    private var firstNode: String? = null
 
 
     override fun onCreateView(): Int {
@@ -42,10 +68,17 @@ class UserFragment : BaseFragment(), UserFragmentView {
         mView.rclUser.adapter = adapter
         mView.rclUser.layoutManager = LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false)
         mView.rclUser.setHasFixedSize(true)
+        pagination.setLayoutManager(mView.rclUser.layoutManager as LinearLayoutManager)
+
+        mView.rclOptions.adapter = adapterOption
+        mView.rclOptions.layoutManager =
+            GridLayoutManager(self, 3, GridLayoutManager.VERTICAL, false)
+        mView.rclOptions.setHasFixedSize(true)
+
     }
 
     override fun eventHandle() {
-        paginationScroll(mView.rclUser)
+        mView.nestedScroll.setOnScrollChangeListener(pagination)
     }
 
 
@@ -58,6 +91,7 @@ class UserFragment : BaseFragment(), UserFragmentView {
         super.onResume()
         if (!isViewed) {
             dialogLoading?.show()
+            presenter.loadOptions()
             presenter.getFirstKey(Key.USER)
             //Get last key and load list user
             presenter.getLastKey(Key.USER)
@@ -67,6 +101,8 @@ class UserFragment : BaseFragment(), UserFragmentView {
     }
 
     override fun resultLoadMoreList(list: ArrayList<UserModel>) {
+        users.removeAt(users.size - 1)
+        mView.rclUser.scrollToPosition(adapter!!.itemCount - 1)
         if (list.size > 0) {
             adapter?.removeLoading()
             for (i in list.size - 1 downTo 0) {
@@ -99,24 +135,18 @@ class UserFragment : BaseFragment(), UserFragmentView {
         if (users.size > 0) adapter?.removeLoading()
     }
 
-    private fun paginationScroll(recyclerView: RecyclerView) {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                val fistLastItem = linearLayoutManager?.findLastCompletelyVisibleItemPosition()
-                if (!isLoading && linearLayoutManager != null && fistLastItem == users.size - 1 && lastNode != firstNode
-                ) {
-                    adapter?.addLoading()
-                    presenter.loadListUser(Key.USER, lastNode.toString(), true)
-                    isLoading = true
-                }
-            }
-        })
+    override fun resultOptions(list: ArrayList<OptionModel>) {
+        options.addAll(list)
+        adapterOption?.notifyDataSetChanged()
     }
 
     private fun onClick(model: UserModel) {
         bundleOf(Constant.MESSAGE to model).also {
             openActivity(ChatActivity::class.java, it, Constant.MESSAGE)
         }
+    }
+
+    private fun onClickOptions(model: OptionModel) {
+        toast(model.action.toString())
     }
 }

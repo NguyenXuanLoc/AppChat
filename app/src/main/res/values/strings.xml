@@ -58,10 +58,16 @@
     <string name="newbie">Người mới</string>
     <string name="male">Nam</string>
     <string name="female">Nữ</string>
-    <string name="she_is_newbie">Cô ấy là người mới :)</string>
-    <string name="he_is_newbie">Anh ấy là người mới :)</string>
-    <string name="not_null_birth_notify_or_name">Không được để trống họ tên hoặc năm sinh, vui lòng thử lại sau.</string>
+    <string name="she_is_newbie">Cô ấy, là người mới 😀😀</string>
+    <string name="he_is_newbie">Anh ấy, là người mới 😀</string>
+    <string name="not_null_information">Không được để trống thông tin, vui lòng thử lại sau.</string>
     <string name="welcome">Chào mừng bạn đến với LitMatch !! </string>
     <string name="write_message">Soạn tin nhắn</string>
     <string name="send">Gửi</string>
+    <string name="fill_information">Fill the information</string>
+    <string name="date_of_birth">Ngày sinh</string>
+    <string name="finish">Hoàn thành</string>
+    <string name="cancel">Hủy</string>
+    <string name="birthday">Birthday</string>
+    <string name="can_not_change_when_confirm_gender">Không thể thay đổi sau khi xác định\ngiới tính</string>
 </resources>

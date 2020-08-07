@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.appchat.R
 import com.example.appchat.common.Key
+import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseFragment
 import com.example.fcm.common.ext.toast
@@ -34,7 +35,6 @@ class FragTest : BaseFragment() {
         Log.e("TAG", list[index])
         return list[index]
     }
-
     fun addUser() {
         var phones = arrayOf("0966468393", "0966666854", "09664754856", "09625456543")
         var gender = arrayOf("nam", "nu")

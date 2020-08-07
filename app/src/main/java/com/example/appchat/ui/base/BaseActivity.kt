@@ -37,6 +37,16 @@ abstract class BaseActivity : AppCompatActivity() {
         toolbarBase.gone()
     }
 
+    // Show Logo
+    protected fun showLogo() {
+        imgLogo.visible()
+    }
+
+    // Hide Logo
+    protected fun hideLogo() {
+        imgLogo.gone()
+    }
+
     // Show base toolbar
     protected fun showToolbarBase() {
         toolbarBase.visible()
@@ -69,7 +79,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     //Change Icon
-    protected fun changeNavigationIcon(icon: Int=R.drawable.ic_back_grey) {
+    protected fun changeNavigationIcon(icon: Int = R.drawable.ic_back_grey) {
         val actionBar = (self as AppCompatActivity?)?.supportActionBar
         actionBar?.run {
             setHomeAsUpIndicator(icon)
