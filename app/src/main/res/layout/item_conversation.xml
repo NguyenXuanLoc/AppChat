@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ctl_click"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="@dimen/dimen_1x">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_marginLeft="@dimen/dimen_2x"
+        android:id="@+id/sdv_avt"
+        android:layout_width="@dimen/dimen_6x"
+        android:layout_height="@dimen/dimen_6x"
+        android:background="@drawable/bn_circle_purple_white"
+        android:padding="@dimen/dimen_1x"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:roundAsCircle="true"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/img_status"
+        android:layout_width="@dimen/dimen_x1x"
+        android:layout_height="@dimen/dimen_x1x"
+        android:background="@drawable/bn_circle_white_grey"
+        android:padding="@dimen/dimen_02x"
+        android:src="@drawable/ic_dots_online"
+        app:layout_constraintBottom_toBottomOf="@id/sdv_avt"
+        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
+        app:layout_constraintRight_toRightOf="@id/sdv_avt"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_name"
+        style="@style/TextView.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_1x"
+        android:layout_marginTop="@dimen/dimen_05x"
+        android:textSize="@dimen/text_size_15"
+        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/img_background_gender"
+        android:layout_width="@dimen/dimen_x3x"
+        android:layout_height="@dimen/dimen_2x"
+        android:layout_marginLeft="@dimen/dimen_x1x"
+        android:background="@drawable/bn_radius_pink"
+        app:layout_constraintBottom_toBottomOf="@id/lbl_name"
+        app:layout_constraintLeft_toRightOf="@id/lbl_name"
+        app:layout_constraintTop_toTopOf="@id/lbl_name"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:visibility="visible"
+        android:src="@drawable/ic_female_white"
+        android:id="@+id/img_gender"
+        android:layout_width="@dimen/dimen_x1x"
+        android:layout_height="@dimen/dimen_x1x"
+        android:layout_marginLeft="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_background_gender"
+        app:layout_constraintLeft_toLeftOf="@id/img_background_gender"
+        app:layout_constraintTop_toTopOf="@id/img_background_gender"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_age"
+        style="@style/TextView.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_10"
+        app:layout_constraintBottom_toBottomOf="@id/img_background_gender"
+        app:layout_constraintRight_toRightOf="@id/img_background_gender"
+        app:layout_constraintTop_toTopOf="@id/img_background_gender"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_last_message"
+        style="@style/TextView.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/text_size_14"
+        app:layout_constraintLeft_toLeftOf="@id/lbl_name"
+        app:layout_constraintTop_toBottomOf="@id/lbl_name"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

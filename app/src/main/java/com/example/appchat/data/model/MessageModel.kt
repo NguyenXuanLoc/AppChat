@@ -1,5 +1,6 @@
 package com.example.appchat.data.model
 
+import com.example.appchat.common.Key
 import com.google.firebase.database.IgnoreExtraProperties
 import java.io.Serializable
 
@@ -14,5 +15,5 @@ data class MessageModel(
     var thumbnail: String? = "",
     var icon: String? = "",
     var time: String? = "",
-    var isSend: String? = ""
+    var isSend: String? = Key.SENDING
 ) : Serializable

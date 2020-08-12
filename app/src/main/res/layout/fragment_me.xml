@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        android:fillViewport="true"
+        android:isScrollContainer="true"
+        android:measureAllChildren="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
+
+
+            <ImageView
+                android:id="@+id/img_background"
+                android:layout_width="@dimen/dimen_10x"
+                android:layout_height="@dimen/dimen_10x"
+                android:contentDescription="TODO"
+                android:src="@drawable/bn_circle_purple_white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdvAvt"
+                android:layout_width="@dimen/dimen_10x"
+                android:layout_height="@dimen/dimen_10x"
+                app:actualImageResource="@drawable/btn_circle_grey"
+                app:layout_constraintBottom_toBottomOf="@id/img_background"
+                app:layout_constraintLeft_toLeftOf="@id/img_background"
+                app:layout_constraintRight_toRightOf="@id/img_background"
+                app:layout_constraintTop_toTopOf="@id/img_background"
+                app:roundAsCircle="true"
+                tools:ignore="MissingConstraints" />
+
+            <View
+                android:id="@+id/view_gender"
+                style="@style/TextView.Regular"
+                android:layout_width="@dimen/dimen_5x"
+                android:layout_height="@dimen/dimen_2x"
+                android:background="@drawable/bn_blue_white_radius"
+                android:drawablePadding="@dimen/dimen_1x"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dimen_1x"
+                android:text="21"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_8"
+                app:layout_constraintBottom_toBottomOf="@id/sdvAvt"
+                app:layout_constraintLeft_toLeftOf="@id/sdvAvt"
+                app:layout_constraintRight_toRightOf="@id/sdvAvt"
+                app:layout_constraintTop_toBottomOf="@id/sdvAvt"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/imgGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_05x"
+                android:contentDescription="TODO"
+                app:layout_constraintBottom_toBottomOf="@id/view_gender"
+                app:layout_constraintLeft_toLeftOf="@id/view_gender"
+                app:layout_constraintTop_toTopOf="@id/view_gender"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lblAge"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dimen_1x"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@id/view_gender"
+                app:layout_constraintRight_toRightOf="@id/view_gender"
+                app:layout_constraintTop_toTopOf="@id/view_gender"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lblNickName"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_1x"
+                android:textColor="@color/greyBold"
+                android:textSize="@dimen/text_size_15"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblAge"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lblStory"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_1x"
+                android:textColor="@color/greyBold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblNickName"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/lblAddTag"
+                style="@style/TextView.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_2x"
+                android:background="@drawable/btn_radius_white_purple"
+                android:paddingLeft="@dimen/dimen_1x"
+                android:paddingTop="@dimen/dimen_05x"
+                android:paddingRight="@dimen/dimen_1x"
+                android:paddingBottom="05dp"
+                android:text="@string/add_tag"
+                android:textColor="@color/purple"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblStory"
+                tools:ignore="MissingConstraints" />
+
+            <LinearLayout
+                android:id="@+id/layout_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/layout_follow"
+                app:layout_constraintTop_toTopOf="@id/layout_follow"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/lblCountFollowing"
+                    style="@style/TextView.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:textColor="@color/greyBold"
+                    android:textSize="@dimen/text_size_15" />
+
+                <TextView
+                    android:id="@+id/lbl_following"
+                    style="@style/TextView.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_1x"
+                    android:text="@string/following"
+                    android:textColor="@color/greyBold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_1x"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toRightOf="@id/layout_following"
+                app:layout_constraintRight_toLeftOf="@id/layout_visit"
+                app:layout_constraintTop_toBottomOf="@id/lblAddTag"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/lblCountFollow"
+                    style="@style/TextView.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:textColor="@color/greyBold"
+                    android:textSize="@dimen/text_size_15" />
+
+                <TextView
+                    android:id="@+id/lbl_follow"
+                    style="@style/TextView.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_1x"
+                    android:text="@string/count_follow"
+                    android:textColor="@color/greyBold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_visit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toRightOf="@id/layout_follow"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layout_follow"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/lblCountVisit"
+                    style="@style/TextView.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0"
+                    android:textColor="@color/greyBold"
+                    android:textSize="@dimen/text_size_15" />
+
+                <TextView
+                    android:id="@+id/lbl_count_visit"
+                    style="@style/TextView.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_1x"
+                    android:text="@string/visited"
+                    android:textColor="@color/greyBold" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line_2"
+                android:layout_width="@dimen/zero"
+                android:layout_height="@dimen/dimen_2x"
+                android:layout_marginTop="@dimen/dimen_2x"
+                android:background="@color/dividerColor"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_follow"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rclStatus"
+                android:layout_width="@dimen/zero"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line_2"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/imgDecorate"
+                android:layout_width="201dp"
+                android:layout_height="198dp"
+                android:src="@drawable/img_circle_letter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line_2"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_2x"
+        android:backgroundTint="@color/purple100"
+        android:src="@drawable/ic_write_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

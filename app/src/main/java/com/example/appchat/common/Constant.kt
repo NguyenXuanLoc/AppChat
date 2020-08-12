@@ -28,6 +28,17 @@ object Constant {
     const val SOUL = "soul"
     const val VOICE = "voice"
     const val MOVIE = "movie"
+    const val SENDING = "Đang gửi"
+    const val RECEIVED = "Đã nhận"
+    const val TITLE = "title"
+    const val MESSAGE_RECEIVED = "message"
+    const val LIT_MATCH = "LitMatch"
+    const val DESCRIPTION = "Miêu tả"
+    const val CHANNEL_ID = "channel_id"
+    const val ID_RECEIVE = "idReceive"
+    const val URL_FCM = "https://fcm.googleapis.com/"
+    const val ONLINE = "online"
+    const val OFFLINE = "offline"
 }
 
 object Key {
@@ -52,6 +63,12 @@ object Key {
     const val OFFLINE = "offline"
     const val CHATS = "chats"
     const val OPTIONS = "options"
+    const val SENDING = "Đang gửi"
+    const val TOKENS = "Tokens"
+    const val ID_TOKEN = "token"
+    const val KEY_AUTH =
+        "AAAApF473e0:APA91bEHui0_mNA31RRwACd17hOmc7cx4oUfA5fGP0LVUXOlXPa84moahTmfH-9xTDc8DwX6SjvBJa6xcUG7V9UFvXZ6bee0h1PABWmRlcOmR294hWjX72jf1dPyBL-REixrLQjG6JfG"
+    const val CONTENT_TYPE = "application/json"
 }
 
 object KeyPermission {

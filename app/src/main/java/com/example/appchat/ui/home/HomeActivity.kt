@@ -9,11 +9,14 @@ import com.example.appchat.R.color.white
 import com.example.appchat.common.Key
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
+import com.example.appchat.ui.fcm.Token
 import com.example.appchat.widget.PaginationScrollListener
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_home.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,7 +35,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
     override
     fun init() {
-        showLogo()
+        hideToolbarBase()
         applyToolbar(background = white)
         bnvOptions.itemIconTintList = null
         bnvOptions.setOnNavigationItemSelectedListener(this)
@@ -46,6 +49,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
     override fun eventHandle() {
         getExtra()
+        updateToken()
     }
 
     override fun onStart() {
@@ -81,6 +85,10 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         return false
     }
 
-
-
+    private fun updateToken() {
+        val refreshToken = FirebaseInstanceId.getInstance().token
+        val token = refreshToken?.let { Token(it) }
+        FirebaseDatabase.getInstance().getReference(Key.TOKENS)
+            .child(getUser()?.id.toString()).setValue(token)
+    }
 }

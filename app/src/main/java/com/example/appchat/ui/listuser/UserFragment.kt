@@ -15,7 +15,7 @@ import com.example.appchat.ui.chat.ChatActivity
 import com.example.appchat.widget.PaginationScrollNestedListener
 import com.example.fcm.common.ext.openActivity
 import com.example.fcm.common.ext.toast
-import kotlinx.android.synthetic.main.frag_chat_friend.view.*
+import kotlinx.android.synthetic.main.fragment_user.view.*
 
 
 @Suppress("DEPRECATION")
@@ -60,11 +60,13 @@ class UserFragment : BaseFragment(), UserFragmentView {
 
 
     override fun onCreateView(): Int {
-        return R.layout.frag_chat_friend
+        return R.layout.fragment_user
     }
 
     override fun init() {
-        setHasOptionsMenu(true)
+        applyToolbar(mView.toolbar, removeElevation = true)
+        showLogo(mView.imgLogo)
+
         mView.rclUser.adapter = adapter
         mView.rclUser.layoutManager = LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false)
         mView.rclUser.setHasFixedSize(true)
@@ -101,8 +103,6 @@ class UserFragment : BaseFragment(), UserFragmentView {
     }
 
     override fun resultLoadMoreList(list: ArrayList<UserModel>) {
-        users.removeAt(users.size - 1)
-        mView.rclUser.scrollToPosition(adapter!!.itemCount - 1)
         if (list.size > 0) {
             adapter?.removeLoading()
             for (i in list.size - 1 downTo 0) {
@@ -110,7 +110,8 @@ class UserFragment : BaseFragment(), UserFragmentView {
             }
             lastNode = users[users.size - 1].id.toString()
             isLoading = false
-            adapter?.notifyDataSetChanged()
+            adapter?.notifyItemInserted(list.size - 1)
+            mView.rclUser.scrollToPosition(adapter!!.itemCount - 1)
         }
     }
 

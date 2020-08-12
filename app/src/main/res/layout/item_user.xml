@@ -43,8 +43,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <View
-        android:id="@+id/view_gender"
+    <ImageView
+        android:id="@+id/img_background_gender"
         android:layout_width="@dimen/dimen_x3x"
         android:layout_height="@dimen/dimen_2x"
         android:layout_marginLeft="@dimen/dimen_x1x"
@@ -55,13 +55,15 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
+        android:visibility="visible"
+        android:src="@drawable/ic_female_white"
         android:id="@+id/img_gender"
         android:layout_width="@dimen/dimen_x1x"
         android:layout_height="@dimen/dimen_x1x"
         android:layout_marginLeft="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/view_gender"
-        app:layout_constraintLeft_toLeftOf="@id/view_gender"
-        app:layout_constraintTop_toTopOf="@id/view_gender"
+        app:layout_constraintBottom_toBottomOf="@id/img_background_gender"
+        app:layout_constraintLeft_toLeftOf="@id/img_background_gender"
+        app:layout_constraintTop_toTopOf="@id/img_background_gender"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -72,9 +74,9 @@
         android:layout_marginRight="1dp"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_10"
-        app:layout_constraintBottom_toBottomOf="@id/view_gender"
-        app:layout_constraintRight_toRightOf="@id/view_gender"
-        app:layout_constraintTop_toTopOf="@id/view_gender"
+        app:layout_constraintBottom_toBottomOf="@id/img_background_gender"
+        app:layout_constraintRight_toRightOf="@id/img_background_gender"
+        app:layout_constraintTop_toTopOf="@id/img_background_gender"
         tools:ignore="MissingConstraints" />
 
     <TextView

@@ -2,7 +2,7 @@
     <string name="facebook_app_id">283433129572777</string>
     <string name="fb_login_protocol_scheme">fb283433129572777</string>
     <string name="id_web_token">705955618285-45ssda7l8q688fkgliq9mnfc95v6jndt.apps.googleusercontent.com</string>
-    <string name="app_name">AppChat</string>
+    <string name="app_name">Lit</string>
     <string name="email">Email</string>
     <string name="pass">Pass</string>
     <string name="confirm_pass">Confirm pass</string>
@@ -25,9 +25,9 @@
     <string name="error">Có lối sảy ra, vui lòng thử lại sau.</string>
     <string name="wrong_info">Sai thông tin đăng nhập, vui lòng thử lại !!</string>
     <string name="friend">Bạn bè̉</string>
-    <string name="group">Hội nhóm</string>
-    <string name="notification">Thông báo</string>
-    <string name="personal">Cá nhân</string>
+    <string name="news">Bản tin</string>
+    <string name="conversation">Trò chuyện</string>
+    <string name="me">Tôi</string>
     <string name="back">Back</string>
     <string name="apply">Apply</string>
     <string name="click_to_record">Nhấn để ghi âm</string>
@@ -70,4 +70,7 @@
     <string name="cancel">Hủy</string>
     <string name="birthday">Birthday</string>
     <string name="can_not_change_when_confirm_gender">Không thể thay đổi sau khi xác định\ngiới tính</string>
+    <string name="latest">Muộn nhất</string>
+    <string name="suggestions">Gợi ý</string>
+    <string name="notification">Thông báo</string>
 </resources>

@@ -1,10 +1,12 @@
 package com.example.appchat.ui.main
 
 import android.os.Handler
+import android.util.Log
 import com.example.appchat.R
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.login.LoginActivity
+import com.example.appchat.ui.test.TestActivity
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.openActivity
 
@@ -22,6 +24,7 @@ class MainActivity : BaseActivity() {
 
     override fun eventHandle() {
 //        removeUser()
+//        openActivity(TestActivity::class.java)
         Handler().postDelayed(Runnable {
             if (getUser() != null) {
                 openActivity(HomeActivity::class.java)

@@ -4,18 +4,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.appchat.ui.listuser.UserFragment
-import com.example.appchat.ui.chatgroup.FragGroup
-import com.example.appchat.ui.notification.FragNotification
-import com.example.appchat.ui.personal.PersonalFragment
+import com.example.appchat.ui.news.NewsFragment
+import com.example.appchat.ui.conversation.ConversationFragment
+import com.example.appchat.ui.me.MeFragment
 
 
 class MainStateAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+
     private val pages by lazy {
         arrayListOf(
             UserFragment.newInstance(),
-            FragGroup.newInstance(),
-            FragNotification.newInstance(),
-            PersonalFragment.newInstance()
+            NewsFragment.newInstance(),
+            ConversationFragment.newInstance(),
+            MeFragment.newInstance()
         )
     }
 

@@ -1,7 +1,6 @@
 package com.example.appchat.ui.listuser
 
 import android.app.Activity
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,6 @@ import com.example.appchat.common.ext.setImage
 import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.data.model.UserModel
 import com.facebook.drawee.view.SimpleDraweeView
-import com.google.android.exoplayer2.util.Log
-import com.google.android.exoplayer2.util.Util
-import find
 import kotlin.random.Random
 
 class UserAdapter(
@@ -74,7 +70,9 @@ class UserAdapter(
         notifyItemInserted(users.size - 1)
     }
 
+    @Suppress("DEPRECATION")
     inner class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var imgBackground: View = itemView.findViewById(R.id.img_background_gender)
         var sdvAvt: SimpleDraweeView = itemView.findViewById(R.id.sdv_avt)
         var lblName: TextView = itemView.findViewById(R.id.lbl_name)
         var lblStory: TextView = itemView.findViewById(R.id.lbl_story)
@@ -89,8 +87,13 @@ class UserAdapter(
                 lblStory.text = model.story
                 if (model.dateOfBirth.toString().isNotEmpty())
                     lblAge.getAge(model.dateOfBirth.toString())
-                if (model.isFeMale()) imgGender.setImage(R.drawable.ic_female_white, ctx)
-                else imgGender.setImage(R.drawable.ic_male_white, ctx)
+
+                if (model.isFeMale()) {
+                    imgGender.setImage(R.drawable.ic_female_white, ctx)
+                } else if (model.isMale()) {
+                    imgBackground.setBackgroundDrawable(ctx.getDrawable(R.drawable.bn_radius_blue))
+                    imgGender.setImage(R.drawable.ic_male_white, ctx)
+                }
                 ctlClick.setOnClickListener { itemClick(this) }
             }
         }

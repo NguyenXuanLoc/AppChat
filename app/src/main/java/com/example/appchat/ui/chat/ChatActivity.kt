@@ -4,13 +4,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
-import android.widget.EditText
-import android.widget.ImageView
+import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
 import com.example.appchat.common.Constant
-import com.example.appchat.common.Key
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
@@ -18,30 +16,25 @@ import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.toast
 import com.example.fcm.common.ext.visible
-import kotlinx.android.synthetic.main.activity_messaging.*
+import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : BaseActivity(), ChatView {
     private val presenter by lazy { ChatPresenter(this) }
     private var userReceiver: UserModel? = null
     private var nodeChild = ""
-    private var model = MessageModel()
     private val messages by lazy { ArrayList<MessageModel>() }
     private val adapter by lazy {
         userReceiver?.let {
             getUser()?.let { it1 ->
-                ChatAdapter(
-                    messages,
-                    self,
-                    it,
-                    it1
-                ) { itemClick(it) }
+                ChatAdapter(messages, self, it, it1) { itemClick(it) }
             }
         }
     }
     private var isLoading = false
     private var lastNode: String? = null
+    private var token: String? = null
     override fun contentView(): Int {
-        return R.layout.activity_messaging
+        return R.layout.activity_chat
     }
 
     override fun init() {
@@ -52,6 +45,7 @@ class ChatActivity : BaseActivity(), ChatView {
         rclChat.layoutManager = LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false)
         rclChat.adapter = adapter
         rclChat.setHasFixedSize(true)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -61,7 +55,10 @@ class ChatActivity : BaseActivity(), ChatView {
 
     override fun getExtra() {
         var bundle = intent.getBundleExtra(Constant.MESSAGE)
-        if (bundle != null) userReceiver = bundle.getSerializable(Constant.MESSAGE) as UserModel?
+        if (bundle != null) {
+            userReceiver = bundle.getSerializable(Constant.MESSAGE) as UserModel?
+            toast(userReceiver?.userName)
+        }
     }
 
     override fun eventHandle() {
@@ -69,16 +66,24 @@ class ChatActivity : BaseActivity(), ChatView {
         userReceiver?.let {
             lblNickName.text = it.userName
             lblStatus.text = it.status
+            presenter.getTokenAndCheckStatus(it)
         }
         presenter.checkNodeChild(getUser()?.id.toString(), userReceiver?.id.toString())
 
         //Listener
         lblSend.setOnClickListener {
-            model.sender = getUser()?.id
-            model.received = userReceiver?.id
-            model.message = edtMessage.text.toString()
+            var model = MessageModel(
+                sender = getUser()?.id,
+                received = userReceiver?.id,
+                message = edtMessage.text.toString(),
+                isSend = Constant.RECEIVED
+            )
             if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
-            presenter.sentMessage(nodeChild, model)
+            userReceiver?.let { it1 -> presenter.sentMessage(nodeChild, model, it1) }
+            model.isSend = Constant.SENDING
+            messages.add(model)
+            adapter?.notifyDataSetChanged()
+            presenter.loadMore(nodeChild, lastNode.toString(), false)
             edtMessage.setText("")
         }
         edtMessage.addTextChangedListener(object : TextWatcher {
@@ -102,7 +107,6 @@ class ChatActivity : BaseActivity(), ChatView {
     }
 
     override fun loadMoreSuccess(list: ArrayList<MessageModel>) {
-        list.removeAt(0)
         adapter?.removeItemLoading()
         if (list.size > 0) {
             isLoading = false
@@ -129,6 +133,22 @@ class ChatActivity : BaseActivity(), ChatView {
     override fun nullNodeChild() {
     }
 
+    override fun loadNewMessageSuccess(list: ArrayList<MessageModel>) {
+        if (list.size > 0) {
+            if (messages.size > 0) {
+                messages.removeAt(messages.size - 1)
+            }
+            lastNode = list[0].id
+            messages.addAll(list)
+            adapter?.notifyDataSetChanged()
+            rclChat.scrollToPosition(messages.size - 1)
+        }
+    }
+
+    override fun loadTokenSuccess(result: String) {
+        token = result
+    }
+
     private fun itemClick(messageModel: MessageModel) {
 
     }
@@ -142,7 +162,6 @@ class ChatActivity : BaseActivity(), ChatView {
                     isLoading = true
                     adapter?.addItemLoading()
                     presenter.loadMore(nodeChild, lastNode.toString())
-                    Log.e("TAG", lastNode.toString())
                 }
                 super.onScrolled(recyclerView, dx, dy)
             }

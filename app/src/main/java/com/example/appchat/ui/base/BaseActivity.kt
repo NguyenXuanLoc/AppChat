@@ -1,6 +1,5 @@
 package com.example.appchat.ui.base
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -10,7 +9,6 @@ import com.example.appchat.R
 import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.visible
 import com.facebook.drawee.backends.pipeline.Fresco
-import contentView
 import kotlinx.android.synthetic.main.activity_base.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -103,4 +101,5 @@ abstract class BaseActivity : AppCompatActivity() {
             setNavigationOnClickListener { up() }
         }
     }
+
 }

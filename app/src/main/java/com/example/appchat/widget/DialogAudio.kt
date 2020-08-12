@@ -1,5 +1,6 @@
 package com.example.appchat.widget
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.setImage
+import com.example.appchat.common.util.PermissionUtil
 import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.visible
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -36,7 +38,11 @@ class DialogAudio(var ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheep
         mFileName = Environment.getExternalStorageDirectory().absolutePath;
         mFileName += Constant.FILE_NAME
         imgRecord.setOnClickListener {
-            checkStatus()
+            if (PermissionUtil.isGranted(self, arrayOf(Manifest.permission.RECORD_AUDIO), 11, true)
+            ){
+                checkStatus()
+            }
+
         }
         imgDelete.setOnClickListener {
             checkStatus = 0

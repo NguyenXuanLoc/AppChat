@@ -7,4 +7,7 @@ interface ChatView {
     fun loadMessageSuccess(list: ArrayList<MessageModel>)
     fun loadNodeChildSuccess(node: String)
     fun nullNodeChild()
+    fun loadNewMessageSuccess(list: ArrayList<MessageModel>)
+    fun loadTokenSuccess(token: String)
+
 }

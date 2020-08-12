@@ -2,15 +2,19 @@ package com.example.appchat.ui.chat
 
 import android.app.Activity
 import android.util.Log
+import android.view.KeyCharacterMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
+import com.example.appchat.common.Constant
 import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
+import com.example.fcm.common.ext.gone
+import com.example.fcm.common.ext.visible
 import com.facebook.drawee.view.SimpleDraweeView
 import find
 
@@ -78,7 +82,7 @@ class ChatAdapter(
         if (holder is ItemLeft) {
             holder.bind(messagers[position])
         } else if (holder is ItemRight) {
-            holder.bind(messagers[position])
+            holder.bind(messagers[position], position)
         }
     }
 
@@ -92,9 +96,19 @@ class ChatAdapter(
     }
 
     inner class ItemRight(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var lblMessage: TextView = itemView.find(R.id.lbl_message)
-        fun bind(model: MessageModel) {
+        private var lblMessage: TextView = itemView.findViewById(R.id.lbl_message)
+        private var lblIsSend: TextView = itemView.findViewById(R.id.lbl_isSent)
+        fun bind(model: MessageModel, position: Int) {
             lblMessage.text = model.message
+            if (position == (messagers.size - 1)) {
+                var isSend = messagers[messagers.size - 1].isSend
+                if (isSend == Constant.SENDING) {
+                    lblIsSend.text = Constant.SENDING
+                } else if (isSend == Constant.RECEIVED) {
+                    lblIsSend.text = Constant.RECEIVED
+                }
+                lblIsSend.visible()
+            } else lblIsSend.gone()
         }
     }
 

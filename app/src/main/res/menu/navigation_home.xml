@@ -9,16 +9,16 @@
     <item
         android:id="@+id/nav_group"
         android:icon="@drawable/btn_ic_world"
-        android:title="@string/group"
+        android:title="@string/news"
         app:showAsAction="always" />
     <item
         android:id="@+id/nav_notification"
         android:icon="@drawable/btn_message"
-        android:title="@string/notification"
+        android:title="@string/conversation"
         app:showAsAction="always" />
     <item
         android:id="@+id/nav_personal"
         android:icon="@drawable/btn_personal"
-        android:title="@string/personal"
+        android:title="@string/me"
         app:showAsAction="always" />
 </menu>

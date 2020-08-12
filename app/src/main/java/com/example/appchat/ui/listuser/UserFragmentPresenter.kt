@@ -1,6 +1,5 @@
 package com.example.appchat.ui.listuser
 
-import android.content.Context
 import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
 
