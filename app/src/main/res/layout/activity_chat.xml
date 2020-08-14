@@ -57,72 +57,92 @@
         android:paddingTop="@dimen/dimen_1x"
         android:paddingBottom="@dimen/dimen_1x"
         android:weightSum="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rclGif"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:ignore="MissingConstraints">
 
         <ImageView
-            android:id="@+id/imgVoice"
-            android:layout_width="@dimen/dimen_4x"
-            android:layout_height="@dimen/dimen_4x"
+            android:id="@+id/imgShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dimen_2x"
             android:layout_marginRight="@dimen/dimen_1x"
-            android:background="@drawable/btn_circle_white"
-            android:src="@drawable/ic_voice_grey_black" />
-
-        <EditText
-            android:id="@+id/edtMessage"
-            style="@style/EditText.Regular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/bn_radius_grey"
-            android:hint="@string/year_of_birth" />
+            android:src="@drawable/ic_right_arrow" />
 
         <ImageView
-            android:id="@+id/imgSticker"
+            android:id="@+id/imgCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dimen_1x"
-            android:layout_marginRight="@dimen/dimen_2x"
-            android:background="@drawable/btn_circle_white"
-            android:src="@drawable/ic_smile_black" />
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:src="@drawable/btn_camera" />
 
         <ImageView
-            android:id="@+id/imgPhoto"
+            android:id="@+id/imgChooseImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:src="@drawable/btn_photo" />
+
+        <ImageView
+            android:id="@+id/imgVoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dimen_1x"
+            android:src="@drawable/btn_voice" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edtMessage"
+                style="@style/EditText.Regular"
+                android:layout_width="@dimen/zero"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dimen_1x"
+                android:background="@drawable/bn_radius_grey_22"
+                android:focusable="true"
+                android:hint="@string/Aa"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgGif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dimen_1x"
+                android:src="@drawable/btn_smile"
+                app:layout_constraintBottom_toBottomOf="@id/edtMessage"
+                app:layout_constraintEnd_toEndOf="@id/edtMessage"
+                app:layout_constraintTop_toTopOf="@id/edtMessage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/imgOption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/dimen_2x"
-            android:background="@drawable/btn_circle_white"
-            android:src="@drawable/ic_photo_black" />
-
-        <ImageView
-            android:id="@+id/imgGift"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_2x"
-            android:background="@drawable/btn_circle_white"
-            android:src="@drawable/ic_gift_black" />
+            android:src="@drawable/btn_like" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/lblSend"
-        style="@style/TextView.Regular"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rclGif"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/dimen_2x"
-        android:background="@drawable/btn_purple_radius"
-        android:padding="@dimen/dimen_1x"
-        android:text="@string/send"
-        android:textColor="@color/white"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/layout_option"
-        app:layout_constraintRight_toRightOf="@id/layout_option"
-        app:layout_constraintTop_toTopOf="@id/layout_option"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

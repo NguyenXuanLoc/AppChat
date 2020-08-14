@@ -13,4 +13,14 @@
         <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Fmonster%20(1).png?alt=media&amp;token=5ade69e6-5414-41bc-a338-d542c89a5f3e</item>
         <item>https://firebasestorage.googleapis.com/v0/b/appchat-c717d.appspot.com/o/image%2Fspaceship%20(1).png?alt=media&amp;token=62ed9c3f-3e9a-42e6-a9b0-c4c5937b13f4</item>
     </string-array>
+
+    <string-array name="gif">
+        <item>https://media.tenor.com/images/e988477e5cdd4cff8983cd1116132920/tenor.gif</item>
+        <item>https://media.tenor.com/images/22e62ae63cfdbc545ee2f7fe11912641/tenor.gif</item>
+        <item>https://media.tenor.com/images/19bacfe5ba1ae8d3fd5e13b35947735f/tenor.gif</item>
+        <item>https://media.tenor.com/images/e64c853fd676b10b797068c886cf32aa/tenor.gif</item>
+        <item>https://media.tenor.com/images/6cf797fb05e6622f2653ec5fabe522a9/tenor.gif</item>
+        <item>https://media.tenor.com/images/7ef81a6f60e77b02b13dd35d85dbfddd/tenor.gif</item>
+        <item>https://media.tenor.com/images/3a84c1dde9013310b0c94b5e41d6cb90/tenor.gif</item>
+    </string-array>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.appchat.ui.chat
 
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -9,14 +8,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
 import com.example.appchat.common.Constant
+import com.example.appchat.common.Key
+import com.example.appchat.common.ext.setImage
+import com.example.appchat.data.model.GifModel
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
-import com.example.appchat.ui.home.HomeActivity
-import com.example.appchat.ui.login.LoginActivity
-import com.example.fcm.common.ext.*
+import com.example.appchat.ui.chat.gif.GifAdapter
+import com.example.appchat.widget.PaginationScrollListener
+import com.example.fcm.common.ext.getUser
+import com.example.fcm.common.ext.gone
+import com.example.fcm.common.ext.toast
+import com.example.fcm.common.ext.visible
 import kotlinx.android.synthetic.main.activity_chat.*
 
+@Suppress("DEPRECATION")
 class ChatActivity : BaseActivity(), ChatView {
     private val presenter by lazy { ChatPresenter(this) }
     private var userReceiver: UserModel? = null
@@ -29,13 +35,38 @@ class ChatActivity : BaseActivity(), ChatView {
         }
     }
 
+
     private var nodeChild = ""
     private var isLoading = true
     private var isBottom = false
     private var isLoadNew = true
 
+    // top node message to new old message
     private var topNode: String? = null
     private var token: String? = null
+
+    //Load gif
+    private var isLoadingGif = true
+    private val gifs by lazy { ArrayList<GifModel>() }
+    private val adapterGif by lazy { GifAdapter(gifs, self) { it -> itemClickGif(it) } }
+    private val pagination by lazy {
+        object : PaginationScrollListener(rclGif.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems() {
+                var lastNode = gifs[gifs.size - 1].id.toString()
+                isLoadingGif = true
+                adapterGif.addLoading()
+                presenter.loadMoreGif(lastNode)
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoadingGif
+            }
+
+        }
+    }
+
+    // is option = true -> send message , is option == false send Like
+    private var isOption = true
 
     override fun contentView(): Int {
         return R.layout.activity_chat
@@ -50,6 +81,10 @@ class ChatActivity : BaseActivity(), ChatView {
         rclChat.adapter = adapter
         rclChat.setHasFixedSize(true)
 
+        //gif
+        rclGif.layoutManager = LinearLayoutManager(self, LinearLayoutManager.HORIZONTAL, false)
+        rclGif.adapter = adapterGif
+        rclGif.setHasFixedSize(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,23 +106,27 @@ class ChatActivity : BaseActivity(), ChatView {
             presenter.getTokenAndCheckStatus(it)
         }
         presenter.checkNodeChild(getUser()?.id.toString(), userReceiver?.id.toString())
-
+        rclGif.setOnScrollListener(pagination)
         //Listener
-        lblSend.setOnClickListener {
-            var model = MessageModel(
-                sender = getUser()?.id,
-                received = userReceiver?.id,
-                message = edtMessage.text.toString(),
-                isSend = Constant.RECEIVED
-            )
-            if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
-            userReceiver?.let { it -> presenter.sentMessage(nodeChild, model, it) }
-            model.isSend = Constant.SENDING
-            if (isLoadNew) {
-                presenter.loadNewMessage(nodeChild)
-                isLoadNew = false
-            }
-            edtMessage.setText("")
+        /*  lblSend.setOnClickListener {
+              var model = MessageModel(
+                  sender = getUser()?.id,
+                  received = userReceiver?.id,
+                  message = edtMessage.text.toString(),
+                  isSend = Constant.RECEIVED
+              )
+              if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
+              userReceiver?.let { it -> presenter.sentMessage(nodeChild, model, it) }
+              model.isSend = Constant.SENDING
+              if (isLoadNew) {
+                  presenter.loadNewMessage(nodeChild)
+                  isLoadNew = false
+              }
+              edtMessage.setText("")
+          }*/
+        edtMessage.setOnClickListener {
+            imgShow.visible()
+            goneItemOption()
         }
         edtMessage.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -97,18 +136,45 @@ class ChatActivity : BaseActivity(), ChatView {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                rclGif.gone()
                 if (s.isNullOrEmpty()) {
-                    imgGift.visible()
-                    lblStatus.gone()
+                    imgOption.setImage(R.drawable.btn_like, self)
+                    isOption = false
+                    imgGif.visible()
                 } else {
-                    imgGift.gone()
-                    lblSend.visible()
+                    imgOption.setImage(R.drawable.btn_send, self)
+                    isOption = true
+                    imgGif.gone()
                 }
             }
         })
+        imgGif.setOnClickListener {
+            presenter.loadGif()
+        }
+        imgShow.setOnClickListener {
+            showItemOption()
+        }
+        imgOption.setOnClickListener {
+            var model = MessageModel(
+                sender = getUser()?.id,
+                received = userReceiver?.id,
+                isSend = Constant.RECEIVED
+            )
+            if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
+            if (isLoadNew) {
+                presenter.loadNewMessage(nodeChild)
+                isLoadNew = false
+            }
 
+            if (isOption) {
+                model.message = edtMessage.text.toString()
+                edtMessage.setText("")
+            } else {
+                model.like = Key.LIKE
+            }
+            userReceiver?.let { it -> presenter.sentMessage(nodeChild, model, it) }
+        }
     }
-
 
     private fun itemClick(messageModel: MessageModel) {
 
@@ -130,12 +196,8 @@ class ChatActivity : BaseActivity(), ChatView {
 
                 if (firstItem == 1 && linearLayoutManager != null && !isLoading
                 ) {
-                    messages.addAll(messages)
-                    adapter?.notifyItemInserted(0)
-                    /* adapter?.addItemLoading()
-                     toast("top")
-                     presenter.loadOldMessage(nodeChild, topNode.toString())
-                     isLoading = true*/
+                    presenter.loadOldMessage(nodeChild, topNode.toString())
+                    isLoading = true
                 }
                 super.onScrolled(recyclerView, dx, dy)
             }
@@ -152,16 +214,10 @@ class ChatActivity : BaseActivity(), ChatView {
                 isLoading = false
                 pagination(rclChat)
             } else {
-                adapter?.removeItemLoading()
                 messages.addAll(0, list)
                 adapter?.notifyItemInserted(0)
-                Log.e("TAG", "more--------")
-                list.forEach { it ->
-                    Log.e("TAG", it.message)
-                }
                 if (list.size > 0) isLoading = false
             }
-
         }
     }
 
@@ -187,7 +243,45 @@ class ChatActivity : BaseActivity(), ChatView {
     }
 
     override fun nullOldMessage() {
-        adapter?.removeItemLoading()
     }
 
+    private fun itemClickGif(model: GifModel) {
+        var messageModel = MessageModel(
+            sender = getUser()?.id,
+            received = userReceiver?.id,
+            isSend = Constant.RECEIVED,
+            urlGif = model.url
+        )
+        userReceiver?.let { it -> presenter.sentMessage(nodeChild, messageModel, it) }
+        rclGif.gone()
+    }
+
+    override fun loadGifSuccess(list: ArrayList<GifModel>) {
+        gifs.addAll(list)
+        rclGif.visible()
+        adapterGif.notifyDataSetChanged()
+        isLoadingGif = false
+    }
+
+    override fun loadMoreGifSuccess(list: ArrayList<GifModel>) {
+        adapterGif.removeLoading()
+        if (list.size > 0) {
+            gifs.addAll(list)
+            adapterGif.notifyItemInserted(gifs.size - 1)
+            isLoadingGif = false
+        }
+
+    }
+
+    private fun goneItemOption() {
+        imgCamera.gone()
+        imgVoice.gone()
+        imgChooseImg.gone()
+    }
+
+    private fun showItemOption() {
+        imgCamera.visible()
+        imgVoice.visible()
+        imgChooseImg.visible()
+    }
 }

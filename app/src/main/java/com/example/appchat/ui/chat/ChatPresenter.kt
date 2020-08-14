@@ -1,5 +1,6 @@
 package com.example.appchat.ui.chat
 
+import com.example.appchat.data.model.GifModel
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 
@@ -13,6 +14,14 @@ class ChatPresenter(view: ChatView) : ChatResponse {
 
     fun loadNewMessage(node: String) {
         model.loadNewMessage(node)
+    }
+
+    fun loadGif() {
+        model.loadNewGift()
+    }
+
+    fun loadMoreGif(lastNode: String) {
+        model.loadMoreGift(lastNode)
     }
 
     fun sentMessage(notChild: String, messageModel: MessageModel, userReceive: UserModel) {
@@ -53,6 +62,14 @@ class ChatPresenter(view: ChatView) : ChatResponse {
 
     override fun loadTokenSuccess(token: String) {
         v.loadTokenSuccess(token)
+    }
+
+    override fun loadGifSuccess(list: ArrayList<GifModel>) {
+        v.loadGifSuccess(list)
+    }
+
+    override fun loadMoreGifSuccess(list: ArrayList<GifModel>) {
+        v.loadMoreGifSuccess(list)
     }
 
 }

@@ -41,6 +41,7 @@ object Constant {
     const val OFFLINE = "offline"
     const val UNREAD = "unread"
     const val READ = "read"
+    const val LIKE="LIKE"
 }
 
 object Key {
@@ -74,6 +75,8 @@ object Key {
     const val UNREAD = "unread"
     const val READ = "read"
     const val READ_MESSAGE = "readMessage"
+    const val GIF = "gif"
+    const val LIKE="LIKE"
 }
 
 object KeyPermission {

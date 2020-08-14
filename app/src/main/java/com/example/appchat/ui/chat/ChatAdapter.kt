@@ -6,14 +6,18 @@ import android.view.KeyCharacterMap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.appchat.R
 import com.example.appchat.common.Constant
+import com.example.appchat.common.Key
 import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.fcm.common.ext.gone
+import com.example.fcm.common.ext.invisible
 import com.example.fcm.common.ext.visible
 import com.facebook.drawee.view.SimpleDraweeView
 import find
@@ -50,19 +54,18 @@ class ChatAdapter(
     override fun getItemCount(): Int {
         return messagers.size
     }
+
     fun addItemLoading() {
         isLoaderVisible = true
-        messagers.add(0,MessageModel())
+        messagers.add(0, MessageModel())
         notifyItemInserted(0)
     }
+
     fun removeItemLoading() {
         isLoaderVisible = false
-        if (messagers.size>0){
-            var position = 0
-            messagers.removeAt(position)
-            notifyItemRemoved(position)
-        }
-
+        var position = 0
+        messagers.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -89,26 +92,67 @@ class ChatAdapter(
     inner class ItemLeft(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var sdvAvt: SimpleDraweeView = itemView.findViewById(R.id.sdv_avt)
         private var lblMessage: TextView = itemView.findViewById(R.id.lbl_message)
+        private var imgGif: ImageView = itemView.findViewById(R.id.img_gif)
+        private var imgLike: ImageView = itemView.findViewById(R.id.img_like)
         fun bind(model: MessageModel) {
-            sdvAvt.setImageSimple(userReceiver.imageUrl, ctx)
-            lblMessage.text = model.message
+            with(model) {
+                sdvAvt.setImageSimple(userReceiver.imageUrl, ctx)
+
+                if (message!!.isNotEmpty()) {
+                    lblMessage.visible()
+                    lblMessage.text = message
+                } else {
+                    lblMessage.invisible()
+                }
+                if (!urlGif.isNullOrEmpty()) {
+                    imgGif.visible()
+                    Glide.with(ctx).asGif().load(urlGif).into(imgGif)
+                }
+                if (like == Constant.LIKE) {
+                    imgLike.visible()
+                } else {
+                    imgLike.invisible()
+                }
+            }
+
+
         }
     }
 
     inner class ItemRight(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var lblMessage: TextView = itemView.findViewById(R.id.lbl_message)
         private var lblIsSend: TextView = itemView.findViewById(R.id.lbl_isSent)
+        private var sdvGif: SimpleDraweeView = itemView.findViewById(R.id.sdv_gif)
+        private var imgLike: ImageView = itemView.findViewById(R.id.img_like)
+
         fun bind(model: MessageModel, position: Int) {
-            lblMessage.text = model.message
-            if (position == (messagers.size - 1)) {
-                var isSend = messagers[messagers.size - 1].isSend
-                if (isSend == Constant.SENDING) {
-                    lblIsSend.text = Constant.SENDING
-                } else if (isSend == Constant.RECEIVED) {
-                    lblIsSend.text = Constant.RECEIVED
+            with(model) {
+                if (message!!.isNotEmpty()) {
+                    lblMessage.visible()
+                    lblMessage.text = message
+                } else {
+                    lblMessage.invisible()
                 }
-                lblIsSend.visible()
-            } else lblIsSend.gone()
+                if (!urlGif.isNullOrEmpty()) {
+                    Log.e("TAG", urlGif)
+                    Glide.with(ctx).asGif().load(urlGif).into(sdvGif)
+                }
+                if (like == Constant.LIKE) {
+                    imgLike.visible()
+                } else {
+                    imgLike.invisible()
+                }
+                if (position == (messagers.size - 1)) {
+                    var isSend = messagers[messagers.size - 1].isSend
+                    if (isSend == Constant.SENDING) {
+                        lblIsSend.text = Constant.SENDING
+                    } else if (isSend == Constant.RECEIVED) {
+                        lblIsSend.text = Constant.RECEIVED
+                    }
+                    lblIsSend.visible()
+                } else lblIsSend.gone()
+            }
+
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Handler
 import android.util.Log
 import com.example.appchat.R
 import com.example.appchat.ui.base.BaseActivity
+import com.example.appchat.ui.chat.ChatActivity
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.login.LoginActivity
 import com.example.appchat.ui.test.TestActivity
@@ -24,7 +25,7 @@ class MainActivity : BaseActivity() {
 
     override fun eventHandle() {
 //        removeUser()
-//        openActivity(TestActivity::class.java)
+//        openActivity(ChatActivity::class.java)
         Handler().postDelayed(Runnable {
             if (getUser() != null) {
                 openActivity(HomeActivity::class.java)

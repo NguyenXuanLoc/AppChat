@@ -39,7 +39,7 @@ fun SimpleDraweeView.setImageSimple(
 fun ImageView.setImage(src: Any, ctx: Activity, errorImage: Int? = R.drawable.img_circle_letter) {
     when (src) {
         is Int -> {
-            setImageResource(src)
+            setImageDrawable(ctx.getDrawable(src))
         }
         is Uri -> {
             setImageURI(src)

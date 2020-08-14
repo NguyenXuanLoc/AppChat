@@ -4,6 +4,7 @@ import android.util.Log
 import com.airbnb.lottie.L
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
+import com.example.appchat.data.model.GifModel
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.fcm.*
@@ -114,9 +115,9 @@ class ChatModel(response: ChatResponse) {
                             if (model?.id != topNode && model != null) {
                                 list.add(model)
                             }
-                            if (list.size>0){
+                            if (list.size > 0) {
                                 v.loadMessageSuccess(list, false)
-                            }else{
+                            } else {
                                 v.nullOldMessage()
                             }
                         }
@@ -198,6 +199,51 @@ class ChatModel(response: ChatResponse) {
                         }
                         v.loadMessageSuccess(list, true)
                     } else v.nullNodeChild()
+                }
+
+            })
+    }
+
+    fun loadNewGift() {
+        var list = ArrayList<GifModel>()
+        FirebaseDatabase.getInstance().getReference(Key.GIF).limitToFirst(Constant.PAGE_SIZE)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (list.size > 0) list.clear()
+                    if (snapshot.hasChildren()) {
+                        snapshot.children.forEach { it ->
+                            var model = it.getValue<GifModel>()
+                            model?.let { list.add(model) }
+                        }
+                        v.loadGifSuccess(list)
+                    }
+                }
+
+            })
+    }
+
+    fun loadMoreGift(lastNode: String) {
+        val list = ArrayList<GifModel>()
+        FirebaseDatabase.getInstance().getReference(Key.GIF)
+            .startAt(lastNode).orderByKey().limitToFirst(Constant.PAGE_SIZE)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChildren()) {
+                        snapshot.children.forEach { it ->
+                            var model = it.getValue<GifModel>()
+                            if (model != null && model.id != lastNode) {
+                                list.add(model)
+                            }
+                        }
+                        v.loadMoreGifSuccess(list)
+                    }
                 }
 
             })
