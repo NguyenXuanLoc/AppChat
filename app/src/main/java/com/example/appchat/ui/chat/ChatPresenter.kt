@@ -6,6 +6,15 @@ import com.example.appchat.data.model.UserModel
 class ChatPresenter(view: ChatView) : ChatResponse {
     val v = view
     val model = ChatModel(this)
+
+    fun loadOldMessage(node: String, topNode: String) {
+        model.loadOldMessage(node, topNode)
+    }
+
+    fun loadNewMessage(node: String) {
+        model.loadNewMessage(node)
+    }
+
     fun sentMessage(notChild: String, messageModel: MessageModel, userReceive: UserModel) {
         model.sendMessage(notChild, messageModel, userReceive)
     }
@@ -14,9 +23,6 @@ class ChatPresenter(view: ChatView) : ChatResponse {
         model.checkNodeChild(idSend, idReceiver)
     }
 
-    fun loadMore(node: String, lastNode: String, isNew: Boolean = true) {
-        model.loadMoreMessage(node, lastNode, isNew)
-    }
 
     //Check Status online or offline to push notification
     fun getTokenAndCheckStatus(userModel: UserModel) {
@@ -24,16 +30,13 @@ class ChatPresenter(view: ChatView) : ChatResponse {
         model.checkStatus(userModel)
     }
 
-    override fun loadNewMessageSuccess(list: ArrayList<MessageModel>) {
-        v.loadNewMessageSuccess(list)
+
+    override fun loadNewMessageSuccess(model: MessageModel) {
+        v.loadNewMessageSuccess(model)
     }
 
-    override fun loadMoreSuccess(list: ArrayList<MessageModel>) {
-        v.loadMoreSuccess(list)
-    }
-
-    override fun loadMessageSuccess(list: ArrayList<MessageModel>) {
-        v.loadMessageSuccess(list)
+    override fun loadMessageSuccess(list: ArrayList<MessageModel>, isCheck: Boolean) {
+        v.loadMessageSuccess(list, isCheck)
     }
 
     override fun loadNodeChildSuccess(node: String) {
@@ -42,6 +45,10 @@ class ChatPresenter(view: ChatView) : ChatResponse {
 
     override fun nullNodeChild() {
         v.nullNodeChild()
+    }
+
+    override fun nullOldMessage() {
+        v.nullOldMessage()
     }
 
     override fun loadTokenSuccess(token: String) {

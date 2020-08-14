@@ -2,6 +2,7 @@ package com.example.appchat.ui.conversation.conversationadapter
 
 import android.app.Activity
 import android.util.Log
+import android.util.TimeUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,11 @@ import com.example.appchat.common.Key
 import com.example.appchat.common.ext.getAge
 import com.example.appchat.common.ext.setImage
 import com.example.appchat.common.ext.setImageSimple
+import com.example.appchat.common.util.TimeUtil
+import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
+import com.example.fcm.common.ext.gone
+import com.example.fcm.common.ext.visible
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlin.random.Random
 
@@ -84,6 +89,8 @@ class ConversationAdapter(
         private var imgGender: ImageView = itemView.findViewById(R.id.img_gender)
         private var ctlClick: ConstraintLayout = itemView.findViewById(R.id.ctl_click)
         private var imgStatus: ImageView = itemView.findViewById(R.id.img_status)
+        private var lblTime: TextView = itemView.findViewById(R.id.lbl_time)
+        private var lblCountUnread: TextView = itemView.findViewById(R.id.lbl_count_unread)
         fun bind(model: UserModel) {
             with(model) {
                 presenter.checkNodeChild(model.id.toString(), user.id.toString())
@@ -102,8 +109,19 @@ class ConversationAdapter(
             }
         }
 
-        override fun resultLastMessage(message: String) {
-            lblLastMessage.text = message
+        override fun resultLastMessage(model: MessageModel) {
+            lblLastMessage.text = model.message
+            var date = TimeUtil.removeYear(model.date.toString())
+            lblTime.text = "${model.time} $date"
+        }
+
+        override fun resultCountUnread(count: String) {
+            if (count.toInt() > 0) {
+                lblCountUnread.text = "+$count"
+                lblCountUnread.visible()
+            } else {
+                lblCountUnread.gone()
+            }
         }
     }
 

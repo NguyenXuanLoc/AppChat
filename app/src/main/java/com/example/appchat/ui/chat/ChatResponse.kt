@@ -3,10 +3,11 @@ package com.example.appchat.ui.chat
 import com.example.appchat.data.model.MessageModel
 
 interface ChatResponse {
-    fun loadNewMessageSuccess(list: ArrayList<MessageModel>)
-    fun loadMoreSuccess(list: ArrayList<MessageModel>)
-    fun loadMessageSuccess(list: ArrayList<MessageModel>)
+    // if isCheck =true : load First message, isCheck=false: load more
+    fun loadMessageSuccess(list: ArrayList<MessageModel>,isCheck:Boolean)
+    fun loadNewMessageSuccess(model: MessageModel)
     fun loadNodeChildSuccess(node: String)
     fun nullNodeChild()
+    fun nullOldMessage()
     fun loadTokenSuccess(token: String)
 }

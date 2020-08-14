@@ -1,5 +1,7 @@
 package com.example.appchat.ui.conversation.conversationadapter
 
+import android.util.Log
+import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.data.model.MessageModel
 import com.google.firebase.database.DataSnapshot
@@ -13,12 +15,12 @@ class ConversationAdapterModel(response: ConversationAdapterResponse) {
     fun checkNodeChild(idSend: String, idReceiver: String) {
         var node1 = idSend + idReceiver
         var node2 = idReceiver + idSend
-        checkNode(node1)
-        checkNode(node2)
+        checkNode(node1, idSend)
+        checkNode(node2, idSend)
     }
 
     // Check node exist
-    private fun checkNode(node: String) {
+    private fun checkNode(node: String, idUser: String) {
         FirebaseDatabase.getInstance().getReference(Key.CHATS).child(node)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -27,24 +29,54 @@ class ConversationAdapterModel(response: ConversationAdapterResponse) {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.value != null) {
                         getLastMessage(node)
+                        getCountMessageUnread(idUser, node)
                     }
                 }
             })
     }
 
+    // GetLastMessage
     private fun getLastMessage(node: String) {
         FirebaseDatabase.getInstance().getReference(Key.CHATS).child(node)
+            .limitToLast(1)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
+
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.hasChildren()) {
-                        var lastMessage: String? = null
+                        var model: MessageModel? = null
+                        snapshot.children.forEach { it ->
+                            model = it.getValue<MessageModel>()
+                        }
+                        model?.let { v.resultLastMessage(model!!) }
+                    }
+                }
+
+            })
+    }
+
+    private fun getCountMessageUnread(idUser: String, node: String) {
+        FirebaseDatabase.getInstance().getReference(Key.CHATS).child(node).orderByKey()
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChildren()) {
+                        var count = 0
                         snapshot.children.forEach { it ->
                             var model = it.getValue<MessageModel>()
-                            lastMessage = model?.message
+                            if (model != null) {
+                                if (model.received == idUser && model.readMessage == Constant.UNREAD) {
+                                    count++
+                                }
+                            }
                         }
-                        lastMessage?.let { v.resultLastMessage(lastMessage.toString()) }
+                        v.resultCountUnread(count.toString())
+                    } else {
+                        v.resultCountUnread("0")
                     }
                 }
 

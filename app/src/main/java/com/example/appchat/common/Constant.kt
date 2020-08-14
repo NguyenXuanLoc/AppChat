@@ -39,6 +39,8 @@ object Constant {
     const val URL_FCM = "https://fcm.googleapis.com/"
     const val ONLINE = "online"
     const val OFFLINE = "offline"
+    const val UNREAD = "unread"
+    const val READ = "read"
 }
 
 object Key {
@@ -69,6 +71,9 @@ object Key {
     const val KEY_AUTH =
         "AAAApF473e0:APA91bEHui0_mNA31RRwACd17hOmc7cx4oUfA5fGP0LVUXOlXPa84moahTmfH-9xTDc8DwX6SjvBJa6xcUG7V9UFvXZ6bee0h1PABWmRlcOmR294hWjX72jf1dPyBL-REixrLQjG6JfG"
     const val CONTENT_TYPE = "application/json"
+    const val UNREAD = "unread"
+    const val READ = "read"
+    const val READ_MESSAGE = "readMessage"
 }
 
 object KeyPermission {

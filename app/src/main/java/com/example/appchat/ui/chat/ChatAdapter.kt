@@ -50,22 +50,23 @@ class ChatAdapter(
     override fun getItemCount(): Int {
         return messagers.size
     }
-
     fun addItemLoading() {
         isLoaderVisible = true
-        messagers.add(MessageModel())
-        notifyItemInserted(messagers.size - 1)
+        messagers.add(0,MessageModel())
+        notifyItemInserted(0)
     }
-
     fun removeItemLoading() {
         isLoaderVisible = false
-        var position = messagers.size - 1
-        messagers.removeAt(position)
-        notifyItemRemoved(position)
+        if (messagers.size>0){
+            var position = 0
+            messagers.removeAt(position)
+            notifyItemRemoved(position)
+        }
+
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isLoaderVisible && position == (messagers.size - 1)) {
+        return if (isLoaderVisible && position == 0) {
             VIEW_TYLE_LOADING
         } else {
             if (messagers[position].sender == userSend.id) {
@@ -74,7 +75,6 @@ class ChatAdapter(
                 VIEW_TYPE_LEFT
             }
         }
-
         return super.getItemViewType(position)
     }
 

@@ -1,10 +1,10 @@
 package com.example.appchat.ui.chat
 
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
-import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appchat.R
@@ -12,16 +12,14 @@ import com.example.appchat.common.Constant
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
-import com.example.fcm.common.ext.getUser
-import com.example.fcm.common.ext.gone
-import com.example.fcm.common.ext.toast
-import com.example.fcm.common.ext.visible
+import com.example.appchat.ui.home.HomeActivity
+import com.example.appchat.ui.login.LoginActivity
+import com.example.fcm.common.ext.*
 import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : BaseActivity(), ChatView {
     private val presenter by lazy { ChatPresenter(this) }
     private var userReceiver: UserModel? = null
-    private var nodeChild = ""
     private val messages by lazy { ArrayList<MessageModel>() }
     private val adapter by lazy {
         userReceiver?.let {
@@ -30,9 +28,15 @@ class ChatActivity : BaseActivity(), ChatView {
             }
         }
     }
-    private var isLoading = false
-    private var lastNode: String? = null
+
+    private var nodeChild = ""
+    private var isLoading = true
+    private var isBottom = false
+    private var isLoadNew = true
+
+    private var topNode: String? = null
     private var token: String? = null
+
     override fun contentView(): Int {
         return R.layout.activity_chat
     }
@@ -57,12 +61,10 @@ class ChatActivity : BaseActivity(), ChatView {
         var bundle = intent.getBundleExtra(Constant.MESSAGE)
         if (bundle != null) {
             userReceiver = bundle.getSerializable(Constant.MESSAGE) as UserModel?
-            toast(userReceiver?.userName)
         }
     }
 
     override fun eventHandle() {
-        pagination(rclChat)
         userReceiver?.let {
             lblNickName.text = it.userName
             lblStatus.text = it.status
@@ -79,11 +81,12 @@ class ChatActivity : BaseActivity(), ChatView {
                 isSend = Constant.RECEIVED
             )
             if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
-            userReceiver?.let { it1 -> presenter.sentMessage(nodeChild, model, it1) }
+            userReceiver?.let { it -> presenter.sentMessage(nodeChild, model, it) }
             model.isSend = Constant.SENDING
-            messages.add(model)
-            adapter?.notifyDataSetChanged()
-            presenter.loadMore(nodeChild, lastNode.toString(), false)
+            if (isLoadNew) {
+                presenter.loadNewMessage(nodeChild)
+                isLoadNew = false
+            }
             edtMessage.setText("")
         }
         edtMessage.addTextChangedListener(object : TextWatcher {
@@ -106,48 +109,6 @@ class ChatActivity : BaseActivity(), ChatView {
 
     }
 
-    override fun loadMoreSuccess(list: ArrayList<MessageModel>) {
-        adapter?.removeItemLoading()
-        if (list.size > 0) {
-            isLoading = false
-            messages.addAll(list)
-            adapter?.notifyDataSetChanged()
-            lastNode = messages[messages.size - 1].id
-        } else {
-            isLoading = true
-        }
-    }
-
-    override fun loadMessageSuccess(list: ArrayList<MessageModel>) {
-        if (list.size > 0) {
-            messages.addAll(list)
-            adapter?.notifyDataSetChanged()
-            lastNode = messages[messages.size - 1].id
-        }
-    }
-
-    override fun loadNodeChildSuccess(node: String) {
-        nodeChild = node
-    }
-
-    override fun nullNodeChild() {
-    }
-
-    override fun loadNewMessageSuccess(list: ArrayList<MessageModel>) {
-        if (list.size > 0) {
-            if (messages.size > 0) {
-                messages.removeAt(messages.size - 1)
-            }
-            lastNode = list[0].id
-            messages.addAll(list)
-            adapter?.notifyDataSetChanged()
-            rclChat.scrollToPosition(messages.size - 1)
-        }
-    }
-
-    override fun loadTokenSuccess(result: String) {
-        token = result
-    }
 
     private fun itemClick(messageModel: MessageModel) {
 
@@ -158,13 +119,75 @@ class ChatActivity : BaseActivity(), ChatView {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
                 val lastItem = linearLayoutManager?.findLastCompletelyVisibleItemPosition()
-                if (lastItem == messages.size - 1 && linearLayoutManager != null && !isLoading) {
-                    isLoading = true
-                    adapter?.addItemLoading()
-                    presenter.loadMore(nodeChild, lastNode.toString())
+                val firstItem = linearLayoutManager?.findFirstCompletelyVisibleItemPosition()
+
+                // Check if scroll to bottom, it hava masage then auto scroll bottom
+                if (lastItem == messages.size - 1 && linearLayoutManager != null) {
+                    isBottom = true
+                } else if (isBottom) {
+                    isBottom = false
+                }
+
+                if (firstItem == 1 && linearLayoutManager != null && !isLoading
+                ) {
+                    messages.addAll(messages)
+                    adapter?.notifyItemInserted(0)
+                    /* adapter?.addItemLoading()
+                     toast("top")
+                     presenter.loadOldMessage(nodeChild, topNode.toString())
+                     isLoading = true*/
                 }
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
     }
+
+    override fun loadMessageSuccess(list: ArrayList<MessageModel>, isCheck: Boolean) {
+        if (list.size > 0) {
+            topNode = list[0].id
+            if (isCheck) {
+                messages.addAll(list)
+                adapter?.notifyDataSetChanged()
+                rclChat.scrollToPosition(messages.size - 1)
+                isLoading = false
+                pagination(rclChat)
+            } else {
+                adapter?.removeItemLoading()
+                messages.addAll(0, list)
+                adapter?.notifyItemInserted(0)
+                Log.e("TAG", "more--------")
+                list.forEach { it ->
+                    Log.e("TAG", it.message)
+                }
+                if (list.size > 0) isLoading = false
+            }
+
+        }
+    }
+
+    override fun loadNodeChildSuccess(node: String) {
+        nodeChild = node
+    }
+
+    override fun nullNodeChild() {
+    }
+
+    override fun loadNewMessageSuccess(model: MessageModel) {
+        messages.add(model)
+        adapter?.notifyDataSetChanged()
+        if (isBottom) {
+            rclChat.scrollToPosition(messages.size - 1)
+            isBottom = false
+        }
+
+    }
+
+    override fun loadTokenSuccess(result: String) {
+        token = result
+    }
+
+    override fun nullOldMessage() {
+        adapter?.removeItemLoading()
+    }
+
 }

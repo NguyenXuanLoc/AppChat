@@ -15,5 +15,7 @@ data class MessageModel(
     var thumbnail: String? = "",
     var icon: String? = "",
     var time: String? = "",
-    var isSend: String? = Key.SENDING
+    var date: String? = "",
+    var isSend: String? = Key.SENDING,
+    var readMessage: String? = Key.UNREAD
 ) : Serializable

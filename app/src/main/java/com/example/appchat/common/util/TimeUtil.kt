@@ -1,30 +1,12 @@
 package com.example.appchat.common.util
 
 import android.content.Context
-import android.os.CountDownTimer
-import android.widget.TextView
 import com.example.appchat.R
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 object TimeUtil {
-    fun TextView.countTime(check: Boolean = true, time: Long = 30000) {
-        this.text = (time / 1000).toString()
-        object : CountDownTimer(time, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                var time = if (check) (time / 1000 - millisUntilFinished / 1000)
-                else millisUntilFinished / 1000
-                this@countTime.text = "$time"
-            }
-
-            override fun onFinish() {
-                this@countTime.text = (time / 1000).toString()
-            }
-        }.start()
-
-    }
-
     fun getTimeUpload(date: String, time: String, ctx: Context): String {
         var result = ""
         val sdfDate = SimpleDateFormat("dd-MM")
@@ -56,5 +38,10 @@ object TimeUtil {
             }
         }
         return result
+    }
+
+    fun removeYear(date: String): String {
+        var list = date.split("/")
+        return "${list[0]},${list[1]}"
     }
 }
