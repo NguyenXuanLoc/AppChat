@@ -5,9 +5,7 @@
     tools:targetApi="lollipop">
     <item>
         <shape>
-            <stroke
-                android:width="@dimen/dimen_05x"
-                android:color="@color/white" />
+            <solid android:color="@color/white"/>
             <corners android:radius="@dimen/dimen_100" />
         </shape>
     </item>

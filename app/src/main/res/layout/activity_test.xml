@@ -5,73 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="@dimen/zero"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/imgVoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dimen_2x"
-            android:layout_marginRight="@dimen/dimen_1x"
-            android:src="@drawable/btn_camera" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_1x"
-            android:src="@drawable/btn_photo" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_1x"
-            android:src="@drawable/btn_voice" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <EditText
-                android:id="@+id/edtMessage"
-                style="@style/EditText.Regular"
-                android:layout_width="@dimen/zero"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dimen_1x"
-                android:background="@drawable/bn_radius_grey_22"
-                android:hint="@string/Aa"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:layout_marginRight="@dimen/dimen_1x"
-                app:layout_constraintTop_toTopOf="@id/edtMessage"
-                app:layout_constraintBottom_toBottomOf="@id/edtMessage"
-                app:layout_constraintEnd_toEndOf="@id/edtMessage"
-                android:src="@drawable/btn_smile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/dimen_2x"
-            android:src="@drawable/btn_like" />
-    </LinearLayout>
-
-
+   <TextView
+       style="@style/Button.GreenDark"
+       android:text="Click"
+       android:id="@+id/btnClick"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintRight_toRightOf="parent"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       tools:ignore="MissingConstraints" />
+<!--<androidx.constraintlayout.widget.m-->
 </androidx.constraintlayout.widget.ConstraintLayout>

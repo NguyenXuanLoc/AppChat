@@ -107,7 +107,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dimen_1x"
                 android:background="@drawable/bn_radius_grey_22"
-                android:focusable="true"
                 android:hint="@string/Aa"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

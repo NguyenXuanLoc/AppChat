@@ -74,4 +74,6 @@
     <string name="latest">Muộn nhất</string>
     <string name="suggestions">Gợi ý</string>
     <string name="notification">Thông báo</string>
+    <string name="all_photo">Tất cả anh</string>
+    <string name="max_night_photo_notify">Bạn chỉ được gửi tối đa 9 hình ảnh !!</string>
 </resources>

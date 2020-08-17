@@ -1,10 +1,12 @@
 package com.example.appchat.ui.chat
 
+import android.net.Uri
 import android.util.Log
 import com.airbnb.lottie.L
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.data.model.GifModel
+import com.example.appchat.data.model.ImageModel
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.fcm.*
@@ -13,10 +15,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -26,8 +30,13 @@ class ChatModel(response: ChatResponse) {
     val v = response
     var token: String? = null
 
-    //statusRevieve
-    fun sendMessage(nodeChild: String, model: MessageModel, userReceive: UserModel) {
+    //if Revieve offline, send and push notification
+    fun sendMessage(
+        nodeChild: String,
+        model: MessageModel,
+        userReceive: UserModel,
+        urlsPhoto: ArrayList<String>? = null
+    ) {
         var ref = FirebaseDatabase.getInstance().getReference(Key.CHATS).child(nodeChild)
         var key = ref.push().key
         val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
@@ -36,6 +45,11 @@ class ChatModel(response: ChatResponse) {
         model.time = currentTime.toString()
         model.date = currentDate.toString()
         ref.child(key.toString()).setValue(model).addOnSuccessListener {
+            Log.e("TAG", "Key: $Key")
+            urlsPhoto?.let {
+                Log.e("TAG","SIZE: ${urlsPhoto.size}")
+                uploadPhoto(it, model.id.toString())
+            }
             if (status == Constant.OFFLINE) {
                 token?.let { it1 ->
                     sendNotification(
@@ -61,8 +75,7 @@ class ChatModel(response: ChatResponse) {
     }
 
     private fun sendNotification(
-        userToken: String, title: String,
-        message: String, idReceive: String
+        userToken: String, title: String, message: String, idReceive: String
     ) {
         val data = Data(title, message, idReceive)
         val sender = NotificationSender(data, userToken)
@@ -247,5 +260,27 @@ class ChatModel(response: ChatResponse) {
                 }
 
             })
+    }
+
+    private fun uploadPhoto(urlPicks: ArrayList<String>, idMessage: String) {
+        for (i in 0 until urlPicks.size) {
+            var uri = Uri.fromFile(File(urlPicks[i]))
+            var mStorageRef = FirebaseStorage.getInstance().reference
+            var nameFile = System.currentTimeMillis().toString()
+            mStorageRef.child(Key.IMAGE).child(nameFile).putFile(uri).addOnSuccessListener { it ->
+                var result = it.metadata?.reference?.downloadUrl
+                result?.addOnSuccessListener {
+                    Log.e("TAG", it.toString())
+                    var url = it.toString()
+                    var imageModel = ImageModel(nameFile, idMessage, url)
+                    FirebaseDatabase.getInstance().getReference(Constant.IMAGE).child(idMessage)
+                        .push()
+                        .setValue(imageModel)
+                        .addOnSuccessListener {
+                            Log.e("TAG", "OK")
+                        }
+                }
+            }
+        }
     }
 }

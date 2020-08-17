@@ -41,9 +41,12 @@
         app:layout_constraintTop_toTopOf="@id/lbl_message"
         tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/img_gif"
-        android:layout_width="@dimen/dimen_220"
+    <com.facebook.drawee.view.SimpleDraweeView
+        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
+        android:layout_marginLeft="@dimen/dimen_1x"
+        android:id="@+id/sdv_gif"
+        android:layout_width="@dimen/dimen_180"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="TODO" />
 </androidx.constraintlayout.widget.ConstraintLayout>

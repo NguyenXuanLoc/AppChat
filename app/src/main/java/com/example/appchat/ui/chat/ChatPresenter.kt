@@ -24,6 +24,15 @@ class ChatPresenter(view: ChatView) : ChatResponse {
         model.loadMoreGift(lastNode)
     }
 
+    fun sentPhoto(
+        nodeChild: String,
+        userReceive: UserModel,
+        urlPhotos: ArrayList<String>,
+        messageModel: MessageModel
+    ) {
+        model.sendMessage(nodeChild, messageModel,userReceive,urlPhotos)
+    }
+
     fun sentMessage(notChild: String, messageModel: MessageModel, userReceive: UserModel) {
         model.sendMessage(notChild, messageModel, userReceive)
     }

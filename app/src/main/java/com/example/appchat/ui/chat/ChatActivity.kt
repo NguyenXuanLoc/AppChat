@@ -15,6 +15,7 @@ import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.chat.gif.GifAdapter
+import com.example.appchat.widget.DialogSendImage
 import com.example.appchat.widget.PaginationScrollListener
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.gone
@@ -23,7 +24,7 @@ import com.example.fcm.common.ext.visible
 import kotlinx.android.synthetic.main.activity_chat.*
 
 @Suppress("DEPRECATION")
-class ChatActivity : BaseActivity(), ChatView {
+class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener {
     private val presenter by lazy { ChatPresenter(this) }
     private var userReceiver: UserModel? = null
     private val messages by lazy { ArrayList<MessageModel>() }
@@ -49,7 +50,7 @@ class ChatActivity : BaseActivity(), ChatView {
     private var isLoadingGif = true
     private val gifs by lazy { ArrayList<GifModel>() }
     private val adapterGif by lazy { GifAdapter(gifs, self) { it -> itemClickGif(it) } }
-    private val pagination by lazy {
+    private val paginationGif by lazy {
         object : PaginationScrollListener(rclGif.layoutManager as LinearLayoutManager) {
             override fun loadMoreItems() {
                 var lastNode = gifs[gifs.size - 1].id.toString()
@@ -66,7 +67,10 @@ class ChatActivity : BaseActivity(), ChatView {
     }
 
     // is option = true -> send message , is option == false send Like
-    private var isOption = true
+    private var isOption = false
+
+    // Send Image
+    private val dialogSendImage by lazy { DialogSendImage(self) }
 
     override fun contentView(): Int {
         return R.layout.activity_chat
@@ -85,9 +89,12 @@ class ChatActivity : BaseActivity(), ChatView {
         rclGif.layoutManager = LinearLayoutManager(self, LinearLayoutManager.HORIZONTAL, false)
         rclGif.adapter = adapterGif
         rclGif.setHasFixedSize(true)
+
+        dialogSendImage.setSendPhotoListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_message, menu)
         menuInflater.inflate(R.menu.menu_message, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -106,25 +113,14 @@ class ChatActivity : BaseActivity(), ChatView {
             presenter.getTokenAndCheckStatus(it)
         }
         presenter.checkNodeChild(getUser()?.id.toString(), userReceiver?.id.toString())
-        rclGif.setOnScrollListener(pagination)
+        rclGif.setOnScrollListener(paginationGif)
+
         //Listener
-        /*  lblSend.setOnClickListener {
-              var model = MessageModel(
-                  sender = getUser()?.id,
-                  received = userReceiver?.id,
-                  message = edtMessage.text.toString(),
-                  isSend = Constant.RECEIVED
-              )
-              if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
-              userReceiver?.let { it -> presenter.sentMessage(nodeChild, model, it) }
-              model.isSend = Constant.SENDING
-              if (isLoadNew) {
-                  presenter.loadNewMessage(nodeChild)
-                  isLoadNew = false
-              }
-              edtMessage.setText("")
-          }*/
         edtMessage.setOnClickListener {
+            imgShow.visible()
+            goneItemOption()
+        }
+        edtMessage.setOnFocusChangeListener { _, _ ->
             imgShow.visible()
             goneItemOption()
         }
@@ -149,7 +145,10 @@ class ChatActivity : BaseActivity(), ChatView {
             }
         })
         imgGif.setOnClickListener {
-            presenter.loadGif()
+            if (gifs.size <= 0) {
+                presenter.loadGif()
+            }
+            rclGif.visible()
         }
         imgShow.setOnClickListener {
             showItemOption()
@@ -160,20 +159,21 @@ class ChatActivity : BaseActivity(), ChatView {
                 received = userReceiver?.id,
                 isSend = Constant.RECEIVED
             )
-            if (nodeChild?.isEmpty()) nodeChild = model.sender + model.received
-            if (isLoadNew) {
-                presenter.loadNewMessage(nodeChild)
-                isLoadNew = false
-            }
-
             if (isOption) {
                 model.message = edtMessage.text.toString()
                 edtMessage.setText("")
             } else {
                 model.like = Key.LIKE
             }
-            userReceiver?.let { it -> presenter.sentMessage(nodeChild, model, it) }
+            if (userReceiver != null && nodeChild.isNotEmpty()) {
+                presenter.sentMessage(
+                    nodeChild,
+                    model,
+                    userReceiver!!
+                )
+            }
         }
+        imgChooseImg.setOnClickListener { dialogSendImage.show() }
     }
 
     private fun itemClick(messageModel: MessageModel) {
@@ -194,11 +194,11 @@ class ChatActivity : BaseActivity(), ChatView {
                     isBottom = false
                 }
 
-                if (firstItem == 1 && linearLayoutManager != null && !isLoading
+                /*if (firstItem == 1 && linearLayoutManager != null && !isLoading
                 ) {
                     presenter.loadOldMessage(nodeChild, topNode.toString())
                     isLoading = true
-                }
+                }*/
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
@@ -209,8 +209,9 @@ class ChatActivity : BaseActivity(), ChatView {
             topNode = list[0].id
             if (isCheck) {
                 messages.addAll(list)
+                var position = messages.size
                 adapter?.notifyDataSetChanged()
-                rclChat.scrollToPosition(messages.size - 1)
+                rclChat.scrollToPosition(position)
                 isLoading = false
                 pagination(rclChat)
             } else {
@@ -223,19 +224,34 @@ class ChatActivity : BaseActivity(), ChatView {
 
     override fun loadNodeChildSuccess(node: String) {
         nodeChild = node
+        loadNewMessage()
     }
 
     override fun nullNodeChild() {
+        if (nodeChild.isEmpty()) {
+            nodeChild = getUser()?.id + userReceiver?.id
+        }
+        loadNewMessage()
     }
 
     override fun loadNewMessageSuccess(model: MessageModel) {
-        messages.add(model)
-        adapter?.notifyDataSetChanged()
-        if (isBottom) {
-            rclChat.scrollToPosition(messages.size - 1)
-            isBottom = false
+        if (messages.size > 0) {
+            if (messages[messages.size - 1].id != model.id) {
+                messages.add(model)
+                adapter?.notifyItemInserted(messages.size - 1)
+            }
+        } else {
+            messages.add(model)
+            adapter?.notifyItemInserted(messages.size - 1)
         }
-
+        if (model.sender == getUser()?.id) {
+            rclChat.scrollToPosition(messages.size - 1)
+        } else {
+            if (isBottom) {
+                rclChat.scrollToPosition(messages.size - 1)
+                isBottom = false
+            }
+        }
     }
 
     override fun loadTokenSuccess(result: String) {
@@ -246,14 +262,18 @@ class ChatActivity : BaseActivity(), ChatView {
     }
 
     private fun itemClickGif(model: GifModel) {
+        toast("Click")
         var messageModel = MessageModel(
             sender = getUser()?.id,
             received = userReceiver?.id,
             isSend = Constant.RECEIVED,
             urlGif = model.url
         )
-        userReceiver?.let { it -> presenter.sentMessage(nodeChild, messageModel, it) }
-        rclGif.gone()
+        if (userReceiver != null && nodeChild.isNotEmpty()) {
+            presenter.sentMessage(nodeChild, messageModel, userReceiver!!)
+        }
+        gifs.clear()
+        adapterGif.notifyDataSetChanged()
     }
 
     override fun loadGifSuccess(list: ArrayList<GifModel>) {
@@ -283,5 +303,25 @@ class ChatActivity : BaseActivity(), ChatView {
         imgCamera.visible()
         imgVoice.visible()
         imgChooseImg.visible()
+    }
+
+    private fun loadNewMessage() {
+        if (isLoadNew) {
+            if (nodeChild.isNotEmpty()) {
+                presenter.loadNewMessage(nodeChild!!)
+                isLoadNew = false
+            }
+        }
+    }
+
+    override fun sendListPhoto(urls: ArrayList<String>) {
+        var messageModel = MessageModel(
+            sender = getUser()?.id,
+            received = userReceiver?.id,
+            isSend = Constant.RECEIVED
+        )
+        Log.e("TAG", urls.size.toString())
+        userReceiver?.let { presenter.sentPhoto(nodeChild, it, urls, messageModel) }
+//        urls.clear()
     }
 }

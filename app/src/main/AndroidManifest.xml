@@ -64,7 +64,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.test.TestActivity"
+            android:name=".ui.test.TestActivty"
             android:configChanges="orientation|screenSize|layoutDirection|keyboardHidden"
             android:launchMode="singleTop" />
         <activity

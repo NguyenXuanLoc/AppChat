@@ -29,7 +29,6 @@ class ChatAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
     private val VIEW_TYPE_LEFT = 0
     private val VIEW_TYPE_RIGHT = 1
     private val VIEW_TYLE_LOADING = 2
@@ -92,30 +91,26 @@ class ChatAdapter(
     inner class ItemLeft(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var sdvAvt: SimpleDraweeView = itemView.findViewById(R.id.sdv_avt)
         private var lblMessage: TextView = itemView.findViewById(R.id.lbl_message)
-        private var imgGif: ImageView = itemView.findViewById(R.id.img_gif)
+        private var sdvGif: ImageView = itemView.findViewById(R.id.sdv_gif)
         private var imgLike: ImageView = itemView.findViewById(R.id.img_like)
         fun bind(model: MessageModel) {
             with(model) {
                 sdvAvt.setImageSimple(userReceiver.imageUrl, ctx)
-
                 if (message!!.isNotEmpty()) {
                     lblMessage.visible()
                     lblMessage.text = message
                 } else {
-                    lblMessage.invisible()
+                    lblMessage.gone()
                 }
-                if (!urlGif.isNullOrEmpty()) {
-                    imgGif.visible()
-                    Glide.with(ctx).asGif().load(urlGif).into(imgGif)
+                if (urlGif!!.isNotEmpty()) {
+                    Glide.with(ctx).asGif().load(urlGif).into(sdvGif)
                 }
                 if (like == Constant.LIKE) {
                     imgLike.visible()
                 } else {
-                    imgLike.invisible()
+                    imgLike.gone()
                 }
             }
-
-
         }
     }
 
@@ -131,18 +126,18 @@ class ChatAdapter(
                     lblMessage.visible()
                     lblMessage.text = message
                 } else {
-                    lblMessage.invisible()
+                    lblMessage.gone()
                 }
-                if (!urlGif.isNullOrEmpty()) {
-                    Log.e("TAG", urlGif)
+                if (urlGif!!.isNotEmpty()) {
                     Glide.with(ctx).asGif().load(urlGif).into(sdvGif)
                 }
                 if (like == Constant.LIKE) {
                     imgLike.visible()
                 } else {
-                    imgLike.invisible()
+                    imgLike.gone()
                 }
-                if (position == (messagers.size - 1)) {
+
+                /*if (position == (messagers.size - 1)) {
                     var isSend = messagers[messagers.size - 1].isSend
                     if (isSend == Constant.SENDING) {
                         lblIsSend.text = Constant.SENDING
@@ -150,7 +145,7 @@ class ChatAdapter(
                         lblIsSend.text = Constant.RECEIVED
                     }
                     lblIsSend.visible()
-                } else lblIsSend.gone()
+                }*/
             }
 
         }
