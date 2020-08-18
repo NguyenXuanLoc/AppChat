@@ -41,13 +41,12 @@ import timber.log.Timber
 class PlayVideoActivity : BaseActivity(), Player.EventListener {
     private var uri: String? = null
     private var isCheckUri = true
-    var isFull = true
+    private var isFull = true
     private lateinit var simpleExoplayer: SimpleExoPlayer
-    var mediaSource: MediaSource? = null
+    private var mediaSource: MediaSource? = null
 
     //Lấy độ dài video
-    private
-    val bandwidthMeter by lazy {
+    private val bandwidthMeter by lazy {
         DefaultBandwidthMeter()
     }
 
@@ -75,7 +74,7 @@ class PlayVideoActivity : BaseActivity(), Player.EventListener {
     }
 
     override fun eventHandle() {
-        imgApply.setOnClickListener {
+        lblApply.setOnClickListener {
             val returnIntent = Intent()
             returnIntent.putExtra(Constant.URI, uri)
             setResult(Activity.RESULT_OK, returnIntent)
@@ -102,7 +101,7 @@ class PlayVideoActivity : BaseActivity(), Player.EventListener {
             bundle = intent.getBundleExtra(Constant.PLAY_VIDEO)
             uri = bundle.getString(Constant.PLAY_VIDEO).toString()
             uri?.let {
-                imgApply.gone()
+                lblApply.gone()
             }
         }
     }

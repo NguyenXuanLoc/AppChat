@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".ui.playvideo.PlayVideoActivity">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
@@ -28,10 +29,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <ImageView
-        android:id="@+id/imgApply"
-        android:layout_width="@dimen/dimen_4x"
-        android:layout_height="@dimen/dimen_4x"
+    <TextView
+        android:text="@string/apply"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_17"
+        style="@style/TextView.Bold"
+        android:id="@+id/lblApply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_3x"
         android:src="@drawable/btn_circle_white"
         app:layout_constraintRight_toRightOf="parent"

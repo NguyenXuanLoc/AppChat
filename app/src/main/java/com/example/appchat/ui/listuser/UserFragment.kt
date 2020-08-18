@@ -85,7 +85,7 @@ class UserFragment : BaseFragment(), UserFragmentView {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_status, menu)
+        inflater.inflate(R.menu.menu_list_user_fragment, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

@@ -269,8 +269,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_2x"
-        android:backgroundTint="@color/purple100"
-        android:src="@drawable/ic_write_white"
+        android:src="@drawable/ic_tick_white"
+        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />

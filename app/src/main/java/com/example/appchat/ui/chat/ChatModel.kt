@@ -1,5 +1,6 @@
 package com.example.appchat.ui.chat
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import com.airbnb.lottie.L
@@ -16,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.storage.FirebaseStorage
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,9 +48,7 @@ class ChatModel(response: ChatResponse) {
         model.time = currentTime.toString()
         model.date = currentDate.toString()
         ref.child(key.toString()).setValue(model).addOnSuccessListener {
-            Log.e("TAG", "Key: $Key")
             urlsPhoto?.let {
-                Log.e("TAG","SIZE: ${urlsPhoto.size}")
                 uploadPhoto(it, model.id.toString())
             }
             if (status == Constant.OFFLINE) {
@@ -74,26 +75,23 @@ class ChatModel(response: ChatResponse) {
             })
     }
 
+    @SuppressLint("CheckResult")
     private fun sendNotification(
         userToken: String, title: String, message: String, idReceive: String
     ) {
         val data = Data(title, message, idReceive)
         val sender = NotificationSender(data, userToken)
         var client = Client()
-        var apiService =
-            client.getClient(Constant.URL_FCM)?.create(APIService::class.java)
-        apiService?.sendNotification(sender)?.enqueue(object : Callback<MyResponse> {
-            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-            }
-
-            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
-                if (response.isSuccessful) {
-                    if (response.body()!!.success != 1) {
-                        Timber.e("Error Push")
-                    }
+        var apiService = client.getClient(Constant.URL_FCM)!!.create(APIService::class.java)
+        apiService?.sendNotification(sender)?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({
+                if (it.success != 1) {
+                    Timber.e("False push notification")
                 }
-            }
-        })
+            }, {
+                Timber.e(it.message)
+            })
     }
 
     fun checkNodeChild(idUser: String, idReceiver: String) {
@@ -141,6 +139,7 @@ class ChatModel(response: ChatResponse) {
 
     // Check node exist and get last message
     private fun checkNode(node: String, idUser: String) {
+        //count check if count =2 -> nullNodeChild
         FirebaseDatabase.getInstance().getReference(Key.CHATS).child(node)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -150,7 +149,9 @@ class ChatModel(response: ChatResponse) {
                     if (snapshot.value != null) {
                         v.loadNodeChildSuccess(node)
                         loadMessage(node)
-                    } else v.nullNodeChild()
+                    } else {
+                        v.nullNodeChild()
+                    }
                 }
             })
     }

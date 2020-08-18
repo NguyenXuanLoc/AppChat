@@ -5,11 +5,13 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Vibrator
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import bundleOf
@@ -26,6 +28,8 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
+
+@Suppress("DEPRECATION")
 class FirebaseMessagingService : FirebaseMessagingService() {
     var title: String? = null
     var message: String? = null
@@ -37,6 +41,8 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         message = p0.data[Constant.MESSAGE_RECEIVED]
         idReceive = p0.data[Constant.ID_RECEIVE]
         getUserSend(idReceive.toString())
+
+/*
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             var importance = NotificationManager.IMPORTANCE_DEFAULT
             var channel =
@@ -46,18 +52,20 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             var notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
-        }
+        }*/
+
         var intent = Intent(this, ChatActivity::class.java)
         bundleOf(Constant.MESSAGE to userModel).also {
             intent.putExtra(Constant.MESSAGE, it)
         }
         var pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_ONE_SHOT)
+
         var builder = NotificationCompat.Builder(this, Constant.CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .setContentTitle(title)
-            .setContentText(message)
+            .setAutoCancel(true)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_MAX) // mức độ ưu tiên
             .setContentIntent(pendingIntent)
         with(NotificationManagerCompat.from(this)) {
             notify(0, builder.build())

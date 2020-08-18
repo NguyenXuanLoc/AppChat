@@ -53,7 +53,7 @@ class NewsFragment : BaseFragment(), NewsFragmentView {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_news_fragment, menu)
+//        inflater.inflate(R.menu.menu_news_fragment, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

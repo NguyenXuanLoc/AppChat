@@ -171,7 +171,6 @@ class StatusAdapter(
                 rclImage.layoutManager =
                     GridLayoutManager(self, 3, GridLayoutManager.VERTICAL, false)
                 presenter.loadImage(statusModel.id)
-//                presenter.loadTest(statusModel.id)
             }
         }
 

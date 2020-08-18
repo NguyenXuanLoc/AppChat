@@ -15,6 +15,7 @@
         android:paddingBottom="@dimen/dimen_2x">
 
         <com.facebook.drawee.view.SimpleDraweeView
+            app:actualImageResource="@drawable/ic_diamond_blue"
             android:id="@+id/sdv_icon"
             android:layout_width="@dimen/dimen_5x"
             android:layout_height="@dimen/dimen_5x"

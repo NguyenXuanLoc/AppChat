@@ -1,14 +1,10 @@
-package com.example.appchat.ui.test
+package com.example.appchat.widget.sendphoto
 
 import android.app.Activity
-import android.graphics.Color
-import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView

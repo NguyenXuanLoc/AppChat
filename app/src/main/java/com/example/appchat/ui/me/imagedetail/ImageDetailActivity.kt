@@ -45,7 +45,6 @@ class ImageDetailActivity : BaseActivity() {
             images.addAll(results)
             adapter.notifyDataSetChanged()
             position = bundle.getInt(Constant.POSITION)
-
         }
     }
 

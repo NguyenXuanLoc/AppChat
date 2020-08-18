@@ -14,8 +14,9 @@ import com.example.appchat.data.model.GifModel
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
+import com.example.appchat.ui.chat.ChatAdapter.ChatAdapter
 import com.example.appchat.ui.chat.gif.GifAdapter
-import com.example.appchat.widget.DialogSendImage
+import com.example.appchat.widget.sendphoto.DialogSendPhoto
 import com.example.appchat.widget.PaginationScrollListener
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.gone
@@ -24,14 +25,19 @@ import com.example.fcm.common.ext.visible
 import kotlinx.android.synthetic.main.activity_chat.*
 
 @Suppress("DEPRECATION")
-class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener {
+class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener {
     private val presenter by lazy { ChatPresenter(this) }
     private var userReceiver: UserModel? = null
     private val messages by lazy { ArrayList<MessageModel>() }
     private val adapter by lazy {
         userReceiver?.let {
             getUser()?.let { it1 ->
-                ChatAdapter(messages, self, it, it1) { itemClick(it) }
+                ChatAdapter(
+                    messages,
+                    self,
+                    it,
+                    it1
+                ) { itemClick(it) }
             }
         }
     }
@@ -41,6 +47,7 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener
     private var isLoading = true
     private var isBottom = false
     private var isLoadNew = true
+    private var isNull = true
 
     // top node message to new old message
     private var topNode: String? = null
@@ -70,7 +77,12 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener
     private var isOption = false
 
     // Send Image
-    private val dialogSendImage by lazy { DialogSendImage(self) }
+    private val dialogSendImage by lazy {
+        DialogSendPhoto(
+            self,
+            userReceiver?.userName.toString()
+        )
+    }
 
     override fun contentView(): Int {
         return R.layout.activity_chat
@@ -78,7 +90,7 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener
 
     override fun init() {
         hideToolbarBase()
-        applyToolbar(toolbar, R.color.white)
+        applyToolbar(toolbar, R.color.white, false)
         enableHomeAsUp(toolbar) { finish() }
         changeNavigationIcon()
         rclChat.layoutManager = LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false)
@@ -94,7 +106,6 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_message, menu)
         menuInflater.inflate(R.menu.menu_message, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -193,7 +204,6 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener
                 } else if (isBottom) {
                     isBottom = false
                 }
-
                 /*if (firstItem == 1 && linearLayoutManager != null && !isLoading
                 ) {
                     presenter.loadOldMessage(nodeChild, topNode.toString())
@@ -220,18 +230,21 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendImage.SendPhotoListener
                 if (list.size > 0) isLoading = false
             }
         }
+        loadNewMessage()
     }
 
     override fun loadNodeChildSuccess(node: String) {
         nodeChild = node
-        loadNewMessage()
     }
 
     override fun nullNodeChild() {
-        if (nodeChild.isEmpty()) {
-            nodeChild = getUser()?.id + userReceiver?.id
+        if (isNull) {
+            if (nodeChild.isEmpty()) {
+                nodeChild = getUser()?.id + userReceiver?.id
+            }
+            loadNewMessage()
+            isNull = false
         }
-        loadNewMessage()
     }
 
     override fun loadNewMessageSuccess(model: MessageModel) {

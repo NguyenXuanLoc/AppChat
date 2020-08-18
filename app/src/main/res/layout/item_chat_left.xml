@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dimen_1x"
+    android:layout_marginLeft="@dimen/dimen_1x"
+    android:layout_marginTop="@dimen/dimen_05x"
     android:background="@color/white248">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -19,34 +20,50 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/lbl_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_1x"
         android:background="@drawable/bn_radius_purple_top"
-        android:padding="@dimen/dimen_x1x"
+        android:padding="@dimen/dimen_1x"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@id/sdv_avt"
         tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/img_like"
         android:layout_width="@dimen/dimen_5x"
         android:layout_height="@dimen/dimen_5x"
         android:src="@drawable/ic_like_blue"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/lbl_message"
         app:layout_constraintLeft_toLeftOf="@id/lbl_message"
         app:layout_constraintTop_toTopOf="@id/lbl_message"
         tools:ignore="MissingConstraints" />
 
     <com.facebook.drawee.view.SimpleDraweeView
-        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
-        android:layout_marginLeft="@dimen/dimen_1x"
         android:id="@+id/sdv_gif"
         android:layout_width="@dimen/dimen_180"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="TODO" />
+        android:layout_marginLeft="@dimen/dimen_1x"
+        android:contentDescription="TODO"
+        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcl_photo"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_1x"
+        app:layout_constraintLeft_toRightOf="@id/sdv_avt"
+        app:layout_constraintRight_toLeftOf="@id/line_vertical"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/line_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.appchat.ui.conversation
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import bundleOf
 import com.example.appchat.R
@@ -16,6 +17,7 @@ import com.example.appchat.widget.PaginationScrollNestedListener
 import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.openActivity
 import kotlinx.android.synthetic.main.fragment_conversation.view.*
+
 
 class ConversationFragment : BaseFragment(), ConversationFragmentView {
     private val users by lazy { ArrayList<UserModel>() }

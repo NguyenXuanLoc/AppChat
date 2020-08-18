@@ -1,6 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.appchat.common.ext
 
 import android.app.Activity
+import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -31,6 +34,9 @@ fun SimpleDraweeView.setImageSimple(
         }
         is File -> {
             setImageURI(Uri.fromFile(src), ctx)
+        }
+        is Bitmap ->{
+            setImageBitmap(src)
         }
         else -> setActualImageResource(errorImage!!)
     }
