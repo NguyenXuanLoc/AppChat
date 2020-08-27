@@ -10,10 +10,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -26,8 +32,7 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <!-- Activity -->
+            android:value="@string/facebook_app_id" /> <!-- Activity -->
         <activity
             android:name=".ui.chat.ChatActivity"
             android:launchMode="singleTop"
@@ -37,7 +42,6 @@
             android:name=".ui.editprofile.EditProfileActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -60,7 +64,7 @@
             android:configChanges="orientation|screenSize|layoutDirection|keyboardHidden"
             android:launchMode="singleTop" />
         <activity
-            android:name="com.example.appchat.ui.uploadstatus.UploadStatusActivity"
+            android:name=".ui.uploadstatus.UploadStatusActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -81,6 +85,11 @@
             android:name=".ui.login.LoginActivity"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".ui.voicecall.VoiceCallActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -89,9 +98,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!--Service-->
         <service
-            android:name="com.example.appchat.ui.fcm.FirebaseMessagingService"
+            android:name=".ui.fcm.FirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -99,13 +108,17 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.example.appchat.ui.fcm.MyFirebaseIdService"
+            android:name=".ui.fcm.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".ui.voicecall.handleCall.VoiceCallService" />
+
+        <receiver android:name=".ui.voicecall.handleCall.NotificationRecevier" />
+        <!--        end Service-->
     </application>
 
 </manifest>

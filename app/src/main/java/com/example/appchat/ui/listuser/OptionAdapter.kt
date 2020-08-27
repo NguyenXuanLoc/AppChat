@@ -28,17 +28,9 @@ class OptionAdapter(
         ctx,
         intArrayOf(R.dimen.dimen_2x, R.dimen.dimen_2x, R.dimen.dimen_2x)
     )
-    private val screenWidth = CommonUtil.getScreenWidthAsPixel(ctx as AppCompatActivity)
     private var totalMargin =
-        (margin + (CommonUtil.getScreenWidthAsPixel(ctx as AppCompatActivity) - margin) / 2f).toInt()
+        (margin + (CommonUtil.getScreenWidthAsPixel(ctx as AppCompatActivity) - margin) / 1.5f).toInt()
 
-    fun updateThumbRatio(isListView: Boolean) {
-        totalMargin = if (isListView) {
-            screenWidth / 3 + (margin - margin * 0.25).toInt()
-        } else {
-            margin
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         var view = LayoutInflater.from(ctx).inflate(R.layout.item_option, parent, false)
@@ -64,8 +56,11 @@ class OptionAdapter(
             lblTitle.text = model.title
             lblContent.text = model.content
             sdvIcon.setImageSimple(model.urlImage, ctx as Activity)
+            layoutOptions.setRatio(ctx as AppCompatActivity, 9, 10, totalMargin)
+
             layoutOptions.setBackgroundColor(Color.parseColor(model.background.toString()))
             layoutOptions.setOnClickListener { itemClick(model) }
+            sdvIcon.setBackgroundColor(Color.parseColor(model.background.toString()))
         }
     }
 }

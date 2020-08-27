@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.appchat.widget.DialogLoading
+import com.example.fcm.common.ext.getUser
 import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.visible
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -20,7 +21,7 @@ abstract class BaseFragment() : Fragment() {
     open lateinit var mView: View
     open val self by lazy { activity }
     open val dialogLoading by lazy { activity?.let { DialogLoading(it) } }
-
+    open val selfUser by lazy { self?.getUser() }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

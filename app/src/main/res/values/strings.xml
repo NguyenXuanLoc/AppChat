@@ -77,4 +77,15 @@
     <string name="all_photo">Tất cả ảnh</string>
     <string name="max_night_photo_notify">Bạn chỉ được gửi tối đa 9 hình ảnh !!</string>
     <string name="to">đến</string>
+    <string name="you_have_message">(bạn có tin nhắn mới)</string>
+    <string name="call_sound">Gọi âm thanh</string>
+    <string name="call_video">Gọi điện video</string>
+    <string name="waiting_answer">Đang chờ người khác trả lời</string>
+    <string name="click_to_call">Bấm để gọi.</string>
+    <string name="call_from_lit_match">Cuộc gọi từ LitMatch</string>
+    <string name="call_from">Cuộc gọi từ</string>
+    <string name="deject">Từ chối</string>
+    <string name="ok">Đồng ý</string>
+    <string name="collecting">Đang kết nối</string>
+    <string name="audio_invitations">Lời mời gọi âm thanh</string>
 </resources>

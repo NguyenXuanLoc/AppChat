@@ -1,25 +1,17 @@
 package com.example.appchat.ui.home
 
-import android.content.Context
-import android.util.Log
 import android.view.MenuItem
 import androidx.viewpager2.widget.ViewPager2
 import com.example.appchat.R
 import com.example.appchat.R.color.white
 import com.example.appchat.common.Key
-import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.fcm.Token
-import com.example.appchat.widget.PaginationScrollListener
 import com.example.fcm.common.ext.getUser
-import com.example.fcm.common.ext.toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_home.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 private const val HOME_INDEX = 0
 private const val GROUP_INDEX = 1

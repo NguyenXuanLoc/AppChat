@@ -34,5 +34,4 @@ class ChatAdapterModel(response: ChatAdapterResponse) {
                 }
             })
     }
-
 }

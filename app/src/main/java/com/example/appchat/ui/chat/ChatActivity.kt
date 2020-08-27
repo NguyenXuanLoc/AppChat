@@ -1,11 +1,14 @@
 package com.example.appchat.ui.chat
 
+import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import bundleOf
 import com.example.appchat.R
 import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
@@ -16,16 +19,19 @@ import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.chat.ChatAdapter.ChatAdapter
 import com.example.appchat.ui.chat.gif.GifAdapter
+import com.example.appchat.ui.test.TestActivty
+import com.example.appchat.ui.voicecall.VoiceCallActivity
+import com.example.appchat.widget.DialogAudio
+import com.example.appchat.widget.LinearManager
 import com.example.appchat.widget.sendphoto.DialogSendPhoto
 import com.example.appchat.widget.PaginationScrollListener
-import com.example.fcm.common.ext.getUser
-import com.example.fcm.common.ext.gone
-import com.example.fcm.common.ext.toast
-import com.example.fcm.common.ext.visible
+import com.example.fcm.common.ext.*
 import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.layout_option_call.*
 
 @Suppress("DEPRECATION")
-class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener {
+class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener,
+    DialogAudio.AudioListener {
     private val presenter by lazy { ChatPresenter(this) }
     private var userReceiver: UserModel? = null
     private val messages by lazy { ArrayList<MessageModel>() }
@@ -48,6 +54,7 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
     private var isBottom = false
     private var isLoadNew = true
     private var isNull = true
+    private var isShowCall = true
 
     // top node message to new old message
     private var topNode: String? = null
@@ -84,6 +91,11 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
         )
     }
 
+    // Send Audio
+    private val dialogSendAudio by lazy {
+        DialogAudio(self)
+    }
+
     override fun contentView(): Int {
         return R.layout.activity_chat
     }
@@ -93,16 +105,17 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
         applyToolbar(toolbar, R.color.white, false)
         enableHomeAsUp(toolbar) { finish() }
         changeNavigationIcon()
-        rclChat.layoutManager = LinearLayoutManager(self, LinearLayoutManager.VERTICAL, false)
+        rclChat.layoutManager = LinearManager(self, LinearLayoutManager.VERTICAL)
         rclChat.adapter = adapter
         rclChat.setHasFixedSize(true)
 
         //gif
-        rclGif.layoutManager = LinearLayoutManager(self, LinearLayoutManager.HORIZONTAL, false)
+        rclGif.layoutManager = LinearManager(self, LinearLayoutManager.HORIZONTAL)
         rclGif.adapter = adapterGif
         rclGif.setHasFixedSize(true)
 
         dialogSendImage.setSendPhotoListener(this)
+        dialogSendAudio.setAudioListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -112,8 +125,8 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
 
     override fun getExtra() {
         var bundle = intent.getBundleExtra(Constant.MESSAGE)
-        if (bundle != null) {
-            userReceiver = bundle.getSerializable(Constant.MESSAGE) as UserModel?
+        bundle?.run {
+            userReceiver = getSerializable(Constant.MESSAGE) as UserModel?
         }
     }
 
@@ -125,7 +138,6 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
         }
         presenter.checkNodeChild(getUser()?.id.toString(), userReceiver?.id.toString())
         rclGif.setOnScrollListener(paginationGif)
-
         //Listener
         edtMessage.setOnClickListener {
             imgShow.visible()
@@ -184,12 +196,40 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
                 )
             }
         }
+
         imgChooseImg.setOnClickListener { dialogSendImage.show() }
+        imgRecordAudio.setOnClickListener { dialogSendAudio.show() }
+
+        layoutCallSound.setOnClickListener {
+            getUser()?.run {
+                presenter.pushNotifyVoiceCall(
+                    token.toString(), userName.toString(),
+                    getString(R.string.call_from), id.toString()
+                )
+            }
+            bundleOf(
+                Constant.USER to userReceiver, Constant.CHECK_CALL to false,
+                Constant.TOKEN to token
+            ).also {
+                openActivity(VoiceCallActivity::class.java, it, Constant.USER)
+            }
+        }
+        layoutCallVideo.setOnClickListener {
+            getUser()?.run {
+                presenter.pushNotifyVoiceCall(
+                    token.toString(), userName.toString(),
+                    getString(R.string.call_from), id.toString()
+                )
+            }
+            bundleOf(
+                Constant.USER to userReceiver, Constant.CHECK_CALL to false,
+                Constant.TOKEN to token
+            ).also {
+                openActivity(TestActivty::class.java, it, Constant.USER)
+            }
+        }
     }
 
-    private fun itemClick(messageModel: MessageModel) {
-
-    }
 
     private fun pagination(rcl: RecyclerView) {
         rcl.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -197,40 +237,30 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
                 val lastItem = linearLayoutManager?.findLastCompletelyVisibleItemPosition()
                 val firstItem = linearLayoutManager?.findFirstCompletelyVisibleItemPosition()
-
-                // Check if scroll to bottom, it hava masage then auto scroll bottom
+                // Check if scroll to bottom, it have massage then auto scroll bottom
                 if (lastItem == messages.size - 1 && linearLayoutManager != null) {
                     isBottom = true
                 } else if (isBottom) {
                     isBottom = false
                 }
-                /*if (firstItem == 1 && linearLayoutManager != null && !isLoading
-                ) {
-                    presenter.loadOldMessage(nodeChild, topNode.toString())
-                    isLoading = true
-                }*/
+                /*  if (firstItem == 0 && linearLayoutManager != null && !isLoading) {
+                      toast("load new")
+                      presenter.loadOldMessage(nodeChild, topNode.toString())
+                      isLoading = true
+                  }*/
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
     }
 
-    override fun loadMessageSuccess(list: ArrayList<MessageModel>, isCheck: Boolean) {
-        if (list.size > 0) {
-            topNode = list[0].id
-            if (isCheck) {
-                messages.addAll(list)
-                var position = messages.size
-                adapter?.notifyDataSetChanged()
-                rclChat.scrollToPosition(position)
-                isLoading = false
-                pagination(rclChat)
-            } else {
-                messages.addAll(0, list)
-                adapter?.notifyItemInserted(0)
-                if (list.size > 0) isLoading = false
-            }
-        }
+    override fun loadFirstMessageSuccess(list: ArrayList<MessageModel>) {
+        topNode = list[0].id
+        messages.addAll(list)
+        adapter?.notifyDataSetChanged()
+        rclChat.scrollToPosition(messages.size - 1)
+        isLoading = false
         loadNewMessage()
+        pagination(rclChat)
     }
 
     override fun loadNodeChildSuccess(node: String) {
@@ -247,6 +277,13 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
         }
     }
 
+    override fun loadOldMessageSuccess(list: ArrayList<MessageModel>) {
+        topNode = list[0].id
+        messages.addAll(0, list)
+        adapter?.notifyItemRangeInserted(0, messages.size)
+        isLoading = false
+    }
+
     override fun loadNewMessageSuccess(model: MessageModel) {
         if (messages.size > 0) {
             if (messages[messages.size - 1].id != model.id) {
@@ -257,13 +294,9 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
             messages.add(model)
             adapter?.notifyItemInserted(messages.size - 1)
         }
-        if (model.sender == getUser()?.id) {
+        if (model.sender == getUser()?.id || isBottom) {
             rclChat.scrollToPosition(messages.size - 1)
-        } else {
-            if (isBottom) {
-                rclChat.scrollToPosition(messages.size - 1)
-                isBottom = false
-            }
+            isBottom = false
         }
     }
 
@@ -275,7 +308,6 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
     }
 
     private fun itemClickGif(model: GifModel) {
-        toast("Click")
         var messageModel = MessageModel(
             sender = getUser()?.id,
             received = userReceiver?.id,
@@ -293,7 +325,7 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
         gifs.addAll(list)
         rclGif.visible()
         adapterGif.notifyDataSetChanged()
-        isLoadingGif = false
+//        isLoadingGif = false
     }
 
     override fun loadMoreGifSuccess(list: ArrayList<GifModel>) {
@@ -303,18 +335,17 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
             adapterGif.notifyItemInserted(gifs.size - 1)
             isLoadingGif = false
         }
-
     }
 
     private fun goneItemOption() {
         imgCamera.gone()
-        imgVoice.gone()
+        imgRecordAudio.gone()
         imgChooseImg.gone()
     }
 
     private fun showItemOption() {
         imgCamera.visible()
-        imgVoice.visible()
+        imgRecordAudio.visible()
         imgChooseImg.visible()
     }
 
@@ -333,8 +364,42 @@ class ChatActivity : BaseActivity(), ChatView, DialogSendPhoto.SendPhotoListener
             received = userReceiver?.id,
             isSend = Constant.RECEIVED
         )
-        Log.e("TAG", urls.size.toString())
-        userReceiver?.let { presenter.sentPhoto(nodeChild, it, urls, messageModel) }
-//        urls.clear()
+        getUser()?.let { presenter.sendAttach(nodeChild, it, urls, messageModel) }
+    }
+
+    override fun onClickAudio(uri: Uri, time: String) {
+        var messageModel = MessageModel(
+            sender = getUser()?.id,
+            received = userReceiver?.id,
+            isSend = Constant.RECEIVED,
+            duration = time
+        )
+        getUser()?.let {
+            presenter.sendAttach(
+                nodeChild,
+                it,
+                messageModel = messageModel,
+                uriAudio = uri
+            )
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_call -> {
+                isShowCall = if (isShowCall) {
+                    layoutCall.visible()
+                    false
+                } else {
+                    layoutCall.gone()
+                    true
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun itemClick(messageModel: MessageModel) {
+
     }
 }

@@ -78,7 +78,7 @@
                 android:paddingEnd="@dimen/dimen_x5x"
                 android:paddingRight="@dimen/dimen_3x"
                 android:paddingBottom="@dimen/dimen_1x"
-                android:text="Nam"
+                android:text="@string/male"
                 android:textColor="@color/btn_white_grey" />
 
             <RadioButton
@@ -96,7 +96,7 @@
                 android:paddingEnd="@dimen/dimen_x5x"
                 android:paddingRight="@dimen/dimen_3x"
                 android:paddingBottom="@dimen/dimen_1x"
-                android:text="Nu"
+                android:text="@string/female"
                 android:textColor="@color/btn_white_grey" />
         </RadioGroup>
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/lblNameSend"
+        style="@style/TextView.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_15"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lbl_from"
+        style="@style/TextView.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblNameSend"
+        android:layout_marginTop="@dimen/dimen_1x"
+        android:text="@string/call_from_lit_match"
+        android:textColor="@color/greyBold"
+        android:textSize="@dimen/text_size_13"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lblReceive"
+        style="@style/TextView.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lbl_from"
+        android:layout_marginTop="@dimen/dimen_1x"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/ok"
+        android:textColor="@color/greyBold"
+        android:textSize="@dimen/text_size_17"
+        app:layout_constraintTop_toBottomOf="@id/lbl_from"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lblDeject"
+        style="@style/TextView.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lbl_from"
+        android:layout_marginLeft="@dimen/dimen_2x"
+        android:layout_marginTop="@dimen/dimen_1x"
+        android:layout_toRightOf="@id/lblReceive"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/deject"
+        android:textColor="@color/greyBold"
+        android:textSize="@dimen/text_size_17"
+        app:layout_constraintLeft_toRightOf="@id/lblReceive"
+        app:layout_constraintTop_toBottomOf="@id/lbl_from"
+        tools:ignore="MissingConstraints" />
+</RelativeLayout>

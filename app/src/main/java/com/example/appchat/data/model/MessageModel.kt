@@ -11,6 +11,7 @@ data class MessageModel(
     var received: String? = "",
     var message: String? = "",
     var urlAudio: String? = "",
+    var duration: String? = "",
     var urlVideo: String? = "",
     var thumbnail: String? = "",
     var icon: String? = "",

@@ -1,5 +1,6 @@
 package com.example.appchat.ui.chat
 
+import android.net.Uri
 import com.example.appchat.data.model.GifModel
 import com.example.appchat.data.model.MessageModel
 import com.example.appchat.data.model.UserModel
@@ -24,13 +25,20 @@ class ChatPresenter(view: ChatView) : ChatResponse {
         model.loadMoreGift(lastNode)
     }
 
-    fun sentPhoto(
+    // Send attach audio,photos
+    fun sendAttach(
         nodeChild: String,
-        userReceive: UserModel,
-        urlPhotos: ArrayList<String>,
-        messageModel: MessageModel
+        useSend: UserModel,
+        urlPhotos: ArrayList<String>? = null,
+        messageModel: MessageModel,
+        uriAudio: Uri? = null
     ) {
-        model.sendMessage(nodeChild, messageModel,userReceive,urlPhotos)
+        urlPhotos?.let {
+            model.sendMessage(nodeChild, messageModel, useSend, it)
+        }
+        uriAudio?.let {
+            model.sendMessage(nodeChild, messageModel, useSend, uriAudio = it)
+        }
     }
 
     fun sentMessage(notChild: String, messageModel: MessageModel, userReceive: UserModel) {
@@ -53,8 +61,12 @@ class ChatPresenter(view: ChatView) : ChatResponse {
         v.loadNewMessageSuccess(model)
     }
 
-    override fun loadMessageSuccess(list: ArrayList<MessageModel>, isCheck: Boolean) {
-        v.loadMessageSuccess(list, isCheck)
+    override fun loadOldMessageSuccess(list: ArrayList<MessageModel>) {
+        v.loadOldMessageSuccess(list)
+    }
+
+    override fun loadFirstMessageSuccess(list: ArrayList<MessageModel>) {
+        v.loadFirstMessageSuccess(list)
     }
 
     override fun loadNodeChildSuccess(node: String) {
@@ -79,6 +91,15 @@ class ChatPresenter(view: ChatView) : ChatResponse {
 
     override fun loadMoreGifSuccess(list: ArrayList<GifModel>) {
         v.loadMoreGifSuccess(list)
+    }
+
+    fun pushNotifyVoiceCall(
+        userToken: String,
+        nameSender: String,
+        message: String,
+        idSender: String
+    ) {
+        model.pushNotifyCallVideo(userToken, nameSender, message, idSender)
     }
 
 }

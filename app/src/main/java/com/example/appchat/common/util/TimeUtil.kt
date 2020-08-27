@@ -7,6 +7,8 @@ import java.util.*
 
 
 object TimeUtil {
+
+    // get time upload status from date and time
     fun getTimeUpload(date: String, time: String, ctx: Context): String {
         var result = ""
         val sdfDate = SimpleDateFormat("dd-MM")

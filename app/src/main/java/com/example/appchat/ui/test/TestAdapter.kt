@@ -33,9 +33,9 @@ class TestAdapter(
     }
 
     inner class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var sdvTest: ImageView = itemView.findViewById<ImageView>(R.id.sdv_test)
+//        var sdvTest: ImageView = itemView.findViewById<ImageView>(R.id.sdv_test)
         fun bind(model: ImageModel, position: Int) {
-            Glide.with(ctx).load(model.url).into(sdvTest);
+//            Glide.with(ctx).load(model.url).into(sdvTest);
 //            sdvTest.setOnClickListener { onClick(position) }
         }
     }

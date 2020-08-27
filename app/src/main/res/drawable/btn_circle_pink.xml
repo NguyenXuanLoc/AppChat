@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:color="?android:colorControlHighlight" tools:targetApi="lollipop">
+    <item android:drawable="@drawable/bn_circle_pink" />
+    <item android:drawable="@drawable/bn_circle_red" android:state_pressed="true" />
+</selector>
+

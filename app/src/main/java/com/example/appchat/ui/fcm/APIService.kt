@@ -14,7 +14,4 @@ interface APIService {
     )
     @POST("fcm/send")
     fun sendNotification(@Body body: NotificationSender?): Single<MyResponse>
-    /*@POST("fcm/send")
-    fun sendNotification(@Body body: NotificationSender?): Call<MyResponse>
-*/
 }

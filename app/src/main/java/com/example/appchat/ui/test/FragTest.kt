@@ -1,80 +1,131 @@
 package com.example.appchat.ui.test
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.media.AudioManager
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import bundleOf
 import com.example.appchat.R
+import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
+import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.data.model.OptionModel
 import com.example.appchat.data.model.UserModel
+import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.base.BaseFragment
+import com.example.appchat.ui.voicecall.VoiceCallPresenter
+import com.example.appchat.ui.voicecall.VoiceCallView
+import com.example.appchat.ui.voicecall.handleCall.VoiceCallService
+import com.example.fcm.common.ext.getUser
+import com.example.fcm.common.ext.gone
 import com.example.fcm.common.ext.toast
+import com.example.fcm.common.ext.visible
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_voice_call.*
 import java.util.*
 
 
-class FragTest : BaseFragment() {
+class FragTest : BaseActivity(), VoiceCallView {
+    private val presenter by lazy { VoiceCallPresenter(this) }
+    private var userRecipient: UserModel? = null
+    private var token: String? = null
+    private var callerId: String? = null
+    private var recipientId: String? = null
+    private var isCheckCall: Boolean? = null
+    private var service: VoiceCallService? = null
+    private val serviceConnection by lazy {
+        object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
+                val binder: VoiceCallService.VoiceCallBinder =
+                    iBinder as VoiceCallService.VoiceCallBinder
+                service = binder.getService()
+            }
 
-    override fun eventHandle() {
-    }
-
-    override fun init() {
-        toast("OK")
-    }
-
-    override fun onCreateView(): Int {
-        return R.layout.activity_register
-    }
-
-    private fun randomAvt(ctx: Context): String {
-        var list = ctx.resources.getStringArray(R.array.image)
-        var index = Random().nextInt(list.size)
-        Log.e("TAG", list[index])
-        return list[index]
-    }
-    fun addUser() {
-        var phones = arrayOf("0966468393", "0966666854", "09664754856", "09625456543")
-        var gender = arrayOf("nam", "nu")
-        var names = arrayOf(
-            "Nguyễn Linh",
-            "Loc.Ka",
-            "Châm. Sứa :)",
-            "Link.Kak",
-            "Tuan.A",
-            "Nguyễn Du",
-            "Bình Good",
-            "Link Anh",
-            "ChamCham"
-        )
-        var status = arrayOf(
-            "Bad boy",
-            "Fuck Girl",
-            "Vui vẻ",
-            "Hiền lành",
-            "Dễ tính",
-            "Lắm mòm",
-            "Mõm"
-        )
-        var date = arrayOf("31/12/1998", "31/12/1997", "31/12/1996", "31/12/1995", "31/12/1995")
-        for (i in 0 until 20) {
-            toast(i.toString())
-            var ref = FirebaseDatabase.getInstance().getReference(Key.USER).push()
-            var key = ref.key
-            var model = UserModel(
-                key,
-                names[Random().nextInt(names.size - 1)],
-                date[Random().nextInt(date.size - 1)],
-                phones[Random().nextInt(phones.size - 1)],
-                self?.let { randomAvt(it) },
-                gender[Random().nextInt(gender.size - 1)],
-                status[Random().nextInt(status.size - 1)],
-                "online"
-            )
-            ref.setValue(model)
+            override fun onServiceDisconnected(name: ComponentName?) {
+            }
         }
     }
 
+    override fun contentView(): Int {
+        return R.layout.activity_voice_call
+    }
+
+    override fun init() {
+        hideToolbarBase()
+        if (isCheckCall == true) {
+            recipientId = "1"
+            callerId = "2"
+        } else if (isCheckCall == false) {
+            recipientId = "2"
+            callerId = "1"
+        }
+    }
+
+    override fun eventHandle() {
+        createService()
+        getUser()?.let {
+            presenter.checkNode(it.id.toString(), userRecipient?.id.toString())
+        }
+        // check who is send, who is receive
+        isCheckCall?.let { it ->
+            if (it) {
+                imgCall.gone()
+                layoutReceive.visible()
+            } else {
+                imgCall.visible()
+                layoutReceive.gone()
+            }
+        }
+        imgCall.setOnClickListener {
+            Log.e("TAG", "recipientId $recipientId")
+            recipientId?.let { it1 -> service!!.call(it1) }
+        }
+        imgReceive.setOnClickListener {
+            Log.e("TAG", "recipientId $recipientId")
+            recipientId?.let { it1 -> service?.call(it1) }
+        }
+        imgDeject.setOnClickListener {
+        }
+        imgStop.setOnClickListener { }
+        imgMic.setOnClickListener {
+            val audioManager =
+                applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            audioManager.mode = AudioManager.MODE_IN_CALL
+            audioManager.isMicrophoneMute = !audioManager.isMicrophoneMute
+        }
+    }
+
+    override fun getExtra() {
+        var bundle = intent.getBundleExtra(Constant.USER)
+        bundle?.let {
+            userRecipient = it.getSerializable(Constant.USER) as UserModel?
+            isCheckCall = it.getBoolean(Constant.CHECK_CALL)
+            sdvAvt.setImageSimple(userRecipient?.imageUrl.toString(), self)
+            token = it.getString(Constant.TOKEN)
+        }
+        if (isCheckCall == true) {
+            recipientId = "1"
+            callerId = "2"
+        } else if (isCheckCall == false) {
+            recipientId = "2"
+            callerId = "1"
+        }
+    }
+
+    fun createService() {
+        var intent = Intent(self, VoiceCallService::class.java)
+        bundleOf(
+            Constant.USER to userRecipient, Constant.CHECK_CALL to isCheckCall
+        ).also {
+            intent.putExtra(Constant.USER, it)
+        }
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE)
+    }
 }

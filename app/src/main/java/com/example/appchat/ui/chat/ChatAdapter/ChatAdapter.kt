@@ -2,11 +2,13 @@ package com.example.appchat.ui.chat.ChatAdapter
 
 import android.app.Activity
 import android.content.Intent
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,6 +31,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
+import timber.log.Timber
+import java.lang.Exception
 
 class ChatAdapter(
     var messagers: ArrayList<MessageModel>,
@@ -159,10 +163,14 @@ class ChatAdapter(
         private var sdvGif: SimpleDraweeView = itemView.findViewById(R.id.sdv_gif)
         private var imgLike: ImageView = itemView.findViewById(R.id.img_like)
         private var rclPhoto: RecyclerView = itemView.findViewById(R.id.rcl_photo)
+        private var layoutAudio: LinearLayout = itemView.findViewById(R.id.layout_play_audio)
+        private var lblTimeAudio: TextView = itemView.findViewById(R.id.lbl_time_audio)
+
         private var photos = ArrayList<ImageModel>()
         private val adapter by lazy { PhotoAdapter(ctx, photos) { onClick(it) } }
         private val presenter by lazy { ChatAdapterPresenter(this) }
         private var isPhoto = true
+        private var mPlayer = MediaPlayer()
         fun bind(model: MessageModel, position: Int) {
             rclPhoto.adapter = adapter
             rclPhoto.layoutManager =
@@ -193,9 +201,13 @@ class ChatAdapter(
                     lblIsSend.visible()
                 }*/
                 if (isPhoto) {
-                    Log.e("TAG", "load phôto")
                     presenter.loadPhotos(id.toString())
                     isPhoto = false
+                }
+                if (urlAudio!!.isNotEmpty() && duration!!.isNotEmpty()) {
+                    lblTimeAudio.text = (duration!!.toLong() / 1000).toString() + "''"
+//                    getDuration(mPlayer, urlAudio.toString(), lblTimeAudio)
+                    layoutAudio.visible()
                 }
             }
         }
@@ -209,7 +221,7 @@ class ChatAdapter(
         }
 
         override fun loadPhotosSuccess(list: ArrayList<ImageModel>) {
-            Log.e("TAG","new photos: ")
+            Log.e("TAG", "new photos: ")
             photos.addAll(list)
             adapter.notifyDataSetChanged()
         }
@@ -217,8 +229,24 @@ class ChatAdapter(
         override fun loadPhotosSuccessNull() {
             rclPhoto.gone()
         }
+
+
     }
 
+    private fun getDuration(player: MediaPlayer, url: String, lblTime: TextView) {
+        player.reset()
+        player.setDataSource(url)
+        try {
+            player.prepare()
+        } catch (e: Exception) {
+            Timber.e(e.message)
+        }
+        player.setOnPreparedListener { it ->
+            var duration = it.duration
+            var seconds = duration % 60;
+            lblTime.text = "${seconds}''"
+        }
+    }
 
     inner class ItemLoading(itemView: View) : RecyclerView.ViewHolder(itemView)
 

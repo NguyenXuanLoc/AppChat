@@ -5,7 +5,8 @@ import com.example.appchat.data.model.MessageModel
 
 interface ChatResponse {
     // if isCheck =true : load First message, isCheck=false: load more
-    fun loadMessageSuccess(list: ArrayList<MessageModel>, isCheck: Boolean)
+    fun loadOldMessageSuccess(list: ArrayList<MessageModel>)
+    fun loadFirstMessageSuccess(list: ArrayList<MessageModel>)
     fun loadNewMessageSuccess(model: MessageModel)
     fun loadNodeChildSuccess(node: String)
     fun nullNodeChild()
