@@ -53,14 +53,13 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
     // Timber - an alternative logger
-    implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Ui
     implementation 'com.android.support:design:29.0.0'
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'com.facebook.fresco:fresco:2.3.0'
     implementation 'com.facebook.fresco:animated-gif:2.3.0'
-//    implementation 'me.relex:photodraweeview:2.0.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation "com.google.android.material:material:1.1.0-alpha07"
 

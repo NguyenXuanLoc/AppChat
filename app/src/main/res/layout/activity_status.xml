@@ -199,8 +199,8 @@
             <TextView
                 android:id="@+id/lbl_voice"
                 style="@style/TextView.Regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="47dp"
+                android:layout_height="28dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dimen_1x"
                 android:gravity="center_vertical"

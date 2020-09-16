@@ -25,6 +25,7 @@ import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
 class MeFragment : BaseFragment(), MeFragmentView {
+
     companion object {
         fun newInstance(): MeFragment {
             return MeFragment()

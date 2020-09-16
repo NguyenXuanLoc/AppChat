@@ -8,6 +8,7 @@ import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.chat.ChatActivity
 import com.example.appchat.ui.home.HomeActivity
 import com.example.appchat.ui.login.LoginActivity
+import com.example.appchat.ui.test.Test2Activity
 import com.example.appchat.ui.test.TestActivty
 import com.example.appchat.ui.uploadstatus.UploadStatusActivity
 import com.example.appchat.ui.voicecall.VoiceCallActivity
@@ -30,8 +31,8 @@ class MainActivity : BaseActivity() {
     }
 
     override fun eventHandle() {
-    //  removeUser()
-//        openActivity(TestActivty::class.java)
+        //  removeUser()
+//        openActivity(UploadStatusActivity::class.java)
         Handler().postDelayed(Runnable {
             if (getUser() != null) {
                 openActivity(HomeActivity::class.java)

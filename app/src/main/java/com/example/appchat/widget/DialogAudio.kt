@@ -39,7 +39,7 @@ class DialogAudio(var ctx: Context) : BottomSheetDialog(ctx, R.style.BottomSheep
         mFileName += Constant.FILE_NAME
         imgRecord.setOnClickListener {
             if (PermissionUtil.isGranted(self, arrayOf(Manifest.permission.RECORD_AUDIO), 11, true)
-            ){
+            ) {
                 checkStatus()
             }
 

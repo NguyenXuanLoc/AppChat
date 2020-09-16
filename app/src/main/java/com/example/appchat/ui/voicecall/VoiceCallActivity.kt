@@ -1,46 +1,31 @@
 package com.example.appchat.ui.voicecall
 
-import android.app.AlarmManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.media.AudioManager
 import android.os.IBinder
-import android.util.Log
 import bundleOf
 import com.example.appchat.R
 import com.example.appchat.common.Constant
-import com.example.appchat.common.KeyPermission
 import com.example.appchat.common.ext.setImageSimple
-import com.example.appchat.common.util.PermissionUtil
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.voicecall.handleCall.VoiceCallService
-import com.example.fcm.common.ext.*
-import com.google.android.exoplayer2.extractor.VorbisUtil
-import com.sinch.android.rtc.PushPair
-import com.sinch.android.rtc.Sinch
-import com.sinch.android.rtc.SinchClient
-import com.sinch.android.rtc.calling.Call
-import com.sinch.android.rtc.calling.CallClient
-import com.sinch.android.rtc.calling.CallClientListener
-import com.sinch.android.rtc.calling.CallListener
+import com.example.fcm.common.ext.gone
+import com.example.fcm.common.ext.toast
+import com.example.fcm.common.ext.visible
 import kotlinx.android.synthetic.main.activity_voice_call.*
 
 
 // SinchCallClientView: handle client, SinchCallListener: handle at progress is calling
-class VoiceCallActivity : BaseActivity(), VoiceCallView, CallClientListener, CallListener {
+class VoiceCallActivity : BaseActivity(), VoiceCallView, VoiceCallService.VoiceCallListener {
     private val presenter by lazy { VoiceCallPresenter(this) }
     private var userRecipient: UserModel? = null
-    private var call: Call? = null
-    private lateinit var sinchClient: SinchClient
+    private var token: String? = null
     private var callerId: String? = null
     private var recipientId: String? = null
-
-    // isCheckCall to check between send and receive
-    // if == true-> receive else == false -> send
     private var isCheckCall: Boolean? = null
+    private var service: VoiceCallService? = null
+    private var serviceConnection: ServiceConnection? = null
 
     override fun contentView(): Int {
         return R.layout.activity_voice_call
@@ -55,25 +40,23 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, CallClientListener, Cal
             recipientId = "2"
             callerId = "1"
         }
-        sinchClient = Sinch.getSinchClientBuilder()
-            .context(this)
-            .userId(callerId)
-            .applicationKey(Constant.APP_KEY)
-            .applicationSecret(Constant.APP_SECRET)
-            .environmentHost(Constant.ENVIRONMENT)
-            .build()
+        serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
+                val binder: VoiceCallService.VoiceCallBinder =
+                    iBinder as VoiceCallService.VoiceCallBinder
+                service = binder.getService()
+                service!!.init(callerId, self)
+                service!!.setVoiceCallListener(this@VoiceCallActivity)
+            }
 
-        sinchClient.setSupportCalling(true)
-        sinchClient.startListeningOnActiveConnection()
-        sinchClient.start()
-        sinchClient.callClient.addCallClientListener(this)
-
+            override fun onServiceDisconnected(name: ComponentName?) {
+            }
+        }
     }
 
     override fun eventHandle() {
-        getUser()?.let {
-            presenter.checkNode(it.id.toString(), userRecipient?.id.toString())
-        }
+        createService()
+
         // check who is send, who is receive
         isCheckCall?.let { it ->
             if (it) {
@@ -85,30 +68,17 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, CallClientListener, Cal
             }
         }
         imgCall.setOnClickListener {
-            if (checkPermission()) {
-                if (call == null) {
-                    lblStatus.text = getString(R.string.waiting_answer)
-                    call = sinchClient.callClient.callUser(recipientId)
-                    call!!.addCallListener(this)
-                } else {
-                    call!!.hangup()
-                }
-            }
+            recipientId?.let { it1 -> service?.startCall(it1) }
         }
         imgReceive.setOnClickListener {
-            if (checkPermission()) {
-                if (call == null) {
-                    call = sinchClient!!.callClient.callUser(recipientId)
-                    call!!.addCallListener(this)
-                } else {
-                    call!!.hangup()
-                }
-            }
+            recipientId?.let { it1 -> service?.startCall(it1) }
         }
         imgDeject.setOnClickListener {
-            call?.hangup()
+            service?.stop()
         }
-        imgStop.setOnClickListener { call?.hangup() }
+        imgStop.setOnClickListener {
+            service?.stop()
+        }
         imgMic.setOnClickListener {
             val audioManager =
                 applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -118,46 +88,57 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, CallClientListener, Cal
     }
 
     override fun getExtra() {
-        var bundle = intent.getBundleExtra(Constant.USER)
-        bundle?.let {
+        intent.getBundleExtra(Constant.USER)?.let {
             userRecipient = it.getSerializable(Constant.USER) as UserModel?
             isCheckCall = it.getBoolean(Constant.CHECK_CALL)
             sdvAvt.setImageSimple(userRecipient?.imageUrl.toString(), self)
+            token = it.getString(Constant.TOKEN)
+            toast("CREATE")
         }
-    }
+        intent.getBundleExtra(Constant.SERVICE)?.let { it ->
+            userRecipient = it.getSerializable(Constant.USER) as UserModel?
+            isCheckCall = it.getBoolean(Constant.CHECK_CALL)
+            sdvAvt.setImageSimple(userRecipient?.imageUrl.toString(), self)
+            token = it.getString(Constant.TOKEN)
 
-    private fun checkPermission(): Boolean {
-        var isCheck = false
-        if (PermissionUtil.isGranted(
-                self,
-                arrayOf(android.Manifest.permission.RECORD_AUDIO),
-                KeyPermission.RC_RECORD_AUDIO
-            ) && PermissionUtil.isGranted(
-                self,
-                arrayOf(
-                    android.Manifest.permission.READ_PHONE_STATE
-                ), KeyPermission.RC_READ_PHONE_STATE
-            )
-        ) {
-            isCheck = true
+            serviceConnection?.let { it -> bindService(intent, it, BIND_AUTO_CREATE) }
+            layoutOpCalling.visible()
+            imgCall.gone()
+            imgReceive.gone()
+            imgDeject.gone()
+            toast(userRecipient?.userName + "SERVICE")
         }
-        return isCheck
+        if (isCheckCall == true) {
+            recipientId = "1"
+            callerId = "2"
+        } else if (isCheckCall == false) {
+            recipientId = "2"
+            callerId = "1"
+        }
+
     }
 
-    override fun onIncomingCall(p0: CallClient?, p1: Call?) {
-        imgCall.gone()
-        layoutReceive.gone()
-        layoutOpCalling.visible()
-        call = p1
-        call?.answer()
-        call?.addCallListener(this)
+    private fun createService() {
+        var intent = Intent(self, VoiceCallService::class.java)
+        bundleOf(
+            Constant.USER to userRecipient, Constant.CHECK_CALL to isCheckCall
+        ).also {
+            intent.putExtra(Constant.USER, it)
+        }
+        startService(intent)
+        serviceConnection?.let { bindService(intent, it, BIND_AUTO_CREATE) }
     }
 
-    override fun onCallProgressing(p0: Call?) {
-        lblStatus.text = getString(R.string.collecting)
+    private fun stopService() {
+        stopService(intent)
+        serviceConnection?.let { unbindService(it) }
     }
 
-    override fun onCallEstablished(p0: Call?) {
+    override fun onComing() {
+    }
+
+    override fun onEstablish() {
+        createService()
         lblStatus.text = "Bắt đầu"
         layoutOpCalling.visible()
         layoutReceive.gone()
@@ -166,16 +147,13 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, CallClientListener, Cal
         cmtTime.start()
     }
 
-    override fun onCallEnded(p0: Call?) {
+    override fun onCallEnd() {
+
+        stopService()
         imgCall.visible()
         layoutOpCalling.gone()
         lblStatus.text = "Kết thúc cuộc gọi"
         cmtTime.stop()
-        call = null
-    }
-
-    override fun onShouldSendPushNotification(p0: Call?, p1: MutableList<PushPair>?) {
-        toast("Nitification")
     }
 
 }

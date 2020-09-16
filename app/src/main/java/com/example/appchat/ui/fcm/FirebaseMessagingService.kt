@@ -31,6 +31,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
                 NotifyUnit.sendNotifyNewMessage(this, dataModel)
             }
             Constant.VOICE_CALL -> {
+                Log.e("TAG","VOICE CALL")
                 NotifyUnit.sendNotifyVoiceCall(this, dataModel)
             }
         }

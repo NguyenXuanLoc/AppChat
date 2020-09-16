@@ -1,13 +1,21 @@
 package com.example.appchat.common.util
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.media.MediaPlayer
 import android.media.RingtoneManager
+import android.os.Build
 import android.widget.RemoteViews
 import androidx.annotation.IdRes
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import bundleOf
 import com.example.appchat.R
 import com.example.appchat.common.Constant
@@ -24,8 +32,32 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
 object NotifyUnit : HandleNotifyListener {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun createNotificationChannel(
+        channelId: String,
+        channelName: String,
+        context: Context
+    ): String {
+        val chan = NotificationChannel(
+            channelId,
+            channelName, NotificationManager.IMPORTANCE_NONE
+        )
+        chan.lightColor = Color.BLUE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+        val service = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        service.createNotificationChannel(chan)
+        return channelId
+    }
+
     fun sendNotifyNewMessage(ctx: Context, model: Data) {
-        var notification = NotificationCompat.Builder(ctx, Constant.CHANNEL_ID)
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel(Constant.CHANNEL_ID, "My Background Service", ctx)
+            } else {
+                ""
+            }
+
+        var notification = NotificationCompat.Builder(ctx, channelId)
         getUserRequest(model.idSender, this, notification, ctx)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         notification.setSmallIcon(R.mipmap.ic_launcher_foreground)
@@ -34,10 +66,7 @@ object NotifyUnit : HandleNotifyListener {
             .setPriority(NotificationCompat.PRIORITY_MAX) // mức độ ưu tiên
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setSound(defaultSoundUri)
-
-       /* with(NotificationManagerCompat.from(ctx)) {
-            notify(0, notification.build())
-        }*/
+            .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
     }
 
     // Custom notification
@@ -79,7 +108,13 @@ object NotifyUnit : HandleNotifyListener {
     }
 
     fun sendNotifyVoiceCall(ctx: Context, model: Data) {
-        var notification = NotificationCompat.Builder(ctx, Constant.CHANNEL_ID)
+        val channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel(Constant.CHANNEL_ID, "Notify", ctx)
+            } else {
+                ""
+            }
+        var notification = NotificationCompat.Builder(ctx, channelId)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         getUserRequest(model.idSender, this, notification, ctx, false)
         notification.setSmallIcon(R.mipmap.ic_launcher_foreground)
@@ -88,6 +123,7 @@ object NotifyUnit : HandleNotifyListener {
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setSound(defaultSoundUri)
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+
     }
 
     private fun onButtonNotificationClick(
@@ -147,7 +183,6 @@ object NotifyUnit : HandleNotifyListener {
         ctx: Context,
         notification: NotificationCompat.Builder
     ) {
-
         var intent = Intent(ctx, VoiceCallActivity::class.java)
         bundleOf(Constant.USER to userModel, Constant.CHECK_CALL to true).also {
             intent.putExtra(Constant.USER, it)

@@ -29,6 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/WhiteTheme">
+        <activity android:name=".ui.videocall.VideoCallActivity"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -88,7 +89,6 @@
             android:name=".ui.voicecall.VoiceCallActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme">
@@ -98,7 +98,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--Service-->
+        <activity android:name=".ui.test.Test2Activity" /> <!-- Service -->
         <service
             android:name=".ui.fcm.FirebaseMessagingService"
             android:enabled="true"
@@ -118,7 +118,6 @@
         <service android:name=".ui.voicecall.handleCall.VoiceCallService" />
 
         <receiver android:name=".ui.voicecall.handleCall.NotificationRecevier" />
-        <!--        end Service-->
     </application>
 
 </manifest>

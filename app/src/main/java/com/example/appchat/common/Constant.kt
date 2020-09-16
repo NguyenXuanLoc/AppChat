@@ -12,6 +12,7 @@ object Constant {
     const val IMAGE = "image"
     const val URI = "14"
     const val VIDEO = "video"
+    const val RECORD_AUDIO = 123
     const val AUDIO = "audio"
     const val USER = "user"
     const val PLAY_VIDEO = "playvideo"
@@ -39,6 +40,8 @@ object Constant {
     const val TOKEN = "token"
     const val DEJECT = "deject"
     const val NULL = "null"
+    const val COUNT_TIME = "count_time"
+    const val SERVICE = "service"
 
     // Key sinch SDK
     const val APP_KEY = "94bc354a-8d1e-4dd9-be8e-cc370ed1e448"

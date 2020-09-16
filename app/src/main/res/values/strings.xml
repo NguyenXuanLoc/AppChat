@@ -88,4 +88,5 @@
     <string name="ok">Đồng ý</string>
     <string name="collecting">Đang kết nối</string>
     <string name="audio_invitations">Lời mời gọi âm thanh</string>
+    <string name="click_to_return_call">Nhấn để quay trở lại cuộc gọi</string>
 </resources>

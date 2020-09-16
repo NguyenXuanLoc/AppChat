@@ -77,7 +77,7 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
     override fun init() {
         enableHomeAsUp { finish() }
         applyToolbar()
-
+        layoutAudio.gone()
         dialogAudio.setAudioListener(this)
         dialogUploadImage.setImageChooserListener(this)
 
@@ -99,6 +99,20 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
         layoutImage.setOnClickListener {
             dialogUploadImage.show()
         }
+        /*  layoutVideo.setOnClickListener {
+              if (PermissionUtil.isGranted(
+                      this,
+                      arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                      RC_PERMISSION_READ_STORAGE
+                  ) && PermissionUtil.isGranted(
+                      this,
+                      arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                      RC_PERMISSION_WRITE_STORAGE
+                  )
+              ) {
+                  FileUtil.openVideo(this)
+              }
+          }*/
         layoutVideo.setOnClickListener {
             if (PermissionUtil.isGranted(
                     this,
@@ -110,7 +124,9 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
                     RC_PERMISSION_WRITE_STORAGE
                 )
             ) {
-                FileUtil.openVideo(this)
+                var intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 20)
+                startActivityForResult(intent, Constant.RECORD_AUDIO)
             }
         }
         imgDeleteAudio.setOnClickListener {
@@ -162,7 +178,6 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
                     val bitmap = data.extras?.get("data") as Bitmap?
                     val uri = bitmap?.let { FileUtil.getImageUriFromBitmap(this, it) }
                     uri?.let { uriImages.add(it) }
-                    toast("ok ${uri.toString()}")
                     Log.e("TAG", uri.toString())
                 }
                 Constant.GET_VIDEO -> {
@@ -181,6 +196,14 @@ class UploadStatusActivity : BaseActivity(), UploadStatusView,
                     imgPlayVideo.visible()
                     imgDeleteVideo.visible()
                     uriThumbnail = bitmap?.let { FileUtil.getImageUriFromBitmap(this, it) }
+                }
+                Constant.RECORD_AUDIO -> {
+                    bundleOf(Constant.URI to data.data.toString()).also {
+                        openActivityForResult(
+                            PlayVideoActivity::class.java,
+                            Constant.RESULT_VIDEO, it, Constant.URI
+                        )
+                    }
                 }
             }
             adapter.notifyDataSetChanged()
