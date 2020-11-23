@@ -1,14 +1,20 @@
 package com.example.appchat.ui.test
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioManager
 import com.example.appchat.R
 import com.example.appchat.common.Constant
+import com.example.appchat.common.Key
 import com.example.appchat.common.KeyPermission
 import com.example.appchat.common.ext.setImageSimple
 import com.example.appchat.common.util.PermissionUtil
 import com.example.appchat.data.model.UserModel
 import com.example.appchat.ui.base.BaseActivity
+import com.example.appchat.ui.fcm.APIService
+import com.example.appchat.ui.fcm.Client
+import com.example.appchat.ui.fcm.Data
+import com.example.appchat.ui.fcm.NotificationSender
 import com.example.appchat.ui.voicecall.VoiceCallPresenter
 import com.example.appchat.ui.voicecall.VoiceCallView
 import com.example.fcm.common.ext.getUser
@@ -22,7 +28,10 @@ import com.sinch.android.rtc.calling.Call
 import com.sinch.android.rtc.calling.CallClient
 import com.sinch.android.rtc.calling.CallClientListener
 import com.sinch.android.rtc.calling.CallListener
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_voice_call.*
+import timber.log.Timber
 
 
 class TestActivty : BaseActivity(), VoiceCallView, CallClientListener, CallListener {
@@ -172,7 +181,6 @@ class TestActivty : BaseActivity(), VoiceCallView, CallClientListener, CallListe
     override fun onShouldSendPushNotification(p0: Call?, p1: MutableList<PushPair>?) {
         toast("Nitification")
     }
-
 }
 
 

@@ -98,7 +98,6 @@ class UserAdapter(
             }
         }
     }
-
     inner class ItemLoading(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private fun randomBackground(): Int {

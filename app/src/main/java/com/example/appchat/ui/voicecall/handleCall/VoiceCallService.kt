@@ -133,18 +133,6 @@ class VoiceCallService : Service(), CallClientListener, CallListener {
             it.start()
             it.callClient.addCallClientListener(this)
         }
-        if (sinchClient!!.isStarted) {
-            Log.e("TAG", "IS STARTED")
-/*            call = sinchClient?.callClient?.callUser(recipientId)
-            call?.addCallListener(this)*/
-        } else {
-            Log.e("TAG", "NOT STARTED")
-            /*   sinchClient!!.start()
-               call = sinchClient?.callClient?.callUser(recipientId)
-               call?.addCallListener(this)*/
-        }
-
-
     }
 
     override fun onIncomingCall(p0: CallClient?, p1: Call?) {
@@ -199,11 +187,11 @@ class VoiceCallService : Service(), CallClientListener, CallListener {
     fun stop() {
         Log.e("TAG", "Stop")
         if (checkPermission()) {
-            if (call == null) {
-                Log.e("TAG", "GỌI")
+           /* if (call == null) {
                 call = sinchClient?.callClient?.callUser(recipientId)
                 call?.addCallListener(this)
-            } else {
+            } else*/
+            if (call!=null){
                 Log.e("TAG", "HỦY")
                 call?.hangup()
             }

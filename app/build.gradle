@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileOptions {
@@ -14,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.appchat"
-        minSdkVersion 21
+        minSdkVersion 23
         multiDexEnabled true
         targetSdkVersion 29
         versionCode 1
@@ -96,4 +97,13 @@ dependencies {
     //Voice chat
     implementation (name:'sinch-android-rtc', version:'+', ext:'aar')
 
+
+    //Crash
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+
+    // Declare the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

@@ -93,7 +93,7 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, VoiceCallService.VoiceC
             isCheckCall = it.getBoolean(Constant.CHECK_CALL)
             sdvAvt.setImageSimple(userRecipient?.imageUrl.toString(), self)
             token = it.getString(Constant.TOKEN)
-            toast("CREATE")
+
         }
         intent.getBundleExtra(Constant.SERVICE)?.let { it ->
             userRecipient = it.getSerializable(Constant.USER) as UserModel?
@@ -106,7 +106,6 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, VoiceCallService.VoiceC
             imgCall.gone()
             imgReceive.gone()
             imgDeject.gone()
-            toast(userRecipient?.userName + "SERVICE")
         }
         if (isCheckCall == true) {
             recipientId = "1"
@@ -115,7 +114,6 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, VoiceCallService.VoiceC
             recipientId = "2"
             callerId = "1"
         }
-
     }
 
     private fun createService() {
@@ -148,12 +146,12 @@ class VoiceCallActivity : BaseActivity(), VoiceCallView, VoiceCallService.VoiceC
     }
 
     override fun onCallEnd() {
-
         stopService()
         imgCall.visible()
         layoutOpCalling.gone()
         lblStatus.text = "Kết thúc cuộc gọi"
         cmtTime.stop()
+        finish()
     }
 
 }

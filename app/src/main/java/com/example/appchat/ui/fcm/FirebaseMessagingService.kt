@@ -1,8 +1,7 @@
 package com.example.appchat.ui.fcm
 
-import android.util.Log
 import com.example.appchat.common.Constant
-import com.example.appchat.common.util.NotifyUnit
+import com.example.appchat.common.util.NotifyUtil
 import com.example.appchat.data.model.UserModel
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -27,12 +26,10 @@ class FirebaseMessagingService : FirebaseMessagingService() {
             Data(title.toString(), message.toString(), idSender.toString(), options.toString())
         when (options) {
             Constant.MESSAGE -> {
-                Log.e("TAG","MESSAGE")
-                NotifyUnit.sendNotifyNewMessage(this, dataModel)
+                NotifyUtil.sendNotifyNewMessage(this, dataModel)
             }
             Constant.VOICE_CALL -> {
-                Log.e("TAG","VOICE CALL")
-                NotifyUnit.sendNotifyVoiceCall(this, dataModel)
+                NotifyUtil.sendNotifyVoiceCall(this, dataModel)
             }
         }
     }

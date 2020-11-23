@@ -34,6 +34,7 @@ class LoginActivity : BaseActivity(), LoginView {
     private lateinit var callbackManager: CallbackManager
 
 
+
     override fun contentView(): Int {
         return R.layout.activity_login
     }

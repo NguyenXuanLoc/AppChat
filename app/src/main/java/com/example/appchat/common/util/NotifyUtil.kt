@@ -31,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
-object NotifyUnit : HandleNotifyListener {
+object NotifyUtil : HandleNotifyListener {
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotificationChannel(
         channelId: String,
@@ -86,7 +86,7 @@ object NotifyUnit : HandleNotifyListener {
             R.id.lblReceive,
             onButtonNotificationClick(R.id.lblReceive, ctx, model.idSender)
         )
-        expandedView.setOnClickPendingIntent(
+        collapsedView.setOnClickPendingIntent(
             R.id.lblDeject,
             onButtonNotificationClick(R.id.lblDeject, ctx, model.idSender)
         )
