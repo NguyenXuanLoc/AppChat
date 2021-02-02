@@ -1,5 +1,6 @@
 package com.example.appchat.ui.fcm
 
+import android.util.Log
 import com.example.appchat.common.Constant
 import com.example.appchat.common.util.NotifyUtil
 import com.example.appchat.data.model.UserModel
@@ -18,6 +19,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(p0: RemoteMessage) {
         var ob = JSONObject(p0.data as Map<*, *>)
+        Log.e("TAG", "onMESSAGE RECIVED: ${ob.toString()}")
         options = p0.data[Constant.OPTIONS]
         title = p0.data[Constant.TITLE]
         message = p0.data[Constant.MESSAGE]

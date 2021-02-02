@@ -8,6 +8,7 @@ import com.example.appchat.common.Key
 import com.example.appchat.ui.base.BaseActivity
 import com.example.appchat.ui.fcm.Token
 import com.example.fcm.common.ext.getUser
+import com.example.fcm.common.ext.toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
@@ -79,6 +80,7 @@ class HomeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
     private fun updateToken() {
         val refreshToken = FirebaseInstanceId.getInstance().token
+        toast(refreshToken.toString());
         val token = refreshToken?.let { Token(it) }
         FirebaseDatabase.getInstance().getReference(Key.TOKENS)
             .child(getUser()?.id.toString()).setValue(token)

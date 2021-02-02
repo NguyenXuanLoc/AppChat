@@ -71,8 +71,11 @@ object Key {
     const val SENDING = "Đang gửi"
     const val TOKENS = "Tokens"
     const val ID_TOKEN = "token"
-    const val KEY_AUTH =
+
+        const val KEY_AUTH =
         "AAAApF473e0:APA91bEHui0_mNA31RRwACd17hOmc7cx4oUfA5fGP0LVUXOlXPa84moahTmfH-9xTDc8DwX6SjvBJa6xcUG7V9UFvXZ6bee0h1PABWmRlcOmR294hWjX72jf1dPyBL-REixrLQjG6JfG"
+//    const val KEY_AUTH =
+//        "AAAAqkBsR3Q:APA91bH_TzuWNsH1zmasxNtxUP1RwinR281_xuzUaVUVGSv909NeHHHBpniPlrA9pjEU2kWJVZrIpVpbxqYM2bv6JA4qKOYUmOu2e9rXt1F050PU1YtRjmE-H-3lW1Gs138iSBgBPVII"
     const val CONTENT_TYPE = "application/json"
     const val UNREAD = "unread"
     const val READ = "read"

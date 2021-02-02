@@ -22,6 +22,7 @@ class EditProfileActivity : BaseActivity(), EditProfileView, DialogChooseDate.Da
     private val dialogDate by lazy { DialogChooseDate(self) }
     private var getGender = ""
     private var getStory = ""
+
     override fun contentView(): Int {
         return R.layout.activity_edit_profile
     }

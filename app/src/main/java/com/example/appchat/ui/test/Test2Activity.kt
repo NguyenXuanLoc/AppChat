@@ -11,10 +11,11 @@ import com.example.appchat.common.Constant
 import com.example.appchat.common.Key
 import com.example.appchat.common.util.NotifyUtil
 import com.example.appchat.ui.base.BaseActivity
-import com.example.appchat.ui.fcm.APIService
-import com.example.appchat.ui.fcm.Client
-import com.example.appchat.ui.fcm.Data
-import com.example.appchat.ui.fcm.NotificationSender
+import com.example.appchat.ui.fcm.*
+import com.example.fcm.common.ext.getUser
+import com.example.fcm.common.ext.toast
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_test.*
@@ -27,9 +28,19 @@ class Test2Activity : BaseActivity() {
     }
 
     override fun init() {
+        updateToken()
+    }
+
+    private fun updateToken() {
+        val refreshToken = FirebaseInstanceId.getInstance().token
+        Log.e("TAG", "TOKEN: ${refreshToken.toString()}");
+        val token = refreshToken?.let { Token(it) }
+        FirebaseDatabase.getInstance().getReference(Key.TOKENS)
+            .child(getUser()?.id.toString()).setValue(token)
     }
 
     override fun eventHandle() {
+
         btnStart.setOnClickListener {
 //            Log.e("TAG", "Crap")
 //            throw RuntimeException("Test Crash") // Force a crash
@@ -41,7 +52,7 @@ class Test2Activity : BaseActivity() {
 
     @SuppressLint("CheckResult")
     fun pushNotifyCallVideo(
-        userToken: String = "dLnOF6KMRKaxt25YMHNw7y:APA91bF1pIIRPU8aEuEXl7dymrlgum0SIZRQ55elY5lVVKgf6ArE57k8jGA1wdVt4TgFZTE8A5WWQ5CJPPgir7KezhAYC39GJWvYBBmm6FnhRNJ1uIq3RBOcnGmcerKrY6suFex1iRXe",
+        userToken: String = "ekAQ8COORgCQyWYXBzEpEs:APA91bFNRqdJvtR5nR5Xnc-c72fiChvyG4W-HTWridqf6tvi4FXqIgXxRNwHInphhRfwhYeDJnZuL9Uko19IKHwK-cNVG2ch-0ATCJHvgaLp2aTpxlrpSoV50IMgCPJR9LKszHz8Chw9",
         nameSender: String,
         message: String,
         idSender: String
@@ -54,10 +65,10 @@ class Test2Activity : BaseActivity() {
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe({
                 if (it.success != 1) {
-                    Log.e("TAG","FASLE")
+                    Log.e("TAG", "FASLE")
                     Timber.e("False push notification")
-                }else{
-                    Log.e("TAG","SUCCESS")
+                } else {
+                    Log.e("TAG", "SUCCESS")
                 }
             }, {
                 Timber.e(it.message)
